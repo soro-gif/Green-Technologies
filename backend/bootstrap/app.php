@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\EnsureUserHasPermission;
+use App\Http\Middleware\EnsureUserHasRole;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -9,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+
+        $middleware->alias([
+            'role' => EnsureUserHasRole::class,
+            'permission' => EnsureUserHasPermission::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
@@ -41,7 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Unauthenticated',
+                    'message' => 'Unauthenticated.',
                 ], 401);
             }
         });
@@ -51,7 +59,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => $e->getMessage() ?: 'Forbidden access',
+                    'message' => $e->getMessage() ?: 'Forbidden access.',
                 ], 403);
             }
         });
@@ -61,8 +69,18 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Requested resource not found',
+                    'message' => 'Requested resource not found.',
                 ], 404);
+            }
+        });
+
+        // Standardized JSON response for Rate Limiting / 429 Too Many Requests
+        $exceptions->render(function (TooManyRequestsHttpException $e, Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Trop de requêtes. Veuillez patienter avant de réessayer.',
+                ], 429);
             }
         });
 
@@ -71,7 +89,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Method not allowed for this endpoint',
+                    'message' => 'Method not allowed for this endpoint.',
                 ], 405);
             }
         });
