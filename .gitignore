@@ -1,0 +1,57 @@
+# Dependencies
+/backend/vendor/
+/frontend/node_modules/
+node_modules/
+vendor/
+
+# Environment files
+.env
+.env.*
+!.env.example
+/backend/.env
+/backend/.env.*
+!/backend/.env.example
+/frontend/.env
+/frontend/.env.*
+!/frontend/.env.example
+
+# Build outputs
+/frontend/dist/
+/frontend/dist-ssr/
+*.local
+
+# Database (SQLite)
+/backend/database/*.sqlite
+/backend/database/*.sqlite-journal
+!/backend/database/.gitkeep
+
+# Laravel storage & cache
+/backend/storage/*.key
+/backend/storage/app/*
+!/backend/storage/app/.gitignore
+/backend/storage/framework/cache/*
+!/backend/storage/framework/cache/.gitignore
+/backend/storage/framework/sessions/*
+!/backend/storage/framework/sessions/.gitignore
+/backend/storage/framework/views/*
+!/backend/storage/framework/views/.gitignore
+/backend/bootstrap/cache/*
+!/backend/bootstrap/cache/.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+.phpunit.result.cache
