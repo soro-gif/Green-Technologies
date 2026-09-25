@@ -29,14 +29,24 @@ export function ProtectedRoute({ children, requiredRole, requiredPermission }: P
 
   if (requiredRole && !hasRole(requiredRole)) {
     return (
-      <div className="max-w-md mx-auto p-6 bg-slate-900 border border-slate-800 rounded-2xl text-center space-y-4">
-        <div className="inline-flex p-3 bg-rose-500/10 text-rose-400 rounded-full border border-rose-500/20">
-          <ShieldAlert className="w-8 h-8" />
+      <div className="min-h-[60vh] flex items-center justify-center p-4">
+        <div className="max-w-md w-full p-8 bg-slate-900 border border-slate-800 rounded-3xl text-center space-y-4 shadow-2xl">
+          <div className="inline-flex p-3.5 bg-rose-500/10 text-rose-400 rounded-2xl border border-rose-500/20">
+            <ShieldAlert className="w-8 h-8" />
+          </div>
+          <h2 className="text-xl font-bold text-white font-['Outfit']">Accès Réservé à l'Administration</h2>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Ce tableau de bord est exclusivement réservé au personnel technique et administratif de Green Technologies.
+          </p>
+          <div className="pt-2">
+            <a
+              href="/"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors"
+            >
+              Retour au site public
+            </a>
+          </div>
         </div>
-        <h2 className="text-xl font-bold text-white">Accès Refusé</h2>
-        <p className="text-xs text-slate-400">
-          Votre rôle actuel (<strong className="text-amber-400">{user.role_label}</strong>) ne vous autorise pas à accéder à cet espace.
-        </p>
       </div>
     );
   }

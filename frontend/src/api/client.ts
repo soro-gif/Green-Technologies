@@ -7,21 +7,28 @@ import type { ApiErrorResponse } from '../types/api';
  * Uses environment variable VITE_API_URL or defaults to local v1 API.
  */
 const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
+    'http://127.0.0.1:8000/api/v1',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  timeout: 10000,
+  timeout: 30000,
   withCredentials: true,
 });
 
-// Request Interceptor: Attach Auth token if present
+// Request Interceptor: Attach Auth token if present & handle FormData
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem('auth_token');
     if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.set('Authorization', `Bearer ${token}`);
+    }
+    // Remove manual Content-Type for FormData so Axios sets the correct multipart boundary
+    if (config.data instanceof FormData && config.headers) {
+      config.headers.delete('Content-Type');
     }
     return config;
   },

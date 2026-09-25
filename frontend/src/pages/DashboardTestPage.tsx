@@ -49,7 +49,7 @@ export function DashboardTestPage() {
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Espace Protégé & Profil Connecté</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Espace protégé et profil connecté</h1>
             <p className="text-xs text-slate-400">Vérification de l'identité et du système de rôles / permissions (RBAC)</p>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function DashboardTestPage() {
       <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-5 space-y-4">
         <div className="flex items-center space-x-2 text-sm font-semibold text-white">
           <Lock className="w-4 h-4 text-amber-400" />
-          <span>Tests des Middlewares de Sécurité (Role & Permission)</span>
+          <span>Tests des middlewares de sécurité (rôle et permission)</span>
         </div>
 
         <div className="flex flex-wrap gap-3">

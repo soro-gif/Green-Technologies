@@ -1,9 +1,10 @@
-export type UserRole = 'super_admin' | 'admin' | 'editor';
+export type UserRole = 'super_admin' | 'admin' | 'editor' | 'user';
 
 export interface AuthUser {
   id: number;
   name: string;
   email: string;
+  phone?: string;
   role: UserRole;
   role_label: string;
   is_active: boolean;
@@ -34,8 +35,8 @@ export interface AuthContextType {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  register: (credentials: RegisterCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<AuthUser>;
+  register: (credentials: RegisterCredentials) => Promise<AuthUser>;
   logout: () => Promise<void>;
   hasRole: (role: UserRole | UserRole[]) => boolean;
   hasPermission: (permission: string) => boolean;

@@ -12,8 +12,8 @@ export function HealthPage() {
             <Activity className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Statut du Socle Technique</h1>
-            <p className="text-xs sm:text-sm text-slate-400">Communication Frontend React ↔ Backend Laravel API v1</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Statut du socle technique</h1>
+            <p className="text-xs sm:text-sm text-slate-400">Communication frontend React ↔ backend laravel API v1</p>
           </div>
         </div>
 
@@ -51,13 +51,12 @@ export function HealthPage() {
               {isError && (error?.message || 'Serveur injoignable')}
             </p>
             <span
-              className={`inline-block mt-2 px-2 py-0.5 text-[10px] font-medium rounded border ${
-                data?.success
+              className={`inline-block mt-2 px-2 py-0.5 text-[10px] font-medium rounded border ${data?.success
                   ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                   : isLoading
-                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                  : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-              }`}
+                    ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                    : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                }`}
             >
               {data?.success ? 'Connecté (v1)' : isLoading ? 'En attente' : 'Hors ligne'}
             </span>

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /mon-espace/
+Disallow: /mon-espace/*
+Disallow: /api/
+
+Sitemap: https://greentechnologies.ci/sitemap.xml

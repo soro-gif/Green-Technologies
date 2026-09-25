@@ -34,23 +34,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials: LoginCredentials): Promise<AuthUser> => {
     setIsLoading(true);
     try {
       const data = await authService.login(credentials);
       setUser(data.user);
       setToken(data.token);
+      return data.user;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (credentials: RegisterCredentials) => {
+  const register = async (credentials: RegisterCredentials): Promise<AuthUser> => {
     setIsLoading(true);
     try {
       const data = await authService.register(credentials);
       setUser(data.user);
       setToken(data.token);
+      return data.user;
     } finally {
       setIsLoading(false);
     }

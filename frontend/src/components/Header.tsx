@@ -6,7 +6,7 @@ export function Header() {
   const { user, isAuthenticated } = useAuth();
 
   return (
-    <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <header className="border-b border-slate-800 bg-slate-900 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-3">
           <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
