@@ -7,24 +7,44 @@ services:
     dockerfilePath: ./backend/Dockerfile
     plan: free
     region: frankfurt
+
     envVars:
       - key: APP_ENV
         value: production
+
       - key: APP_DEBUG
         value: "false"
+
       - key: APP_URL
         fromService:
           type: web
           name: greentech-backend
           property: host
+
+      - key: APP_KEY
+        generateValue: true
+
+      # PostgreSQL Render
       - key: DB_CONNECTION
         value: pgsql
+
+      - key: DB_URL
+        fromDatabase:
+          name: greentech-db
+          property: connectionString
+
       - key: DATABASE_URL
         fromDatabase:
           name: greentech-db
           property: connectionString
-      - key: APP_KEY
-        generateValue: true
+
+      # Session API
+      - key: SESSION_DRIVER
+        value: array
+
+      # Logs Render
+      - key: LOG_CHANNEL
+        value: stderr
 
 # --- DATABASE (PostgreSQL) ---
 databases:
