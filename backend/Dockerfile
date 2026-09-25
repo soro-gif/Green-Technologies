@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 # Install system dependencies & PostgreSQL dev libraries
 RUN apt-get update && apt-get install -y \
@@ -33,8 +33,8 @@ COPY . /var/www/html
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Install PHP dependencies without executing Laravel scripts during image build
-RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction
+# Install PHP dependencies
+RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Set permissions for Laravel storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
