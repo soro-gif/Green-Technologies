@@ -8,7 +8,6 @@ echo "========================================="
 # --------------------------------------------------
 # Laravel storage directories
 # --------------------------------------------------
-
 mkdir -p \
     /var/www/html/storage/logs \
     /var/www/html/storage/framework/cache/data \
@@ -16,10 +15,6 @@ mkdir -p \
     /var/www/html/storage/framework/views \
     /var/www/html/storage/app/public \
     /var/www/html/bootstrap/cache
-
-# --------------------------------------------------
-# Permissions
-# --------------------------------------------------
 
 chown -R www-data:www-data \
     /var/www/html/storage \
@@ -34,35 +29,30 @@ echo "Storage permissions configured."
 # --------------------------------------------------
 # Laravel package discovery
 # --------------------------------------------------
-
-php artisan package:discover --ansi
-
-# --------------------------------------------------
-# Clear old caches
-# --------------------------------------------------
-
-php artisan optimize:clear
+php artisan package:discover --ansi || true
 
 # --------------------------------------------------
-# Database migrations
+# Database migrations & seeds (MUST RUN BEFORE CACHE CLEAR)
 # --------------------------------------------------
-
 echo "Running database migrations..."
+php artisan migrate --force || true
 
-php artisan migrate --force
+echo "Running database seeders..."
+php artisan db:seed --force || true
 
 # --------------------------------------------------
-# Production optimization
+# Production optimizations (after tables exist)
 # --------------------------------------------------
+echo "Caching configurations and routes..."
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
 
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-echo "Laravel startup completed successfully."
+echo "========================================="
+echo " Laravel startup completed successfully!"
+echo "========================================="
 
 # --------------------------------------------------
 # Start Apache
 # --------------------------------------------------
-
 exec "$@"
