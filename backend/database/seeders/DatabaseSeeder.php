@@ -21,13 +21,23 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
         ]);
 
-        // 2. Local Development Admin Account (Explicit demo credentials)
+        // 2. Demo Accounts
         User::updateOrCreate(
             ['email' => 'admin@greentechnologies.ci'],
             [
                 'name' => 'Direction Technique Green Tech',
-                'password' => Hash::make('GreenTechDev2026!'),
+                'password' => Hash::make('password'),
                 'role' => UserRole::SuperAdmin,
+                'is_active' => true,
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'client@greentechnologies.ci'],
+            [
+                'name' => 'Client Démo Green Tech',
+                'password' => Hash::make('password'),
+                'role' => UserRole::User,
                 'is_active' => true,
             ]
         );
