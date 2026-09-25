@@ -12,6 +12,7 @@ class ContactMessage extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'full_name',
         'email',
         'phone',
@@ -34,5 +35,10 @@ class ContactMessage extends Model
     public function scopeUnread(Builder $query): Builder
     {
         return $query->where('status', MessageStatus::Unread);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

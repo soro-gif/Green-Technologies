@@ -121,4 +121,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+
+    /**
+     * Quotes submitted by this user.
+     */
+    public function quoteRequests(): HasMany
+    {
+        return $this->hasMany(QuoteRequest::class);
+    }
+
+    /**
+     * Contact messages sent by this user.
+     */
+    public function contactMessages(): HasMany
+    {
+        return $this->hasMany(ContactMessage::class);
+    }
 }

@@ -26,9 +26,9 @@ class ProjectSeeder extends Seeder
             [
                 'category_id' => $eau?->id,
                 'service_id' => $forageService?->id,
-                'title' => 'Système d\'Adduction d\'Eau Potable & Forage Solaire',
+                'title' => 'Système d\'adduction d\'eau potable et forage solaire',
                 'slug' => 'systeme-adduction-eau-potable-forage-solaire-bouake',
-                'client_name' => 'Communauté Villageoise & Coopérative',
+                'client_name' => 'Communauté villageoise et coopérative',
                 'location' => 'Région de Bouaké',
                 'completion_date' => '2025-11-15',
                 'summary' => 'Forage à 95m de profondeur avec château d\'eau métallique de 25m³ et 8 bornes fontaines connectées.',
@@ -43,7 +43,7 @@ class ProjectSeeder extends Seeder
             [
                 'category_id' => $energie?->id,
                 'service_id' => $solaireService?->id,
-                'title' => 'Centrale Photovoltaïque Hybride Industrielle 120 kWc',
+                'title' => 'Centrale photovoltaïque hybride industrielle 120 kWc',
                 'slug' => 'centrale-photovoltaique-hybride-industrielle-korhogo',
                 'client_name' => 'Complexe Agro-industriel du Nord',
                 'location' => 'Korhogo',
@@ -60,9 +60,9 @@ class ProjectSeeder extends Seeder
             [
                 'category_id' => $agro?->id,
                 'service_id' => $irrigationService?->id,
-                'title' => 'Aménagement Hydro-Agricole & Irrigation Goutte-à-Goutte (30 Ha)',
+                'title' => 'Aménagement hydro-agricole et irrigation goutte-à-goutte (30 ha)',
                 'slug' => 'amenagement-hydro-agricole-irrigation-yamoussoukro',
-                'client_name' => 'Ferme Maraîchère & Exportation',
+                'client_name' => 'Ferme maraîchère et exportation',
                 'location' => 'Yamoussoukro',
                 'completion_date' => '2026-05-10',
                 'summary' => 'Système d\'irrigation automatisé par secteurs avec station de pompage solaire et fertigation intégrée.',
@@ -77,7 +77,7 @@ class ProjectSeeder extends Seeder
             [
                 'category_id' => $btp?->id,
                 'service_id' => $btpService?->id,
-                'title' => 'Plateforme Logistique & Bâtiment Bas-Carbone',
+                'title' => 'Plateforme logistique et bâtiment bas-carbone',
                 'slug' => 'plateforme-logistique-batiment-bas-carbone-abidjan',
                 'client_name' => 'Groupe Logistique International',
                 'location' => 'Zone Industrielle Yopougon, Abidjan',

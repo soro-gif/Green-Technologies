@@ -35,10 +35,15 @@ class Article extends Model
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('status', ArticleStatus::Published)
-            ->whereNotNull('published_at')
-            ->where('published_at', '<=', now())
-            ->orderByDesc('published_at');
+        return $query->where(function ($q) {
+                $q->where('status', ArticleStatus::Published)
+                  ->orWhere('status', 'published');
+            })
+            ->where(function ($q) {
+                $q->whereNull('published_at')
+                  ->orWhere('published_at', '<=', now()->addMinutes(5));
+            })
+            ->orderByDesc('created_at');
     }
 
     public function author(): BelongsTo

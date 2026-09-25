@@ -13,6 +13,7 @@ class QuoteRequest extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'reference',
         'category_id',
         'service_id',
@@ -41,6 +42,11 @@ class QuoteRequest extends Model
     public function scopePending(Builder $query): Builder
     {
         return $query->where('status', QuoteStatus::Pending);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function category(): BelongsTo

@@ -14,12 +14,12 @@ enum Permission: string
     public function label(): string
     {
         return match ($this) {
-            self::ServicesManage => 'Gestion des services & prestations',
-            self::ProjectsManage => 'Gestion des réalisations & projets',
+            self::ServicesManage => 'Gestion des services et prestations',
+            self::ProjectsManage => 'Gestion des réalisations et projets',
             self::QuotesManage => 'Gestion et suivi des devis',
             self::MessagesManage => 'Gestion des messages de contact',
-            self::ArticlesManage => 'Gestion des publications & blog',
-            self::UsersManage => 'Gestion des utilisateurs & rôles',
+            self::ArticlesManage => 'Gestion des publications et blog',
+            self::UsersManage => 'Gestion des utilisateurs et rôles',
         };
     }
 }

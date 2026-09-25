@@ -29,7 +29,7 @@ class AuthController extends BaseApiController
             'name' => $validated['name'],
             'email' => strtolower(trim($validated['email'])),
             'password' => Hash::make($validated['password']),
-            'role' => UserRole::Editor, // Default role for self-registered accounts
+            'role' => UserRole::User, // Standard user / client without dashboard access
             'is_active' => true,
         ]);
 

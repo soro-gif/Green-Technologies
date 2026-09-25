@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
@@ -16,16 +15,20 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:150'],
-            'email' => ['required', 'string', 'email:rfc', 'max:150', 'unique:users,email'],
-            'password' => ['required', 'string', Password::min(8)->letters()->numbers(), 'confirmed'],
+            'email' => ['required', 'string', 'email', 'max:150', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'email.unique' => 'Cette adresse email est déjà utilisée.',
+            'name.required' => 'Le nom complet est obligatoire.',
+            'email.required' => 'L\'adresse email est obligatoire.',
             'email.email' => 'Veuillez renseigner une adresse email valide.',
+            'email.unique' => 'Cette adresse email est déjà utilisée par un autre compte.',
+            'password.required' => 'Le mot de passe est obligatoire.',
+            'password.min' => 'Le mot de passe doit comporter au moins 8 caractères.',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ];
     }

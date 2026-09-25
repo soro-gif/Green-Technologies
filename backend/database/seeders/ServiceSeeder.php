@@ -19,7 +19,7 @@ class ServiceSeeder extends Seeder
             // EAU
             [
                 'category_id' => $eau?->id,
-                'title' => 'Forages Hydrauliques & Pompage Solaire',
+                'title' => 'Forages hydrauliques et pompage solaire',
                 'slug' => 'forages-hydrauliques-pompage-solaire',
                 'summary' => 'Réalisation de forages profonds équipés de pompes solaires immergées pour un approvisionnement continu.',
                 'description' => 'Étude géophysique, foration grand diamètre, tubage certifié, installation de pompes solaires et châteaux d\'eau métalliques ou béton.',
@@ -30,7 +30,7 @@ class ServiceSeeder extends Seeder
             ],
             [
                 'category_id' => $eau?->id,
-                'title' => 'Stations de Filtration & Traitement d\'Eau OMS',
+                'title' => 'Stations de filtration et traitement d\'eau OMS',
                 'slug' => 'stations-filtration-traitement-eau-oms',
                 'summary' => 'Unités de potabilisation d\'eau aux normes OMS pour collectivités, complexes industriels et résidences.',
                 'description' => 'Filtration membranaire, osmose inverse, déferrisation, désinfection UV et traitement automatique sans surconsommation chimique.',
@@ -43,7 +43,7 @@ class ServiceSeeder extends Seeder
             // ENERGIE
             [
                 'category_id' => $energie?->id,
-                'title' => 'Centrales Solaires Photovoltaïques Hybrides',
+                'title' => 'Centrales solaires photovoltaïques hybrides',
                 'slug' => 'centrales-solaires-photovoltaiques-hybrides',
                 'summary' => 'Conception et installation de centrales solaires avec stockage lithium pour entreprises et sites isolés.',
                 'description' => 'Dimensionnement sur mesure, onduleurs hybrides de pointe, batteries LiFePO4 longue durée et supervision connectée en temps réel.',
@@ -54,7 +54,7 @@ class ServiceSeeder extends Seeder
             ],
             [
                 'category_id' => $energie?->id,
-                'title' => 'Éclairage Public Solaire Autonome',
+                'title' => 'Éclairage public solaire autonome',
                 'slug' => 'eclairage-public-solaire-autonome',
                 'summary' => 'Lampadaires solaires tout-en-un haute intensité pour voiries, communes, lotissements et sites industriels.',
                 'description' => 'Lampadaires solaires intelligents avec capteurs crépusculaires et de mouvement, batterie intégrée et LED haute luminosité.',
@@ -67,7 +67,7 @@ class ServiceSeeder extends Seeder
             // AGRO
             [
                 'category_id' => $agro?->id,
-                'title' => 'Irrigation Goutte-à-Goutte Connectée',
+                'title' => 'Irrigation goutte-à-goutte connectée',
                 'slug' => 'irrigation-goutte-a-goutte-connectee',
                 'summary' => 'Réseaux d\'irrigation de précision pilotés par capteurs d\'humidité pour exploitations maraîchères et plantations.',
                 'description' => 'Optimisation de la ressource en eau, fertigation dosée, gain de rendement agricole supérieur à 40% et pilotage simplifié.',
@@ -80,7 +80,7 @@ class ServiceSeeder extends Seeder
             // BTP
             [
                 'category_id' => $btp?->id,
-                'title' => 'Ouvrages de Génie Civil & BTP Écologique',
+                'title' => 'Ouvrages de génie civil et BTP écologique',
                 'slug' => 'ouvrages-genie-civil-btp-ecologique',
                 'summary' => 'Construction de structures durables, plateformes logistiques, voiries et terrassement avec approche bas-carbone.',
                 'description' => 'Ingénierie structurelle, fondations spéciales, voiries et réseaux divers (VRD), aménagement paysager et constructions éco-conçues.',

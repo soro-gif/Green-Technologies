@@ -11,7 +11,7 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Eau & Hydraulique',
+                'name' => 'Eau et hydraulique',
                 'slug' => 'eau-hydraulique',
                 'description' => 'Forages hydrauliques, stations de traitement d\'eau potable aux normes OMS, châteaux d\'eau et réseaux d\'adduction.',
                 'icon' => 'droplets',
@@ -19,7 +19,7 @@ class CategorySeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'name' => 'Énergie Solaire',
+                'name' => 'Énergie solaire',
                 'slug' => 'energie-solaire',
                 'description' => 'Centrales photovoltaïques, kits solaires autonomes, pompage solaire et éclairage public autonome.',
                 'icon' => 'sun',
@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'name' => 'BTP & Génie Civil',
+                'name' => 'BTP et génie civil',
                 'slug' => 'btp-genie-civil',
                 'description' => 'Infrastructures durables, voiries, hangars industriels et construction de bâtiments écologiques.',
                 'icon' => 'building-2',
