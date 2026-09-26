@@ -85,7 +85,7 @@ export function ServicesPage() {
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-['Outfit'] tracking-tight">
             Catalogue de prestations et services
           </h1>
           <p className="text-base sm:text-lg text-slate-600">
