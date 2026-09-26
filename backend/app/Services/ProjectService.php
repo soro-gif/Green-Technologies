@@ -93,8 +93,23 @@ class ProjectService
      */
     public function create(array $data): Project
     {
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+        if (empty($data['slug']) && !empty($data['title'])) {
+            $baseSlug = Str::slug($data['title']);
+            $slug = $baseSlug;
+            $count = 1;
+            while (Project::where('slug', $slug)->exists()) {
+                $slug = "{$baseSlug}-{$count}";
+                $count++;
+            }
+            $data['slug'] = $slug;
+        }
+
+        if (empty($data['summary'])) {
+            $data['summary'] = Str::limit(strip_tags($data['description'] ?? $data['title']), 250);
+        }
+
+        if (empty($data['location'])) {
+            $data['location'] = 'Côte d\'Ivoire';
         }
 
         return Project::create($data);
@@ -106,7 +121,22 @@ class ProjectService
     public function update(Project $project, array $data): Project
     {
         if (isset($data['title']) && empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+            if ($data['title'] !== $project->title) {
+                $baseSlug = Str::slug($data['title']);
+                $slug = $baseSlug;
+                $count = 1;
+                while (Project::where('slug', $slug)->where('id', '!=', $project->id)->exists()) {
+                    $slug = "{$baseSlug}-{$count}";
+                    $count++;
+                }
+                $data['slug'] = $slug;
+            } else {
+                unset($data['slug']);
+            }
+        }
+
+        if (isset($data['description']) && empty($data['summary'])) {
+            $data['summary'] = Str::limit(strip_tags($data['description']), 250);
         }
 
         $project->update($data);

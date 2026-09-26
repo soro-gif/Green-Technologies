@@ -70,8 +70,15 @@ class CategoryService
      */
     public function create(array $data): Category
     {
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['name']);
+        if (empty($data['slug']) && !empty($data['name'])) {
+            $baseSlug = Str::slug($data['name']);
+            $slug = $baseSlug;
+            $count = 1;
+            while (Category::where('slug', $slug)->exists()) {
+                $slug = "{$baseSlug}-{$count}";
+                $count++;
+            }
+            $data['slug'] = $slug;
         }
 
         return Category::create($data);
@@ -83,7 +90,18 @@ class CategoryService
     public function update(Category $category, array $data): Category
     {
         if (isset($data['name']) && empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['name']);
+            if ($data['name'] !== $category->name) {
+                $baseSlug = Str::slug($data['name']);
+                $slug = $baseSlug;
+                $count = 1;
+                while (Category::where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
+                    $slug = "{$baseSlug}-{$count}";
+                    $count++;
+                }
+                $data['slug'] = $slug;
+            } else {
+                unset($data['slug']);
+            }
         }
 
         $category->update($data);

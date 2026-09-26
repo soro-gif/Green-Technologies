@@ -14,12 +14,13 @@ class UpdateServiceRequest extends FormRequest
 
     public function rules(): array
     {
-        $serviceId = $this->route('service')?->id ?? $this->route('id');
+        $service = $this->route('service');
+        $serviceId = is_object($service) ? $service->id : ($service ?? $this->route('id'));
 
         return [
             'category_id' => ['sometimes', 'required', 'integer', 'exists:categories,id'],
             'title' => ['sometimes', 'required', 'string', 'max:180'],
-            'slug' => ['sometimes', 'required', 'string', 'max:180', Rule::unique('services', 'slug')->ignore($serviceId)],
+            'slug' => ['sometimes', 'nullable', 'string', 'max:180', Rule::unique('services', 'slug')->ignore($serviceId)],
             'summary' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
             'features' => ['nullable', 'array'],

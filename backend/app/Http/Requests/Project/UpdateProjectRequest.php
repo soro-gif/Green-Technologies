@@ -15,17 +15,18 @@ class UpdateProjectRequest extends FormRequest
 
     public function rules(): array
     {
-        $projectId = $this->route('project')?->id ?? $this->route('id');
+        $project = $this->route('project');
+        $projectId = is_object($project) ? $project->id : ($project ?? $this->route('id'));
 
         return [
             'category_id' => ['sometimes', 'required', 'integer', 'exists:categories,id'],
             'service_id' => ['nullable', 'integer', 'exists:services,id'],
             'title' => ['sometimes', 'required', 'string', 'max:200'],
-            'slug' => ['sometimes', 'required', 'string', 'max:200', Rule::unique('projects', 'slug')->ignore($projectId)],
+            'slug' => ['sometimes', 'nullable', 'string', 'max:200', Rule::unique('projects', 'slug')->ignore($projectId)],
             'client_name' => ['nullable', 'string', 'max:150'],
-            'location' => ['sometimes', 'required', 'string', 'max:150'],
+            'location' => ['sometimes', 'nullable', 'string', 'max:150'],
             'completion_date' => ['nullable', 'date'],
-            'summary' => ['sometimes', 'required', 'string'],
+            'summary' => ['sometimes', 'nullable', 'string'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'string', 'max:2048'],
             'gallery' => ['nullable', 'array'],

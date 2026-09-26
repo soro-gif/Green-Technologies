@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Plus, Trash2, Edit3, CheckCircle2 } from 'lucide-react';
+import { Search, Plus, Trash2, Edit3, CheckCircle2, AlertCircle } from 'lucide-react';
 import { servicesApi, categoriesApi } from '../../api';
 import type { Service, Category } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';
@@ -34,6 +34,7 @@ export function AdminServicesPage() {
     is_active: true,
   });
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     categoriesApi.getAll().then((res) => setCategories(res.data || [])).catch(() => {});
@@ -63,6 +64,7 @@ export function AdminServicesPage() {
 
   const handleOpenCreate = () => {
     setEditingService(null);
+    setFormError('');
     setFormData({
       category_id: categories[0]?.id ? String(categories[0].id) : '',
       title: '',
@@ -76,6 +78,7 @@ export function AdminServicesPage() {
 
   const handleOpenEdit = (srv: Service) => {
     setEditingService(srv);
+    setFormError('');
     setFormData({
       category_id: String(srv.category_id),
       title: srv.title,
@@ -89,13 +92,25 @@ export function AdminServicesPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    if (!formData.category_id) {
+      setFormError('Veuillez sélectionner un domaine / pôle d\'expertise.');
+      return;
+    }
+
+    if (!formData.title.trim()) {
+      setFormError('Le titre de la prestation est obligatoire.');
+      return;
+    }
+
     try {
       setSaving(true);
       const payload = {
         category_id: parseInt(formData.category_id, 10),
-        title: formData.title,
-        summary: formData.summary,
-        description: formData.description,
+        title: formData.title.trim(),
+        summary: formData.summary || null,
+        description: formData.description || null,
         image: formData.image || null,
         is_active: formData.is_active,
       };
@@ -108,8 +123,21 @@ export function AdminServicesPage() {
 
       setModalOpen(false);
       fetchServices();
-    } catch (err) {
-      alert('Erreur lors de l\'enregistrement.');
+    } catch (err: any) {
+      console.error(err);
+      if (err.response?.status === 401) {
+        setFormError('Votre session a expiré. Veuillez vous reconnecter à votre compte administrateur.');
+      } else if (err.response?.status === 403) {
+        setFormError('Accès refusé : rôle ou permissions insuffisants.');
+      } else if (err.response?.data?.errors) {
+        const errorList = Object.values(err.response.data.errors).flat().join(' ');
+        setFormError(errorList || 'Erreur de validation du formulaire.');
+      } else {
+        setFormError(
+          err.response?.data?.message ||
+          'Une erreur est survenue lors de l\'enregistrement de la prestation.'
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -267,6 +295,13 @@ export function AdminServicesPage() {
         maxWidth="lg"
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
+              <div className="text-xs font-medium">{formError}</div>
+            </div>
+          )}
+
           <Select
             label="Domaine"
             required

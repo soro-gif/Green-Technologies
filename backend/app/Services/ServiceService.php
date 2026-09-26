@@ -91,7 +91,14 @@ class ServiceService
     public function create(array $data): Service
     {
         if (empty($data['slug']) && !empty($data['title'])) {
-            $data['slug'] = Str::slug($data['title']);
+            $baseSlug = Str::slug($data['title']);
+            $slug = $baseSlug;
+            $count = 1;
+            while (Service::where('slug', $slug)->exists()) {
+                $slug = "{$baseSlug}-{$count}";
+                $count++;
+            }
+            $data['slug'] = $slug;
         }
 
         return Service::create($data);
@@ -103,7 +110,18 @@ class ServiceService
     public function update(Service $service, array $data): Service
     {
         if (isset($data['title']) && empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+            if ($data['title'] !== $service->title) {
+                $baseSlug = Str::slug($data['title']);
+                $slug = $baseSlug;
+                $count = 1;
+                while (Service::where('slug', $slug)->where('id', '!=', $service->id)->exists()) {
+                    $slug = "{$baseSlug}-{$count}";
+                    $count++;
+                }
+                $data['slug'] = $slug;
+            } else {
+                unset($data['slug']);
+            }
         }
 
         $service->update($data);

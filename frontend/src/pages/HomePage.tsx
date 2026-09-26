@@ -108,7 +108,7 @@ export function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             {/* LEFT COLUMN: Texts & CTAs (7 Cols) */}
             <div className="lg:col-span-7 space-y-6 text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-['Outfit'] tracking-tight leading-[1.12] text-white">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] tracking-tight leading-[1.12] text-white">
                 Bâtir l'avenir par l'eau, l'énergie et le génie civil
               </h1>
 

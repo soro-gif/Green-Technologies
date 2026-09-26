@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Plus, Trash2, Edit3, CheckCircle2 } from 'lucide-react';
+import { Search, Plus, Trash2, Edit3, CheckCircle2, AlertCircle } from 'lucide-react';
 import { categoriesApi } from '../../api';
 import type { Category } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';
@@ -29,6 +29,7 @@ export function AdminCategoriesPage() {
     is_active: true,
   });
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const fetchCategories = async () => {
     try {
@@ -53,6 +54,7 @@ export function AdminCategoriesPage() {
 
   const handleOpenCreate = () => {
     setEditingCategory(null);
+    setFormError('');
     setFormData({
       name: '',
       description: '',
@@ -64,6 +66,7 @@ export function AdminCategoriesPage() {
 
   const handleOpenEdit = (cat: Category) => {
     setEditingCategory(cat);
+    setFormError('');
     setFormData({
       name: cat.name,
       description: cat.description || '',
@@ -75,10 +78,17 @@ export function AdminCategoriesPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    if (!formData.name.trim()) {
+      setFormError('Le nom du pôle d\'expertise est obligatoire.');
+      return;
+    }
+
     try {
       setSaving(true);
       const payload = {
-        name: formData.name,
+        name: formData.name.trim(),
         description: formData.description || null,
         image: formData.image || null,
         is_active: formData.is_active,
@@ -92,8 +102,21 @@ export function AdminCategoriesPage() {
 
       setModalOpen(false);
       fetchCategories();
-    } catch (err) {
-      alert('Erreur lors de l\'enregistrement du domaine.');
+    } catch (err: any) {
+      console.error(err);
+      if (err.response?.status === 401) {
+        setFormError('Votre session a expiré. Veuillez vous reconnecter à votre compte administrateur.');
+      } else if (err.response?.status === 403) {
+        setFormError('Accès refusé : rôle ou permissions insuffisants.');
+      } else if (err.response?.data?.errors) {
+        const errorList = Object.values(err.response.data.errors).flat().join(' ');
+        setFormError(errorList || 'Erreur de validation du formulaire.');
+      } else {
+        setFormError(
+          err.response?.data?.message ||
+          'Une erreur est survenue lors de l\'enregistrement du pôle.'
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -232,6 +255,13 @@ export function AdminCategoriesPage() {
         maxWidth="lg"
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
+              <div className="text-xs font-medium">{formError}</div>
+            </div>
+          )}
+
           <Input
             label="Nom du pôle"
             required

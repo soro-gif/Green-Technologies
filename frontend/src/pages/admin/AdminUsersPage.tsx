@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit3, Eye, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, Edit3, Eye, CheckCircle2, AlertCircle } from 'lucide-react';
 import { usersApi } from '../../api';
 import type { User, UserRole } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';
@@ -29,6 +29,7 @@ export function AdminUsersPage() {
     is_active: true,
   });
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const fetchUsers = async () => {
     try {
@@ -49,6 +50,7 @@ export function AdminUsersPage() {
 
   const handleOpenCreate = () => {
     setEditingUser(null);
+    setFormError('');
     setFormData({
       name: '',
       email: '',
@@ -61,6 +63,7 @@ export function AdminUsersPage() {
 
   const handleOpenEdit = (u: User) => {
     setEditingUser(u);
+    setFormError('');
     setFormData({
       name: u.name,
       email: u.email,
@@ -73,11 +76,23 @@ export function AdminUsersPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    if (!formData.name.trim()) {
+      setFormError('Le nom du collaborateur est obligatoire.');
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      setFormError('L\'adresse email est obligatoire.');
+      return;
+    }
+
     try {
       setSaving(true);
       const payload: any = {
-        name: formData.name,
-        email: formData.email,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
         role: formData.role,
         is_active: formData.is_active,
       };
@@ -94,7 +109,20 @@ export function AdminUsersPage() {
       setModalOpen(false);
       fetchUsers();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Erreur lors de la sauvegarde du collaborateur.');
+      console.error(err);
+      if (err.response?.status === 401) {
+        setFormError('Votre session a expiré. Veuillez vous reconnecter à votre compte administrateur.');
+      } else if (err.response?.status === 403) {
+        setFormError('Accès refusé : rôle ou permissions insuffisants (réservé aux SuperAdmin).');
+      } else if (err.response?.data?.errors) {
+        const errorList = Object.values(err.response.data.errors).flat().join(' ');
+        setFormError(errorList || 'Erreur de validation du formulaire.');
+      } else {
+        setFormError(
+          err.response?.data?.message ||
+          'Une erreur est survenue lors de l\'enregistrement du collaborateur.'
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -227,6 +255,13 @@ export function AdminUsersPage() {
         maxWidth="md"
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
+              <div className="text-xs font-medium">{formError}</div>
+            </div>
+          )}
+
           <Input
             label="Nom et prénom"
             required

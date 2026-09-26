@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit3, CheckCircle2, Eye } from 'lucide-react';
+import { Plus, Trash2, Edit3, CheckCircle2, Eye, AlertCircle } from 'lucide-react';
 import { testimonialsApi } from '../../api';
 import type { Testimonial } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';
@@ -30,6 +30,7 @@ export function AdminTestimonialsPage() {
     is_featured: true,
   });
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const fetchTestimonials = async () => {
     try {
@@ -50,6 +51,7 @@ export function AdminTestimonialsPage() {
 
   const handleOpenCreate = () => {
     setEditingTestimonial(null);
+    setFormError('');
     setFormData({
       author_name: '',
       author_role: '',
@@ -64,6 +66,7 @@ export function AdminTestimonialsPage() {
 
   const handleOpenEdit = (t: Testimonial) => {
     setEditingTestimonial(t);
+    setFormError('');
     setFormData({
       author_name: t.author_name,
       author_role: t.author_role,
@@ -78,6 +81,18 @@ export function AdminTestimonialsPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    if (!formData.author_name.trim()) {
+      setFormError('Le nom de l\'auteur est obligatoire.');
+      return;
+    }
+
+    if (!formData.content.trim()) {
+      setFormError('Le contenu du témoignage est obligatoire.');
+      return;
+    }
+
     try {
       setSaving(true);
       if (editingTestimonial) {
@@ -87,8 +102,21 @@ export function AdminTestimonialsPage() {
       }
       setModalOpen(false);
       fetchTestimonials();
-    } catch (err) {
-      alert('Erreur lors de l\'enregistrement.');
+    } catch (err: any) {
+      console.error(err);
+      if (err.response?.status === 401) {
+        setFormError('Votre session a expiré. Veuillez vous reconnecter à votre compte administrateur.');
+      } else if (err.response?.status === 403) {
+        setFormError('Accès refusé : rôle ou permissions insuffisants.');
+      } else if (err.response?.data?.errors) {
+        const errorList = Object.values(err.response.data.errors).flat().join(' ');
+        setFormError(errorList || 'Erreur de validation du formulaire.');
+      } else {
+        setFormError(
+          err.response?.data?.message ||
+          'Une erreur est survenue lors de l\'enregistrement du témoignage.'
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -211,6 +239,13 @@ export function AdminTestimonialsPage() {
         maxWidth="md"
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
+              <div className="text-xs font-medium">{formError}</div>
+            </div>
+          )}
+
           <Input
             label="Nom complet de l'auteur"
             required
