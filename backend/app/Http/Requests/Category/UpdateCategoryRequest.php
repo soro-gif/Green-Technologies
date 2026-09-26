@@ -22,7 +22,7 @@ class UpdateCategoryRequest extends FormRequest
             'slug' => ['sometimes', 'nullable', 'string', 'max:150', Rule::unique('categories', 'slug')->ignore($categoryId)],
             'description' => ['nullable', 'string'],
             'icon' => ['nullable', 'string', 'max:50'],
-            'image' => ['nullable', 'string', 'max:2048'],
+            'image' => ['nullable', 'string'],
             'display_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ];

@@ -21,7 +21,7 @@ class StoreTestimonialRequest extends FormRequest
             'author_name' => ['required', 'string', 'max:255'],
             'author_role' => ['required', 'string', 'max:255'],
             'company' => ['nullable', 'string', 'max:255'],
-            'avatar' => ['nullable', 'string', 'max:255'],
+            'avatar' => ['nullable', 'string'],
             'content' => ['required', 'string', 'min:10'],
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'is_featured' => ['sometimes', 'boolean'],

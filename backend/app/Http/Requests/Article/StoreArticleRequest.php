@@ -22,7 +22,7 @@ class StoreArticleRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:255', 'unique:articles,slug'],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['required', 'string', 'min:20'],
-            'cover_image' => ['nullable', 'string', 'max:255'],
+            'cover_image' => ['nullable', 'string'],
             'status' => ['sometimes', new Enum(ArticleStatus::class)],
             'published_at' => ['nullable', 'date'],
         ];

@@ -18,7 +18,7 @@ class StoreCategoryRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:150', 'unique:categories,slug'],
             'description' => ['nullable', 'string'],
             'icon' => ['nullable', 'string', 'max:50'],
-            'image' => ['nullable', 'string', 'max:2048'],
+            'image' => ['nullable', 'string'],
             'display_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ];

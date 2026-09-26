@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'password' => ['nullable', 'string', Password::defaults()],
             'role' => ['sometimes', new Enum(UserRole::class)],
             'phone' => ['nullable', 'string', 'max:30'],
-            'avatar' => ['nullable', 'string', 'max:255'],
+            'avatar' => ['nullable', 'string'],
             'is_active' => ['sometimes', 'boolean'],
         ];
     }

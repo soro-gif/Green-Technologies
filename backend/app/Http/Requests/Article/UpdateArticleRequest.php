@@ -26,7 +26,7 @@ class UpdateArticleRequest extends FormRequest
             'slug' => ['sometimes', 'string', 'max:255', Rule::unique('articles', 'slug')->ignore($articleId)],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['sometimes', 'required', 'string', 'min:20'],
-            'cover_image' => ['nullable', 'string', 'max:255'],
+            'cover_image' => ['nullable', 'string'],
             'status' => ['sometimes', new Enum(ArticleStatus::class)],
             'published_at' => ['nullable', 'date'],
         ];

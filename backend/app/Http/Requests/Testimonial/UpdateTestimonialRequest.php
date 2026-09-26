@@ -21,7 +21,7 @@ class UpdateTestimonialRequest extends FormRequest
             'author_name' => ['sometimes', 'required', 'string', 'max:255'],
             'author_role' => ['sometimes', 'required', 'string', 'max:255'],
             'company' => ['nullable', 'string', 'max:255'],
-            'avatar' => ['nullable', 'string', 'max:255'],
+            'avatar' => ['nullable', 'string'],
             'content' => ['sometimes', 'required', 'string', 'min:10'],
             'rating' => ['sometimes', 'required', 'integer', 'min:1', 'max:5'],
             'is_featured' => ['sometimes', 'boolean'],
