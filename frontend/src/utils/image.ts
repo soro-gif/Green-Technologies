@@ -70,8 +70,19 @@ const FRONTEND_STATIC_ASSETS = [
 ];
 
 /**
+ * Upgrades an http:// URL to https:// to prevent mixed-content warnings.
+ * Only applies to actual http URLs (not data: or relative paths).
+ */
+function enforceHttps(url: string): string {
+  if (url.startsWith('http://')) {
+    return 'https://' + url.slice('http://'.length);
+  }
+  return url;
+}
+
+/**
  * Normalizes an image URL:
- * - If external (http/https/data:), returns as-is
+ * - If external (http/https/data:), returns as-is (http:// is upgraded to https://)
  * - If backend upload (/uploads/... or /storage/...), prepends backend base URL
  * - If known frontend static asset (/Fontaine.png...), returns local relative path
  * - Otherwise prepends backend base URL or falls back to category theme image
@@ -83,7 +94,8 @@ export function getImageUrl(
   if (imagePath && typeof imagePath === 'string' && imagePath.trim().length > 0) {
     const trimmed = imagePath.trim();
     if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:')) {
-      return trimmed;
+      // Upgrade http:// → https:// to avoid mixed-content errors
+      return trimmed.startsWith('data:') ? trimmed : enforceHttps(trimmed);
     }
     const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
 
@@ -94,10 +106,10 @@ export function getImageUrl(
 
     // Backend uploads path (served by Laravel)
     if (cleanPath.startsWith('/uploads/') || cleanPath.startsWith('/storage/')) {
-      return `${BACKEND_URL}${cleanPath}`;
+      return enforceHttps(`${BACKEND_URL}${cleanPath}`);
     }
 
-    return `${BACKEND_URL}${cleanPath}`;
+    return enforceHttps(`${BACKEND_URL}${cleanPath}`);
   }
 
   return getFallbackImage(categoryIdentifier);
