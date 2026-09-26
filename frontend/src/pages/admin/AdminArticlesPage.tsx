@@ -60,6 +60,8 @@ export function AdminArticlesPage() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [localFileDetails, setLocalFileDetails] = useState<{ name: string; size: string } | null>(null);
+  // Local preview URL (base64) — used ONLY for display, never sent to the API
+  const [previewUrl, setPreviewUrl] = useState<string>('');
 
   // Load categories
   useEffect(() => {
@@ -110,6 +112,7 @@ export function AdminArticlesPage() {
     setEditingArticle(null);
     setFormError('');
     setLocalFileDetails(null);
+    setPreviewUrl('');
     setImageMode('upload');
     setFormData({
       category_id: categories[0]?.id ? String(categories[0].id) : '',
@@ -126,6 +129,7 @@ export function AdminArticlesPage() {
     setEditingArticle(art);
     setFormError('');
     setLocalFileDetails(null);
+    setPreviewUrl(art.cover_image || '');
     setImageMode(art.cover_image && art.cover_image.startsWith('http') && !art.cover_image.includes('uploads/articles') ? 'url' : 'upload');
     setFormData({
       category_id: art.category_id ? String(art.category_id) : '',
@@ -147,9 +151,9 @@ export function AdminArticlesPage() {
       return;
     }
 
-    // Check size (< 15MB)
-    if (file.size > 15 * 1024 * 1024) {
-      setFormError('Le fichier est trop volumineux (maximum 15 Mo).');
+    // Check size (< 10MB — matches backend max:10240)
+    if (file.size > 10 * 1024 * 1024) {
+      setFormError('Le fichier est trop volumineux (maximum 10 Mo).');
       return;
     }
 
@@ -157,34 +161,33 @@ export function AdminArticlesPage() {
       setUploadingImage(true);
       setFormError('');
 
-      // 1. Generate optimized client-side data URL for guaranteed persistence in PostgreSQL
-      const optimizedDataUrl = await compressAndOptimizeImage(file);
-
       const formattedSize = file.size > 1024 * 1024
         ? `${(file.size / (1024 * 1024)).toFixed(1)} Mo`
         : `${Math.round(file.size / 1024)} Ko`;
 
-      setLocalFileDetails({
-        name: file.name,
-        size: formattedSize,
-      });
+      setLocalFileDetails({ name: file.name, size: formattedSize });
 
-      setFormData((prev) => ({
-        ...prev,
-        cover_image: optimizedDataUrl,
-      }));
+      // 1. Generate a local base64 preview ONLY for display — never sent to the API
+      const optimizedDataUrl = await compressAndOptimizeImage(file);
+      setPreviewUrl(optimizedDataUrl);
 
-      // 2. Also send to backend upload API
+      // 2. Upload to backend — the returned URL is what gets persisted
       try {
         const res = await uploadApi.uploadImage(file, 'articles');
-        if (res.data?.url && res.data.url.startsWith('https://res.cloudinary.com')) {
-          setFormData((prev) => ({
-            ...prev,
-            cover_image: res.data.url,
-          }));
+        const uploadedUrl = res.data?.url || res.data?.relative_url || '';
+        if (uploadedUrl) {
+          setFormData((prev) => ({ ...prev, cover_image: uploadedUrl }));
+        } else {
+          // Upload succeeded but no URL returned — leave cover_image empty
+          setFormData((prev) => ({ ...prev, cover_image: '' }));
         }
-      } catch (uploadErr) {
-        console.warn('Backend upload note:', uploadErr);
+      } catch (uploadErr: any) {
+        console.warn('Backend upload failed:', uploadErr);
+        // Do NOT fall back to base64 — leave cover_image empty to avoid server errors
+        setFormData((prev) => ({ ...prev, cover_image: '' }));
+        setFormError(
+          'L\'image n\'a pas pu être téléversée sur le serveur. L\'article sera créé sans image de couverture. Veuillez réessayer ou utiliser un lien URL.'
+        );
       }
     } catch (err: any) {
       console.error(err);
@@ -569,7 +572,7 @@ export function AdminArticlesPage() {
                 />
 
                 {/* Dropzone / Upload Box */}
-                {!formData.cover_image ? (
+                {!previewUrl && !formData.cover_image ? (
                   <div
                     onClick={() => fileInputRef.current?.click()}
                     onDragOver={(e) => {
@@ -620,7 +623,7 @@ export function AdminArticlesPage() {
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
                       <img
-                        src={formData.cover_image}
+                        src={previewUrl || formData.cover_image}
                         alt="Aperçu"
                         className="w-16 h-14 object-cover rounded-xl border border-slate-300 shadow-2xs shrink-0"
                         onError={(e) => {
@@ -657,6 +660,7 @@ export function AdminArticlesPage() {
                         type="button"
                         onClick={() => {
                           setFormData((prev) => ({ ...prev, cover_image: '' }));
+                          setPreviewUrl('');
                           setLocalFileDetails(null);
                         }}
                         className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 transition-colors cursor-pointer"
