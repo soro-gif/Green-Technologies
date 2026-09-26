@@ -99,7 +99,7 @@ export function UserNewQuotePage() {
           <CheckCircle2 className="w-10 h-10" />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-extrabold text-slate-900 font-['Outfit']">
+          <h2 className="text-2xl font-bold text-slate-900 font-['Outfit']">
             Demande de Devis Enregistrée !
           </h2>
           <p className="text-xs text-slate-600">

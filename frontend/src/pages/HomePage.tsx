@@ -189,7 +189,7 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <Badge variant="green">Solutions clés en main</Badge>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-['Outfit'] tracking-tight">
               Nos 4 pôles d'excellence
             </h2>
             <p className="text-base sm:text-lg text-slate-600">
@@ -246,7 +246,7 @@ export function HomePage() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
               <div className="space-y-2">
                 <Badge variant="blue">Catalogue technique</Badge>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+                <h2 className="text-3xl sm:text-4xl text-slate-900 font-['Outfit'] tracking-tight">
                   Nos prestations populaires
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600">
@@ -324,7 +324,7 @@ export function HomePage() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
               <div className="space-y-2">
                 <Badge variant="orange">Chantiers récents</Badge>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-['Outfit'] tracking-tight">
+                <h2 className="text-3xl sm:text-4xl text-white font-['Outfit'] tracking-tight">
                   Nos réalisations sur le terrain
                 </h2>
                 <p className="text-base sm:text-lg text-slate-400">
@@ -416,7 +416,7 @@ export function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
               <Badge variant="green">Confiance et satisfaction</Badge>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl text-slate-900 font-['Outfit'] tracking-tight">
                 Ils nous font confiance
               </h2>
               <p className="text-base sm:text-lg text-slate-600">
@@ -463,7 +463,7 @@ export function HomePage() {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
               <div className="space-y-2">
                 <Badge variant="green">Actualités et blog</Badge>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+                <h2 className="text-3xl sm:text-4xl text-slate-900 font-['Outfit'] tracking-tight">
                   Dernières publications et études
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600">
