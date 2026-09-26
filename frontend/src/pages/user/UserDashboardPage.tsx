@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FileText,
@@ -49,7 +49,7 @@ export function UserDashboardPage() {
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
             Espace Personnel Client
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold font-['Outfit']">
+          <h1 className="text-2xl sm:text-3xl font-semibold font-['Outfit']">
             Bienvenue, {user?.name}
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
@@ -96,7 +96,7 @@ export function UserDashboardPage() {
       {/* Recent Quotes Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900 font-['Outfit']">
+          <h2 className="text-lg font-medium text-slate-900 font-['Outfit']">
             Mes Dernières Demandes
           </h2>
           <Link

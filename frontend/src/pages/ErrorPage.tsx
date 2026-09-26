@@ -1,4 +1,4 @@
-import { useRouteError, isRouteErrorResponse, Link } from 'react-router-dom';
+﻿import { useRouteError, isRouteErrorResponse, Link } from 'react-router-dom';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
@@ -24,7 +24,7 @@ export function ErrorPage() {
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold font-['Outfit'] text-white">
+          <h1 className="text-2xl font-medium font-['Outfit'] text-white">
             {isChunkError ? 'Mise à jour disponible' : 'Une erreur est survenue'}
           </h1>
           <p className="text-sm text-slate-400">

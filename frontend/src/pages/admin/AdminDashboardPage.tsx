@@ -6,11 +6,9 @@ import {
   Eye,
   Layers,
   Briefcase,
-  Newspaper,
-  Download,
   Clock,
 } from 'lucide-react';
-import { dashboardApi, quotesApi, contactApi } from '../../api';
+import { dashboardApi } from '../../api';
 import type { DashboardStats } from '../../api/dashboard.api';
 import type { QuoteRequest } from '../../types/models';
 import { Button } from '../../components/ui/Button';
@@ -23,8 +21,6 @@ export function AdminDashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [selectedQuote, setSelectedQuote] = useState<QuoteRequest | null>(null);
   const [loading, setLoading] = useState(true);
-  const [exportingQuotes, setExportingQuotes] = useState(false);
-  const [exportingMessages, setExportingMessages] = useState(false);
 
   useEffect(() => {
     async function loadDashboard() {
@@ -41,44 +37,6 @@ export function AdminDashboardPage() {
 
     loadDashboard();
   }, []);
-
-  const handleExportQuotes = async () => {
-    try {
-      setExportingQuotes(true);
-      const blob = await quotesApi.exportExcel();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `devis_green_technologies_${new Date().toISOString().split('T')[0]}.xls`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setExportingQuotes(false);
-    }
-  };
-
-  const handleExportMessages = async () => {
-    try {
-      setExportingMessages(true);
-      const blob = await contactApi.exportExcel();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `messages_contact_${new Date().toISOString().split('T')[0]}.xls`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setExportingMessages(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -112,69 +70,13 @@ export function AdminDashboardPage() {
               </span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-medium text-white tracking-tight leading-snug">
               Bonjour, <span className="text-emerald-400 font-extrabold">{user?.name || 'Administrateur'}</span>
             </h1>
 
             <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
               Vue d'ensemble en temps réel des demandes de devis, messages de contact, chantiers et actualités.
             </p>
-          </div>
-
-          {/* Action buttons & Exports */}
-          <div className="flex flex-wrap items-center gap-3 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-800/80">
-            {/* Primary Actions */}
-            <Link to="/admin/devis">
-              <Button
-                variant={overview?.quotes_pending ? 'accent' : 'outline-dark'}
-                size="sm"
-                leftIcon={<FileText className="w-4 h-4" />}
-                className="font-semibold shadow-sm transition-all"
-              >
-                Devis en attente
-                <span className={`ml-2 px-1.5 py-0.5 rounded-full text-xs font-bold ${overview?.quotes_pending ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-400'}`}>
-                  {overview?.quotes_pending || 0}
-                </span>
-              </Button>
-            </Link>
-
-            <Link to="/admin/articles?action=new">
-              <Button
-                variant="primary"
-                size="sm"
-                leftIcon={<Newspaper className="w-4 h-4 text-white" />}
-                className="bg-emerald-600 hover:bg-emerald-500 font-semibold shadow-sm text-white"
-              >
-                + Nouvelle actualité
-              </Button>
-            </Link>
-
-            {/* Export Actions */}
-            <div className="flex items-center gap-2 pl-1 sm:border-l border-slate-800">
-              <Button
-                variant="outline-dark"
-                size="sm"
-                onClick={handleExportQuotes}
-                isLoading={exportingQuotes}
-                leftIcon={<Download className="w-3.5 h-3.5 text-slate-400" />}
-                className="text-xs text-slate-300 hover:text-white border-slate-700/80 bg-slate-800/50 hover:bg-slate-800"
-                title="Exporter les devis au format Excel"
-              >
-                Export Devis
-              </Button>
-
-              <Button
-                variant="outline-dark"
-                size="sm"
-                onClick={handleExportMessages}
-                isLoading={exportingMessages}
-                leftIcon={<Download className="w-3.5 h-3.5 text-slate-400" />}
-                className="text-xs text-slate-300 hover:text-white border-slate-700/80 bg-slate-800/50 hover:bg-slate-800"
-                title="Exporter les messages de contact au format Excel"
-              >
-                Export Messages
-              </Button>
-            </div>
           </div>
         </div>
       </div>

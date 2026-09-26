@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import {
   Search,
   CheckCircle2,
@@ -172,7 +172,7 @@ export function QuoteRequestPage() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
           <Badge variant="orange">Étude et chiffrage gratuit sous 48h</Badge>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-['Outfit'] tracking-tight">
             Demande de devis et suivi de dossier
           </h1>
           <p className="text-base sm:text-lg text-slate-600">

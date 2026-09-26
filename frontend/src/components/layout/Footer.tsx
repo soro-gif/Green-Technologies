@@ -83,6 +83,11 @@ export function Footer() {
             </h5>
             <ul className="space-y-2.5 text-sm sm:text-base text-slate-300">
               <li>
+                <Link to="/a-propos" className="hover:text-emerald-400 transition-colors">
+                  À propos de nous
+                </Link>
+              </li>
+              <li>
                 <Link to="/services" className="hover:text-emerald-400 transition-colors">
                   Catalogue des prestations
                 </Link>

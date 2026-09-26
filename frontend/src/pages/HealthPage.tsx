@@ -1,4 +1,4 @@
-import { CheckCircle2, Server, Activity, RefreshCw } from 'lucide-react';
+﻿import { CheckCircle2, Server, Activity, RefreshCw } from 'lucide-react';
 import { useHealthCheck } from '../hooks/useHealthCheck';
 
 export function HealthPage() {
@@ -12,7 +12,7 @@ export function HealthPage() {
             <Activity className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Statut du socle technique</h1>
+            <h1 className="text-xl sm:text-2xl font-medium text-white tracking-tight">Statut du socle technique</h1>
             <p className="text-xs sm:text-sm text-slate-400">Communication frontend React ↔ backend laravel API v1</p>
           </div>
         </div>

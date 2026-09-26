@@ -29,6 +29,7 @@ export function Navbar() {
 
   const navLinks = [
     { name: 'Accueil', to: '/' },
+    { name: 'À propos', to: '/a-propos' },
     {
       name: 'Nos domaines',
       to: '/domaines',

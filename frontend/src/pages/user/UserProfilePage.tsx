@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -93,7 +93,7 @@ export function UserProfilePage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900 font-['Outfit']">
+        <h1 className="text-2xl font-semibold text-slate-900 font-['Outfit']">
           Mon Profil Client
         </h1>
         <p className="text-xs text-slate-500 mt-1">
@@ -109,7 +109,7 @@ export function UserProfilePage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-slate-900">{user?.name}</h2>
+              <h2 className="text-sm font-medium text-slate-900">{user?.name}</h2>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                 {user?.role_label || 'Utilisateur'}
               </span>

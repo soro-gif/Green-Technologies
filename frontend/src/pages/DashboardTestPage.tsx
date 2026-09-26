@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { ShieldCheck, User, Key, LogOut, CheckCircle2, Lock, ShieldAlert } from 'lucide-react';
 import api from '../api/client';
@@ -49,7 +49,7 @@ export function DashboardTestPage() {
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Espace protégé et profil connecté</h1>
+            <h1 className="text-xl sm:text-2xl font-medium text-white tracking-tight">Espace protégé et profil connecté</h1>
             <p className="text-xs text-slate-400">Vérification de l'identité et du système de rôles / permissions (RBAC)</p>
           </div>
         </div>

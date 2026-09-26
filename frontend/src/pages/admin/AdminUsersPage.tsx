@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit3, Eye, CheckCircle2, AlertCircle } from 'lucide-react';
 import { usersApi } from '../../api';
 import type { User, UserRole } from '../../types/models';
@@ -142,7 +142,7 @@ export function AdminUsersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white font-['Outfit']">
+          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
             Collaborateurs et contrôle d'accès
           </h1>
           <p className="text-xs text-slate-400 mt-1">

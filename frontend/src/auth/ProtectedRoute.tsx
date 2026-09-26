@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+﻿import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import type { UserRole } from './auth.types';
@@ -34,7 +34,7 @@ export function ProtectedRoute({ children, requiredRole, requiredPermission }: P
           <div className="inline-flex p-3.5 bg-rose-500/10 text-rose-400 rounded-2xl border border-rose-500/20">
             <ShieldAlert className="w-8 h-8" />
           </div>
-          <h2 className="text-xl font-bold text-white font-['Outfit']">Accès Réservé à l'Administration</h2>
+          <h2 className="text-xl font-medium text-white font-['Outfit']">Accès Réservé à l'Administration</h2>
           <p className="text-xs text-slate-300 leading-relaxed">
             Ce tableau de bord est exclusivement réservé au personnel technique et administratif de Green Technologies.
           </p>
@@ -57,7 +57,7 @@ export function ProtectedRoute({ children, requiredRole, requiredPermission }: P
         <div className="inline-flex p-3 bg-rose-500/10 text-rose-400 rounded-full border border-rose-500/20">
           <ShieldAlert className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-white">Permission Insuffisante</h2>
+        <h2 className="text-xl font-medium text-white">Permission Insuffisante</h2>
         <p className="text-xs text-slate-400">
           L'action requiert la permission <code className="text-emerald-400">{requiredPermission}</code>.
         </p>

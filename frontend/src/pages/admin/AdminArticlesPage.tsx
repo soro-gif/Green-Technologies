@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
   Plus,
@@ -289,7 +289,7 @@ export function AdminArticlesPage() {
             <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <Newspaper className="w-5 h-5" />
             </span>
-            <h1 className="text-2xl font-extrabold text-white font-['Outfit']">
+            <h1 className="text-2xl font-semibold text-white font-['Outfit']">
               Actualités et veille technique
             </h1>
           </div>

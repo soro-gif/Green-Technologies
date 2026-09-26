@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   CheckCircle2,
@@ -96,7 +96,7 @@ export function DomainDetailPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/60" />
 
           <div className="relative p-8 sm:p-12 lg:p-16 max-w-3xl space-y-5 text-white">
-            <h1 className="text-3xl sm:text-5xl font-extrabold font-['Outfit'] text-white tracking-tight">
+            <h1 className="text-3xl sm:text-5xl font-semibold font-['Outfit'] text-white tracking-tight">
               {category.name}
             </h1>
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
@@ -120,7 +120,7 @@ export function DomainDetailPage() {
         {/* Services List inside Domain */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900 font-['Outfit']">
+            <h2 className="text-2xl font-medium text-slate-900 font-['Outfit']">
               Prestations et solutions incluses
             </h2>
             <span className="text-sm font-semibold text-slate-500">

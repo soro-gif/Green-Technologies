@@ -26,6 +26,7 @@ const withSuspense = (Component: React.ComponentType) => (
 // PUBLIC PAGES (VISITEUR)
 // =========================================================================
 const HomePage = lazy(() => import('../pages/HomePage').then((m) => ({ default: m.HomePage })));
+const AboutPage = lazy(() => import('../pages/AboutPage').then((m) => ({ default: m.AboutPage })));
 const DomainsPage = lazy(() => import('../pages/DomainsPage').then((m) => ({ default: m.DomainsPage })));
 const DomainDetailPage = lazy(() => import('../pages/DomainDetailPage').then((m) => ({ default: m.DomainDetailPage })));
 const ServicesPage = lazy(() => import('../pages/ServicesPage').then((m) => ({ default: m.ServicesPage })));
@@ -80,6 +81,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: withSuspense(HomePage),
+      },
+      {
+        path: 'a-propos',
+        element: withSuspense(AboutPage),
+      },
+      {
+        path: 'about',
+        element: <Navigate to="/a-propos" replace />,
       },
       {
         path: 'domaines',

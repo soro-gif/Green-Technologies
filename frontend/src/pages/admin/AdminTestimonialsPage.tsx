@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit3, CheckCircle2, Eye, AlertCircle } from 'lucide-react';
 import { testimonialsApi } from '../../api';
 import type { Testimonial } from '../../types/models';
@@ -136,7 +136,7 @@ export function AdminTestimonialsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white font-['Outfit']">
+          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
             Avis et témoignages clients
           </h1>
           <p className="text-xs text-slate-400 mt-1">

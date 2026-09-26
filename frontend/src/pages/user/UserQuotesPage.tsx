@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, PlusCircle, Eye } from 'lucide-react';
 import { userApi } from '../../api/user.api';
@@ -37,7 +37,7 @@ export function UserQuotesPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 font-['Outfit']">
+          <h1 className="text-2xl font-semibold text-slate-900 font-['Outfit']">
             Mes Demandes de Devis
           </h1>
           <p className="text-xs text-slate-500 mt-1">

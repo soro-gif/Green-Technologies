@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -95,7 +95,7 @@ export function RegisterPage() {
       <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 sm:p-10 shadow-sm space-y-6">
         <div className="text-center space-y-2">
           <Logo size="md" className="justify-center mb-3" />
-          <h1 className="text-2xl font-bold text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-2xl font-medium text-slate-900 font-['Outfit'] tracking-tight">
             Création de Compte
           </h1>
           <p className="text-xs text-slate-500">
