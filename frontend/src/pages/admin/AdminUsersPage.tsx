@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit3, Eye, CheckCircle2, AlertCircle } from 'lucide-react';
 import { usersApi } from '../../api';
 import type { User, UserRole } from '../../types/models';
@@ -140,12 +140,12 @@ export function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
         <div>
-          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
+          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-['Outfit']">
             Collaborateurs et contrôle d'accès
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Gestion des rôles (SuperAdmin, Admin, Éditeur) et permissions d'accès au backoffice.
           </p>
         </div>
@@ -154,24 +154,25 @@ export function AdminUsersPage() {
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
+          className="shadow-sm font-semibold rounded-xl"
         >
           Nouveau collaborateur
         </Button>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
           </div>
         ) : users.length === 0 ? (
-          <div className="p-8 text-center text-xs text-slate-500">
+          <div className="p-12 text-center text-xs text-slate-500">
             Aucun utilisateur trouvé.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Nom</th>
                   <th className="px-4 py-3">Email</th>
@@ -180,19 +181,19 @@ export function AdminUsersPage() {
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-100 text-slate-700">
                 {users.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-4 py-3 text-white font-bold">{u.name}</td>
-                    <td className="px-4 py-3 text-slate-300">{u.email}</td>
+                  <tr key={u.id} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="px-4 py-3 text-slate-900 font-bold">{u.name}</td>
+                    <td className="px-4 py-3 text-slate-600 font-medium">{u.email}</td>
                     <td className="px-4 py-3">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                           u.role === 'super_admin'
-                            ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                            ? 'bg-purple-50 text-purple-800 border-purple-200'
                             : u.role === 'admin'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                            : 'bg-slate-800 text-slate-300'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : 'bg-slate-100 text-slate-700 border-slate-200'
                         }`}
                       >
                         {u.role_label || u.role}
@@ -200,10 +201,10 @@ export function AdminUsersPage() {
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                           u.is_active
-                            ? 'bg-emerald-500/20 text-emerald-300'
-                            : 'bg-red-500/20 text-red-300'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : 'bg-rose-50 text-rose-800 border-rose-200'
                         }`}
                       >
                         {u.is_active ? 'Actif' : 'Désactivé'}
@@ -213,14 +214,14 @@ export function AdminUsersPage() {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleOpenEdit(u)}
-                          className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-sky-700 hover:bg-sky-50 transition-colors cursor-pointer"
                           title="Consulter / Voir"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleOpenEdit(u)}
-                          className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
                           title="Modifier"
                         >
                           <Edit3 className="w-4 h-4" />
@@ -228,7 +229,7 @@ export function AdminUsersPage() {
                         {u.id !== currentUser?.id && (
                           <button
                             onClick={() => handleDelete(u.id)}
-                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer"
                             title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -243,7 +244,7 @@ export function AdminUsersPage() {
           </div>
         )}
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
           <Pagination meta={meta} onPageChange={setPage} />
         </div>
       </div>

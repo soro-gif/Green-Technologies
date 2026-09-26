@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Plus, Trash2, Edit3, CheckCircle2, AlertCircle } from 'lucide-react';
 import { projectsApi, categoriesApi } from '../../api';
 import type { Project, Category, ProjectStatus } from '../../types/models';
@@ -175,26 +175,32 @@ export function AdminProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
-            Portfolio et réalisations
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Gérez vos études de cas, chantiers livrés et photographies de terrain.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-orange-50 text-orange-600 rounded-2xl border border-orange-100">
+            <Briefcase className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              Portfolio & Réalisations
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Gérez vos études de cas, chantiers livrés et photographies de terrain.
+            </p>
+          </div>
         </div>
         <Button
-          variant="primary"
+          variant="accent"
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
+          className="font-bold text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
         >
           Nouveau Projet
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
             placeholder="Rechercher par titre, client, localité..."
@@ -204,7 +210,6 @@ export function AdminProjectsPage() {
               setPage(1);
             }}
             leftIcon={<Search className="w-4 h-4 text-slate-400" />}
-            className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
           />
         </div>
         <div>
@@ -214,7 +219,6 @@ export function AdminProjectsPage() {
               setCategoryId(e.target.value);
               setPage(1);
             }}
-            className="bg-slate-800 border-slate-700 text-white"
           >
             <option value="">Tous les domaines</option>
             {categories.map((c) => (
@@ -226,7 +230,7 @@ export function AdminProjectsPage() {
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -238,7 +242,7 @@ export function AdminProjectsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Photo</th>
                   <th className="px-4 py-3">Projet</th>
@@ -248,13 +252,13 @@ export function AdminProjectsPage() {
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-100 text-slate-700">
                 {projects.map((p) => {
                   const projImage = (p as any).image_url || p.image;
                   return (
-                    <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
+                    <tr key={p.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-4 py-2.5">
-                        <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-800 border border-slate-700 shrink-0">
+                        <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                           <img
                             src={getImageUrl(projImage, p.slug || p.category?.slug)}
                             alt={p.title}
@@ -263,18 +267,18 @@ export function AdminProjectsPage() {
                           />
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-white font-medium">
+                      <td className="px-4 py-3 text-slate-900 font-semibold">
                         <div>{p.title}</div>
-                        {p.client_name && <div className="text-[10px] text-slate-400">{p.client_name}</div>}
+                        {p.client_name && <div className="text-[10px] text-slate-500 font-normal">{p.client_name}</div>}
                       </td>
-                      <td className="px-4 py-3 text-slate-300">{p.category?.name}</td>
-                      <td className="px-4 py-3 text-slate-300">{p.location || '-'}</td>
+                      <td className="px-4 py-3 text-slate-600 font-medium">{p.category?.name}</td>
+                      <td className="px-4 py-3 text-slate-600">{p.location || '-'}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                             p.status === 'published'
-                              ? 'bg-emerald-500/20 text-emerald-300'
-                              : 'bg-slate-800 text-slate-400'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              : 'bg-slate-100 text-slate-600 border-slate-200'
                           }`}
                         >
                           {p.status_label || p.status}
@@ -284,14 +288,14 @@ export function AdminProjectsPage() {
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleOpenEdit(p)}
-                            className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
                             title="Modifier"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(p.id)}
-                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer"
                             title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -306,7 +310,7 @@ export function AdminProjectsPage() {
           </div>
         )}
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/40">
           <Pagination meta={meta} onPageChange={setPage} />
         </div>
       </div>

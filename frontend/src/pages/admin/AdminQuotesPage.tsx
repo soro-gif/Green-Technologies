@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Trash2, Edit3, Download, CheckCircle2, Eye } from 'lucide-react';
 import { quotesApi } from '../../api';
 import type { QuoteRequest, QuoteStatus } from '../../types/models';
@@ -107,32 +107,37 @@ export function AdminQuotesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
-            Gestion des Demandes de Devis
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Consultez, traitez et mettez à jour le statut des dossiers clients.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl border border-amber-100">
+            <FileText className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              Gestion des Demandes de Devis
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Consultez, traitez et mettez à jour le statut des {meta.total} dossier(s) clients.
+            </p>
+          </div>
         </div>
 
         <Button
-          variant="outline-dark"
+          variant="outline"
           size="sm"
           onClick={handleExport}
           isLoading={exporting}
-          leftIcon={<Download className="w-4 h-4 text-emerald-400" />}
+          leftIcon={<Download className="w-4 h-4 text-emerald-600" />}
+          className="text-xs font-semibold"
         >
           Exporter en Excel
         </Button>
       </div>
 
       {/* Filters */}
-      <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
-            variant="dark"
             placeholder="Rechercher par référence, nom, email, ville..."
             value={search}
             onChange={(e) => {
@@ -144,33 +149,32 @@ export function AdminQuotesPage() {
         </div>
         <div>
           <Select
-            variant="dark"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
           >
-            <option value="" className="bg-slate-800 text-white">Tous les statuts</option>
-            <option value="pending" className="bg-slate-800 text-white">En attente</option>
-            <option value="in_review" className="bg-slate-800 text-white">En cours d'étude</option>
-            <option value="quoted" className="bg-slate-800 text-white">Devis transmis</option>
-            <option value="accepted" className="bg-slate-800 text-white">Accepté</option>
-            <option value="rejected" className="bg-slate-800 text-white">Refusé</option>
+            <option value="">Tous les statuts</option>
+            <option value="pending">En attente</option>
+            <option value="in_review">En cours d'étude</option>
+            <option value="quoted">Devis transmis</option>
+            <option value="accepted">Accepté</option>
+            <option value="rejected">Refusé</option>
           </Select>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
           </div>
         ) : error ? (
-          <div className="p-8 text-center text-xs text-red-400 space-y-3">
+          <div className="p-8 text-center text-xs text-red-600 space-y-3">
             <p>{error}</p>
-            <Button variant="outline-dark" size="sm" onClick={fetchQuotes}>
+            <Button variant="outline" size="sm" onClick={fetchQuotes}>
               Réessayer
             </Button>
           </div>
@@ -181,20 +185,20 @@ export function AdminQuotesPage() {
         ) : (
           <div>
             {/* Mobile Cards (<md) */}
-            <div className="md:hidden divide-y divide-slate-800">
+            <div className="md:hidden divide-y divide-slate-100">
               {quotes.map((q) => (
-                <div key={q.id} className="p-4 space-y-3 hover:bg-slate-800/40 transition-colors">
+                <div key={q.id} className="p-4 space-y-3 hover:bg-slate-50/70 transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-sm text-emerald-400">{q.reference}</span>
+                    <span className="font-mono font-bold text-sm text-emerald-700">{q.reference}</span>
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
                         q.status === 'pending'
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                          ? 'bg-amber-50 text-amber-800 border-amber-200'
                           : q.status === 'accepted'
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                           : q.status === 'quoted'
-                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                          : 'bg-slate-700 text-slate-300'
+                          ? 'bg-sky-50 text-sky-800 border-sky-200'
+                          : 'bg-slate-100 text-slate-700 border-slate-200'
                       }`}
                     >
                       {q.status_label || q.status}
@@ -202,16 +206,16 @@ export function AdminQuotesPage() {
                   </div>
 
                   <div className="text-xs space-y-1">
-                    <p className="font-bold text-white">{q.full_name}</p>
-                    <p className="text-[11px] text-slate-400">{q.phone} • {q.email}</p>
-                    <div className="flex items-center justify-between pt-1 text-slate-400 text-[11px]">
-                      <span>Ville : <strong className="text-slate-300">{q.city}</strong></span>
+                    <p className="font-bold text-slate-900">{q.full_name}</p>
+                    <p className="text-[11px] text-slate-500">{q.phone} • {q.email}</p>
+                    <div className="flex items-center justify-between pt-1 text-slate-500 text-[11px]">
+                      <span>Ville : <strong className="text-slate-800">{q.city}</strong></span>
                       <span>{new Date(q.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-                    <span className="text-xs font-bold text-emerald-400">
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                    <span className="text-xs font-bold text-emerald-700">
                       {q.estimated_budget
                         ? `${Number(q.estimated_budget).toLocaleString('fr-FR')} FCFA`
                         : 'Budget non précisé'}
@@ -219,21 +223,21 @@ export function AdminQuotesPage() {
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => handleOpenEdit(q)}
-                        className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors"
+                        className="p-1.5 rounded-lg text-slate-600 hover:text-sky-700 hover:bg-sky-50 transition-colors"
                         title="Voir"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleOpenEdit(q)}
-                        className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                        className="p-1.5 rounded-lg text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
                         title="Modifier"
                       >
                         <Edit3 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(q.id)}
-                        className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+                        className="p-1.5 rounded-lg text-slate-600 hover:text-rose-700 hover:bg-rose-50 transition-colors"
                         title="Supprimer"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -247,7 +251,7 @@ export function AdminQuotesPage() {
             {/* Desktop Table (>=md) */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+                <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
                   <tr>
                     <th className="px-4 py-3">Réf.</th>
                     <th className="px-4 py-3">Client</th>
@@ -258,59 +262,59 @@ export function AdminQuotesPage() {
                     <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800">
+                <tbody className="divide-y divide-slate-100 text-slate-700">
                   {quotes.map((q) => (
-                    <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="px-4 py-3 font-mono font-bold text-emerald-400">
+                    <tr key={q.id} className="hover:bg-slate-50/70 transition-colors">
+                      <td className="px-4 py-3 font-mono font-bold text-emerald-700">
                         {q.reference}
                       </td>
-                      <td className="px-4 py-3 text-white font-medium">
+                      <td className="px-4 py-3 text-slate-900 font-semibold">
                         <div>{q.full_name}</div>
-                        <div className="text-[10px] text-slate-400">{q.phone} • {q.email}</div>
+                        <div className="text-[10px] text-slate-500 font-normal">{q.phone} • {q.email}</div>
                       </td>
-                      <td className="px-4 py-3 text-slate-300">{q.city}</td>
-                      <td className="px-4 py-3 text-slate-300">
+                      <td className="px-4 py-3 text-slate-600 font-medium">{q.city}</td>
+                      <td className="px-4 py-3 text-slate-700 font-medium font-mono">
                         {q.estimated_budget
                           ? `${Number(q.estimated_budget).toLocaleString('fr-FR')} F`
                           : '-'}
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
                             q.status === 'pending'
-                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                              ? 'bg-amber-50 text-amber-800 border-amber-200'
                               : q.status === 'accepted'
-                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                               : q.status === 'quoted'
-                              ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                              : 'bg-slate-700 text-slate-300'
+                              ? 'bg-sky-50 text-sky-800 border-sky-200'
+                              : 'bg-slate-100 text-slate-700 border-slate-200'
                           }`}
                         >
                           {q.status_label || q.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-[11px]">
+                      <td className="px-4 py-3 text-slate-500 text-[11px]">
                         {new Date(q.created_at).toLocaleDateString('fr-FR')}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleOpenEdit(q)}
-                            className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-sky-700 hover:bg-sky-50 transition-colors cursor-pointer"
                             title="Voir le dossier de devis"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleOpenEdit(q)}
-                            className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
                             title="Traiter / Mettre à jour"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(q.id)}
-                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer"
                             title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -325,7 +329,7 @@ export function AdminQuotesPage() {
           </div>
         )}
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/40">
           <Pagination meta={meta} onPageChange={setPage} />
         </div>
       </div>

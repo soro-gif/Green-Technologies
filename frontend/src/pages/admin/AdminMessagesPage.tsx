@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Trash2, Edit3, Download, CheckCircle2, Eye } from 'lucide-react';
 import { contactApi } from '../../api';
 import type { ContactMessage, MessageStatus } from '../../types/models';
@@ -107,31 +107,36 @@ export function AdminMessagesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
-            Messages de Contact
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Messagerie entrante du site web et historique de traitement.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-sky-50 text-sky-600 rounded-2xl border border-sky-100">
+            <Mail className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              Messages de Contact
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Messagerie entrante du site web et historique de traitement.
+            </p>
+          </div>
         </div>
 
         <Button
-          variant="outline-dark"
+          variant="outline"
           size="sm"
           onClick={handleExport}
           isLoading={exporting}
-          leftIcon={<Download className="w-4 h-4 text-sky-400" />}
+          leftIcon={<Download className="w-4 h-4 text-sky-600" />}
+          className="text-xs font-semibold"
         >
           Exporter en Excel
         </Button>
       </div>
 
-      <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
-            variant="dark"
             placeholder="Rechercher par nom, email, sujet..."
             value={search}
             onChange={(e) => {
@@ -143,31 +148,30 @@ export function AdminMessagesPage() {
         </div>
         <div>
           <Select
-            variant="dark"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
           >
-            <option value="" className="bg-slate-800 text-white">Tous les statuts</option>
-            <option value="unread" className="bg-slate-800 text-white">Non lu</option>
-            <option value="read" className="bg-slate-800 text-white">Lu</option>
-            <option value="replied" className="bg-slate-800 text-white">Répondu</option>
-            <option value="archived" className="bg-slate-800 text-white">Archivé</option>
+            <option value="">Tous les statuts</option>
+            <option value="unread">Non lu</option>
+            <option value="read">Lu</option>
+            <option value="replied">Répondu</option>
+            <option value="archived">Archivé</option>
           </Select>
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
           </div>
         ) : error ? (
-          <div className="p-8 text-center text-xs text-red-400 space-y-3">
+          <div className="p-8 text-center text-xs text-red-600 space-y-3">
             <p>{error}</p>
-            <Button variant="outline-dark" size="sm" onClick={fetchMessages}>
+            <Button variant="outline" size="sm" onClick={fetchMessages}>
               Réessayer
             </Button>
           </div>
@@ -178,18 +182,18 @@ export function AdminMessagesPage() {
         ) : (
           <div>
             {/* Mobile Cards (<md) */}
-            <div className="md:hidden divide-y divide-slate-800">
+            <div className="md:hidden divide-y divide-slate-100">
               {messages.map((m) => (
-                <div key={m.id} className="p-4 space-y-3 hover:bg-slate-800/40 transition-colors">
+                <div key={m.id} className="p-4 space-y-3 hover:bg-slate-50/70 transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-white text-xs">{m.full_name}</span>
+                    <span className="font-bold text-slate-900 text-xs">{m.full_name}</span>
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
                         m.status === 'unread'
-                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                          ? 'bg-sky-50 text-sky-800 border-sky-200'
                           : m.status === 'replied'
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-slate-800 text-slate-400'
+                          ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                          : 'bg-slate-100 text-slate-700 border-slate-200'
                       }`}
                     >
                       {m.status_label || m.status}
@@ -197,31 +201,31 @@ export function AdminMessagesPage() {
                   </div>
 
                   <div className="text-xs space-y-1">
-                    <p className="font-medium text-emerald-400">{m.subject}</p>
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                    <p className="font-medium text-emerald-700">{m.subject}</p>
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
                       <span>{m.email}</span>
                       <span>{new Date(m.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-1.5 pt-2 border-t border-slate-800">
+                  <div className="flex justify-end gap-1.5 pt-2 border-t border-slate-100">
                     <button
                       onClick={() => handleOpenEdit(m)}
-                      className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-600 hover:text-sky-700 hover:bg-sky-50 transition-colors"
                       title="Voir"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleOpenEdit(m)}
-                      className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
                       title="Consulter"
                     >
                       <Edit3 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(m.id)}
-                      className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-600 hover:text-rose-700 hover:bg-rose-50 transition-colors"
                       title="Supprimer"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -234,7 +238,7 @@ export function AdminMessagesPage() {
             {/* Desktop Table (>=md) */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+                <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
                   <tr>
                     <th className="px-4 py-3">Expéditeur</th>
                     <th className="px-4 py-3">Sujet</th>
@@ -243,49 +247,49 @@ export function AdminMessagesPage() {
                     <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800">
+                <tbody className="divide-y divide-slate-100">
                   {messages.map((m) => (
-                    <tr key={m.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="px-4 py-3 text-white font-medium">
+                    <tr key={m.id} className="hover:bg-slate-50/70 transition-colors">
+                      <td className="px-4 py-3 text-slate-900 font-semibold">
                         <div>{m.full_name}</div>
-                        <div className="text-[10px] text-slate-400">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
+                        <div className="text-[10px] text-slate-500 font-normal">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
                       </td>
-                      <td className="px-4 py-3 text-slate-200 font-medium">{m.subject}</td>
+                      <td className="px-4 py-3 text-slate-700 font-medium">{m.subject}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
                             m.status === 'unread'
-                              ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                              ? 'bg-sky-50 text-sky-800 border-sky-200'
                               : m.status === 'replied'
-                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                              : 'bg-slate-800 text-slate-400'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              : 'bg-slate-100 text-slate-700 border-slate-200'
                           }`}
                         >
                           {m.status_label || m.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-[11px]">
+                      <td className="px-4 py-3 text-slate-500 text-[11px]">
                         {new Date(m.created_at).toLocaleDateString('fr-FR')}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleOpenEdit(m)}
-                            className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-sky-700 hover:bg-sky-50 transition-colors cursor-pointer"
                             title="Voir le message"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleOpenEdit(m)}
-                            className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
                             title="Consulter / Répondre"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(m.id)}
-                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer"
                             title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -300,7 +304,7 @@ export function AdminMessagesPage() {
           </div>
         )}
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/40">
           <Pagination meta={meta} onPageChange={setPage} />
         </div>
       </div>

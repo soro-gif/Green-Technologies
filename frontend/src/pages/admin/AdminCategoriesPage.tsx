@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Plus, Trash2, Edit3, CheckCircle2, AlertCircle } from 'lucide-react';
 import { categoriesApi } from '../../api';
 import type { Category } from '../../types/models';
@@ -134,12 +134,12 @@ export function AdminCategoriesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
         <div>
-          <h1 className="text-2xl font-semibold text-white font-['Outfit']">
+          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-['Outfit']">
             Pôles Majeurs et Domaines d'Expertise
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Gérez les 4 pôles d'ingénierie, leurs visuels de couverture et descriptions.
           </p>
         </div>
@@ -148,12 +148,13 @@ export function AdminCategoriesPage() {
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
+          className="shadow-sm font-semibold rounded-xl"
         >
           Nouveau Pôle
         </Button>
       </div>
 
-      <div className="max-w-md">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs max-w-md">
         <Input
           placeholder="Rechercher un pôle..."
           value={search}
@@ -162,23 +163,22 @@ export function AdminCategoriesPage() {
             setPage(1);
           }}
           leftIcon={<Search className="w-4 h-4 text-slate-400" />}
-          className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
         />
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
           </div>
         ) : categories.length === 0 ? (
-          <div className="p-8 text-center text-xs text-slate-500">
+          <div className="p-12 text-center text-xs text-slate-500">
             Aucun pôle d'expertise trouvé.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Bannière</th>
                   <th className="px-4 py-3">Pôle</th>
@@ -188,13 +188,13 @@ export function AdminCategoriesPage() {
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-100 text-slate-700">
                 {categories.map((c) => {
                   const catImage = (c as any).image_url || c.image;
                   return (
-                    <tr key={c.id} className="hover:bg-slate-800/40 transition-colors">
+                    <tr key={c.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-4 py-2.5">
-                        <div className="w-14 h-10 rounded-lg overflow-hidden bg-slate-800 border border-slate-700 shrink-0">
+                        <div className="w-14 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-2xs">
                           <img
                             src={c.slug === 'eau-hydraulique' && !catImage ? '/Fontaine.png' : getImageUrl(catImage, c.slug)}
                             alt={c.name}
@@ -203,15 +203,23 @@ export function AdminCategoriesPage() {
                           />
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-white font-bold">{c.name}</td>
-                      <td className="px-4 py-3 text-slate-300 font-semibold">{c.services_count || 0}</td>
-                      <td className="px-4 py-3 text-emerald-400 font-semibold">{c.projects_count || 0}</td>
+                      <td className="px-4 py-3 text-slate-900 font-bold">{c.name}</td>
+                      <td className="px-4 py-3 text-slate-700 font-medium">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200/60">
+                          {c.services_count || 0} prestations
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 font-medium">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-200/60">
+                          {c.projects_count || 0} projets
+                        </span>
+                      </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                             c.is_active
-                              ? 'bg-emerald-500/20 text-emerald-300'
-                              : 'bg-slate-800 text-slate-400'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              : 'bg-slate-100 text-slate-600 border-slate-200'
                           }`}
                         >
                           {c.is_active ? 'Actif' : 'Inactif'}
@@ -221,14 +229,14 @@ export function AdminCategoriesPage() {
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleOpenEdit(c)}
-                            className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
                             title="Modifier"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(c.id)}
-                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer"
                             title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -243,7 +251,7 @@ export function AdminCategoriesPage() {
           </div>
         )}
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
           <Pagination meta={meta} onPageChange={setPage} />
         </div>
       </div>
