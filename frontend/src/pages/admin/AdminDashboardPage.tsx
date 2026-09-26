@@ -95,62 +95,87 @@ export function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       {/* 1. Header & Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-slate-900 border border-slate-800 rounded-2xl">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white font-['Outfit']">
-              Bonjour, {user?.name}
-            </h1>
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              {user?.role_label || 'Administrateur'}
-            </span>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Vue d'ensemble des demandes clients, chantiers et publications.
-          </p>
-        </div>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800/90 border border-slate-800/80 p-6 sm:p-7 shadow-lg">
+        {/* Subtle decorative background glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
 
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <Link to="/admin/devis">
-            <Button
-              variant="accent"
-              size="sm"
-              leftIcon={<FileText className="w-4 h-4" />}
-              className="font-bold shadow-sm"
-            >
-              Devis en attente ({overview?.quotes_pending || 0})
-            </Button>
-          </Link>
-          <Link to="/admin/articles?action=new">
-            <Button
-              variant="primary"
-              size="sm"
-              leftIcon={<Newspaper className="w-4 h-4 text-white" />}
-              className="bg-emerald-600 hover:bg-emerald-500 font-bold shadow-sm"
-            >
-              + Nouvelle actualité
-            </Button>
-          </Link>
-          <Button
-            variant="outline-dark"
-            size="sm"
-            onClick={handleExportQuotes}
-            isLoading={exportingQuotes}
-            leftIcon={<Download className="w-4 h-4 text-slate-400" />}
-            title="Exporter les devis au format Excel"
-          >
-            Export Devis (.xls)
-          </Button>
-          <Button
-            variant="outline-dark"
-            size="sm"
-            onClick={handleExportMessages}
-            isLoading={exportingMessages}
-            leftIcon={<Download className="w-4 h-4 text-slate-400" />}
-            title="Exporter les messages de contact au format Excel"
-          >
-            Export Messages (.xls)
-          </Button>
+        <div className="relative flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+          {/* User info & Subtitle */}
+          <div className="space-y-2 min-w-0">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                {user?.role_label || 'Super Administrateur'}
+              </span>
+              <span className="text-xs text-slate-400">
+                • Espace Administration
+              </span>
+            </div>
+
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-snug">
+              Bonjour, <span className="text-emerald-400 font-extrabold">{user?.name || 'Administrateur'}</span>
+            </h1>
+
+            <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
+              Vue d'ensemble en temps réel des demandes de devis, messages de contact, chantiers et actualités.
+            </p>
+          </div>
+
+          {/* Action buttons & Exports */}
+          <div className="flex flex-wrap items-center gap-3 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-800/80">
+            {/* Primary Actions */}
+            <Link to="/admin/devis">
+              <Button
+                variant={overview?.quotes_pending ? 'accent' : 'outline-dark'}
+                size="sm"
+                leftIcon={<FileText className="w-4 h-4" />}
+                className="font-semibold shadow-sm transition-all"
+              >
+                Devis en attente
+                <span className={`ml-2 px-1.5 py-0.5 rounded-full text-xs font-bold ${overview?.quotes_pending ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  {overview?.quotes_pending || 0}
+                </span>
+              </Button>
+            </Link>
+
+            <Link to="/admin/articles?action=new">
+              <Button
+                variant="primary"
+                size="sm"
+                leftIcon={<Newspaper className="w-4 h-4 text-white" />}
+                className="bg-emerald-600 hover:bg-emerald-500 font-semibold shadow-sm text-white"
+              >
+                + Nouvelle actualité
+              </Button>
+            </Link>
+
+            {/* Export Actions */}
+            <div className="flex items-center gap-2 pl-1 sm:border-l border-slate-800">
+              <Button
+                variant="outline-dark"
+                size="sm"
+                onClick={handleExportQuotes}
+                isLoading={exportingQuotes}
+                leftIcon={<Download className="w-3.5 h-3.5 text-slate-400" />}
+                className="text-xs text-slate-300 hover:text-white border-slate-700/80 bg-slate-800/50 hover:bg-slate-800"
+                title="Exporter les devis au format Excel"
+              >
+                Export Devis
+              </Button>
+
+              <Button
+                variant="outline-dark"
+                size="sm"
+                onClick={handleExportMessages}
+                isLoading={exportingMessages}
+                leftIcon={<Download className="w-3.5 h-3.5 text-slate-400" />}
+                className="text-xs text-slate-300 hover:text-white border-slate-700/80 bg-slate-800/50 hover:bg-slate-800"
+                title="Exporter les messages de contact au format Excel"
+              >
+                Export Messages
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
 
