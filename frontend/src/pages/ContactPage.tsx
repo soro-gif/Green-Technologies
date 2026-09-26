@@ -153,7 +153,7 @@ export function ContactPage() {
 
                 {/* Téléphones Directs */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-orange-50 text-orange-600 shrink-0 border border-orange-100">
+                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
@@ -173,7 +173,7 @@ export function ContactPage() {
 
                 {/* Email */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-sky-50 text-sky-600 shrink-0 border border-sky-100">
+                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
@@ -189,7 +189,7 @@ export function ContactPage() {
 
                 {/* Horaires */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-slate-100 text-slate-600 shrink-0 border border-slate-200">
+                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
