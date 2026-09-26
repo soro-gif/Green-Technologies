@@ -176,7 +176,6 @@ export function AdminMessagesPage() {
             Aucun message reçu.
           </div>
         ) : (
-        ) : (
           <div>
             {/* Mobile Cards (<md) */}
             <div className="md:hidden divide-y divide-slate-800">

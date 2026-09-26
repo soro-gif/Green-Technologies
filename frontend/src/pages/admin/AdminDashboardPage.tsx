@@ -270,7 +270,6 @@ export function AdminDashboardPage() {
                 Aucune demande de devis enregistrée pour le moment.
               </div>
             ) : (
-            ) : (
               <div>
                 {/* Mobile Cards (<md) */}
                 <div className="md:hidden divide-y divide-slate-800/60">
