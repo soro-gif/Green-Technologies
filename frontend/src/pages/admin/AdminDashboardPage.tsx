@@ -7,6 +7,7 @@ import {
   Layers,
   Briefcase,
   Clock,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { dashboardApi } from '../../api';
 import type { DashboardStats } from '../../api/dashboard.api';
@@ -75,14 +76,27 @@ export function AdminDashboardPage() {
             </h1>
 
             <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
-              Vue d'ensemble en temps réel des demandes de devis, messages de contact, chantiers et actualités.
+              Vue d'ensemble en temps réel des demandes de devis, messages de contact, chantiers, actualités et gestion de la médiathèque.
             </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Link to="/admin/medias">
+              <Button
+                variant="accent"
+                size="md"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md"
+              >
+                <ImageIcon className="w-4 h-4 mr-1.5" />
+                <span>Médiathèque & Images</span>
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* 2. Key Metrics Grid (4 cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 2. Key Metrics Grid (5 cards) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Devis */}
         <Link
           to="/admin/devis"
@@ -140,13 +154,30 @@ export function AdminDashboardPage() {
           className="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition-all flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-emerald-400 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Catalogue des services</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Catalogue services</span>
             <Layers className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </div>
           <div className="flex items-end justify-between">
             <div className="text-3xl font-extrabold text-white font-['Outfit']">{overview?.services_total || 0}</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
               {overview?.services_active || 0} actifs
+            </span>
+          </div>
+        </Link>
+
+        {/* Médiathèque & Images */}
+        <Link
+          to="/admin/medias"
+          className="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/40 transition-all flex flex-col justify-between group"
+        >
+          <div className="flex items-center justify-between text-purple-400 mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Médiathèque</span>
+            <ImageIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </div>
+          <div className="flex items-end justify-between">
+            <div className="text-lg font-bold text-white font-['Outfit']">Toutes les images</div>
+            <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30">
+              Gérer →
             </span>
           </div>
         </Link>
