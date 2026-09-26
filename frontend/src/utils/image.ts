@@ -9,37 +9,47 @@ const BACKEND_URL =
 
 export const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
   // EAU & HYDRAULIQUE
-  'eau-hydraulique': '/Fontaine.png',
-  'eau': '/Fontaine.png',
-  'forage': '/Fontaine.png',
-  'forages': '/Fontaine.png',
-  'pompage': '/Fontaine.png',
+  'eau-hydraulique': '/forage.jpg',
+  'eau': '/forage.jpg',
+  'forage': '/forage.jpg',
+  'forages': '/forage.jpg',
+  'pompage': '/forage.jpg',
+  'pompage-solaire': '/forage.jpg',
+  'forages-hydrauliques-pompage-solaire': '/forage.jpg',
   'filtration': '/Prefiltre.png',
   'prefiltre': '/Prefiltre.png',
-  'traitement-eau': '/Prefiltre.png',
+  'traitement-eau': '/Fontaine.png',
   'stations-filtration': '/Prefiltre.png',
+  'stations-filtration-traitement-eau-oms': '/Fontaine.png',
+  'fontaine': '/FTA.png',
+  'dispenser': '/FP.png',
 
   // ENERGIE SOLAIRE
   'energie-solaire': '/solaire.jpg',
   'energie': '/solaire.jpg',
   'solaire': '/solaire.jpg',
   'centrales-solaires': '/solaire.jpg',
-  'eclairage-public': '/solaire.jpg',
+  'centrales-solaires-photovoltaiques-hybrides': '/solaire.jpg',
+  'eclairage-public': '/eclairage.jpg',
+  'eclairage-public-solaire-autonome': '/eclairage.jpg',
+  'eclairage': '/eclairage.jpg',
 
   // AGROTECHNOLOGIES
   'agrotechnologies': '/agriculture.jpg',
   'agro': '/agriculture.jpg',
   'irrigation': '/agriculture.jpg',
+  'irrigation-goutte-a-goutte-connectee': '/agriculture.jpg',
   'serres': '/agriculture.jpg',
 
   // BTP ET GENIE CIVIL
   'btp-genie-civil': '/btp.jpg',
   'btp': '/btp.jpg',
   'genie-civil': '/btp.jpg',
+  'ouvrages-genie-civil-btp-ecologique': '/btp.jpg',
   'batiment': '/btp.jpg',
 
   // DEFAULT
-  'default': '/Fontaine.png',
+  'default': '/forage.jpg',
 };
 
 // Known static assets located strictly in frontend/public folder
@@ -49,6 +59,8 @@ const FRONTEND_STATIC_ASSETS = [
   '/fe.png',
   '/fp.png',
   '/fta.png',
+  '/forage.jpg',
+  '/eclairage.jpg',
   '/solaire.jpg',
   '/agriculture.jpg',
   '/btp.jpg',
@@ -75,14 +87,14 @@ export function getImageUrl(
     }
     const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
 
-    // Backend uploads path (served by Laravel)
-    if (cleanPath.startsWith('/uploads/') || cleanPath.startsWith('/storage/')) {
-      return `${BACKEND_URL}${cleanPath}`;
-    }
-
     // Frontend public assets
     if (FRONTEND_STATIC_ASSETS.includes(cleanPath.toLowerCase())) {
       return cleanPath;
+    }
+
+    // Backend uploads path (served by Laravel)
+    if (cleanPath.startsWith('/uploads/') || cleanPath.startsWith('/storage/')) {
+      return `${BACKEND_URL}${cleanPath}`;
     }
 
     return `${BACKEND_URL}${cleanPath}`;
@@ -100,6 +112,42 @@ export function getFallbackImage(categoryIdentifier?: string | null): string {
   }
 
   const key = categoryIdentifier.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  
+  // 1. Direct exact match
+  if (CATEGORY_DEFAULT_IMAGES[key]) {
+    return CATEGORY_DEFAULT_IMAGES[key];
+  }
+
+  // 2. Specific keyword priorities
+  if (key.includes('forage') || key.includes('pompage')) {
+    return '/forage.jpg';
+  }
+  if (key.includes('eclairage') || key.includes('lampadaire')) {
+    return '/eclairage.jpg';
+  }
+  if (key.includes('filtr') || key.includes('prefiltr')) {
+    return '/Prefiltre.png';
+  }
+  if (key.includes('traitement') || key.includes('oms') || key.includes('potab')) {
+    return '/Fontaine.png';
+  }
+  if (key.includes('fontaine')) {
+    return '/FTA.png';
+  }
+  if (key.includes('solaire') || key.includes('photovolt') || key.includes('panneau') || key.includes('energie')) {
+    return '/solaire.jpg';
+  }
+  if (key.includes('irrig') || key.includes('agro') || key.includes('agri') || key.includes('goutte')) {
+    return '/agriculture.jpg';
+  }
+  if (key.includes('btp') || key.includes('genie') || key.includes('batiment') || key.includes('civil') || key.includes('ouvrage')) {
+    return '/btp.jpg';
+  }
+  if (key.includes('eau') || key.includes('hydraul')) {
+    return '/forage.jpg';
+  }
+
+  // 3. Fallback scan
   for (const [catKey, url] of Object.entries(CATEGORY_DEFAULT_IMAGES)) {
     if (key.includes(catKey) || catKey.includes(key)) {
       return url;
@@ -117,20 +165,9 @@ export function handleImageError(
   categoryIdentifier?: string | null
 ) {
   const target = event.target as HTMLImageElement;
-  if (
-    target.src.includes('/Fontaine.png') ||
-    target.src.includes('/Prefiltre.png') ||
-    target.src.includes('/solaire.jpg') ||
-    target.src.includes('/agriculture.jpg') ||
-    target.src.includes('/btp.jpg')
-  ) {
-    return;
-  }
-  
   const fallback = getFallbackImage(categoryIdentifier);
-  if (target.src !== fallback && !target.src.endsWith(fallback)) {
+  
+  if (!target.src.endsWith(fallback) && target.src !== fallback) {
     target.src = fallback;
-  } else {
-    target.src = '/Fontaine.png';
   }
 }
