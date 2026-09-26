@@ -163,7 +163,7 @@ export function DomainDetailPage() {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-2">
+                    <div className="flex flex-col xs:flex-row gap-2.5 xs:items-center xs:justify-between border-t border-slate-100 pt-4 mt-2">
                       <Link
                         to={`/services/${srv.slug}`}
                         className="text-sm font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1"
@@ -173,7 +173,7 @@ export function DomainDetailPage() {
                       </Link>
                       <Link
                         to="/devis"
-                        className="text-sm font-bold text-orange-600 hover:text-orange-700"
+                        className="text-sm font-bold text-orange-600 hover:text-orange-700 inline-flex items-center"
                       >
                         Demander un devis
                       </Link>

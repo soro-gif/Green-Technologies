@@ -179,10 +179,10 @@ export function QuoteRequestPage() {
             Remplissez notre formulaire pour vos travaux en Côte d'Ivoire ou suivez l'état d'avancement de votre devis.
           </p>
 
-          <div className="inline-flex p-1.5 bg-slate-200/80 rounded-xl mt-4">
+          <div className="flex flex-col sm:flex-row w-full max-w-lg mx-auto p-1.5 bg-slate-200/80 rounded-xl mt-4 gap-1 sm:gap-0">
             <button
               onClick={() => setActiveTab('request')}
-              className={`px-6 py-2.5 text-sm font-bold rounded-lg transition-all cursor-pointer ${activeTab === 'request'
+              className={`flex-1 px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer ${activeTab === 'request'
                 ? 'bg-white text-emerald-800 shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
                 }`}
@@ -191,7 +191,7 @@ export function QuoteRequestPage() {
             </button>
             <button
               onClick={() => setActiveTab('track')}
-              className={`px-6 py-2.5 text-sm font-bold rounded-lg transition-all cursor-pointer ${activeTab === 'track'
+              className={`flex-1 px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer ${activeTab === 'track'
                 ? 'bg-white text-emerald-800 shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
                 }`}
@@ -502,14 +502,16 @@ export function QuoteRequestPage() {
               </p>
             </div>
 
-            <form onSubmit={handleTrack} className="max-w-md mx-auto flex gap-2">
-              <Input
-                placeholder="ex: DEV-2026-00001"
-                value={trackRef}
-                onChange={(e) => setTrackRef(e.target.value.toUpperCase())}
-                className="font-mono uppercase font-bold"
-              />
-              <Button type="submit" variant="primary" isLoading={trackLoading} leftIcon={<Search className="w-4 h-4" />}>
+            <form onSubmit={handleTrack} className="max-w-md mx-auto flex flex-col sm:flex-row gap-2.5">
+              <div className="flex-1">
+                <Input
+                  placeholder="ex: DEV-2026-00001"
+                  value={trackRef}
+                  onChange={(e) => setTrackRef(e.target.value.toUpperCase())}
+                  className="font-mono uppercase font-bold text-center sm:text-left"
+                />
+              </div>
+              <Button type="submit" variant="primary" isLoading={trackLoading} leftIcon={<Search className="w-4 h-4" />} className="w-full sm:w-auto">
                 Vérifier
               </Button>
             </form>

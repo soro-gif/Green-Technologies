@@ -15,7 +15,7 @@ export const uploadApi = {
    */
   uploadImage: async (
     file: File,
-    folder: 'articles' | 'projects' | 'services' | 'general' = 'articles'
+    folder: 'articles' | 'projects' | 'services' | 'general' | 'categories' = 'articles'
   ): Promise<ApiResponse<UploadResponseData>> => {
     const formData = new FormData();
     formData.append('image', file);

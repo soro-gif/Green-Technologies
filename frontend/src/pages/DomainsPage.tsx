@@ -85,7 +85,7 @@ export function DomainsPage() {
                     </p>
                   </div>
 
-                  <div className="border-t border-slate-100 pt-6 flex items-center justify-between">
+                  <div className="border-t border-slate-100 pt-5 sm:pt-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                     <Link
                       to={`/domaines/${cat.slug}`}
                       className="inline-flex items-center gap-2 text-sm sm:text-base font-bold text-emerald-700 hover:text-emerald-800 group/link"
@@ -95,7 +95,7 @@ export function DomainsPage() {
                     </Link>
                     <Link
                       to="/devis"
-                      className="text-sm font-bold text-orange-600 hover:text-orange-700"
+                      className="text-sm font-bold text-orange-600 hover:text-orange-700 inline-flex items-center"
                     >
                       Devis gratuit →
                     </Link>

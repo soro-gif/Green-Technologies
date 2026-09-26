@@ -176,70 +176,128 @@ export function AdminMessagesPage() {
             Aucun message reçu.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
-                <tr>
-                  <th className="px-4 py-3">Expéditeur</th>
-                  <th className="px-4 py-3">Sujet</th>
-                  <th className="px-4 py-3">Statut</th>
-                  <th className="px-4 py-3">Reçu le</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {messages.map((m) => (
-                  <tr key={m.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-4 py-3 text-white font-medium">
-                      <div>{m.full_name}</div>
-                      <div className="text-[10px] text-slate-400">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
-                    </td>
-                    <td className="px-4 py-3 text-slate-200 font-medium">{m.subject}</td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          m.status === 'unread'
-                            ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                            : m.status === 'replied'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                            : 'bg-slate-800 text-slate-400'
-                        }`}
-                      >
-                        {m.status_label || m.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-slate-400 text-[11px]">
-                      {new Date(m.created_at).toLocaleDateString('fr-FR')}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => handleOpenEdit(m)}
-                          className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
-                          title="Voir le message"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleOpenEdit(m)}
-                          className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
-                          title="Consulter / Répondre"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(m.id)}
-                          className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                          title="Supprimer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
+        ) : (
+          <div>
+            {/* Mobile Cards (<md) */}
+            <div className="md:hidden divide-y divide-slate-800">
+              {messages.map((m) => (
+                <div key={m.id} className="p-4 space-y-3 hover:bg-slate-800/40 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white text-xs">{m.full_name}</span>
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        m.status === 'unread'
+                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                          : m.status === 'replied'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          : 'bg-slate-800 text-slate-400'
+                      }`}
+                    >
+                      {m.status_label || m.status}
+                    </span>
+                  </div>
+
+                  <div className="text-xs space-y-1">
+                    <p className="font-medium text-emerald-400">{m.subject}</p>
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                      <span>{m.email}</span>
+                      <span>{new Date(m.created_at).toLocaleDateString('fr-FR')}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-1.5 pt-2 border-t border-slate-800">
+                    <button
+                      onClick={() => handleOpenEdit(m)}
+                      className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors"
+                      title="Voir"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleOpenEdit(m)}
+                      className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                      title="Consulter"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(m.id)}
+                      className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+                      title="Supprimer"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (>=md) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+                  <tr>
+                    <th className="px-4 py-3">Expéditeur</th>
+                    <th className="px-4 py-3">Sujet</th>
+                    <th className="px-4 py-3">Statut</th>
+                    <th className="px-4 py-3">Reçu le</th>
+                    <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {messages.map((m) => (
+                    <tr key={m.id} className="hover:bg-slate-800/40 transition-colors">
+                      <td className="px-4 py-3 text-white font-medium">
+                        <div>{m.full_name}</div>
+                        <div className="text-[10px] text-slate-400">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
+                      </td>
+                      <td className="px-4 py-3 text-slate-200 font-medium">{m.subject}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            m.status === 'unread'
+                              ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                              : m.status === 'replied'
+                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                              : 'bg-slate-800 text-slate-400'
+                          }`}
+                        >
+                          {m.status_label || m.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-400 text-[11px]">
+                        {new Date(m.created_at).toLocaleDateString('fr-FR')}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            onClick={() => handleOpenEdit(m)}
+                            className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
+                            title="Voir le message"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenEdit(m)}
+                            className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                            title="Consulter / Répondre"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(m.id)}
+                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            title="Supprimer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 

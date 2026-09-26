@@ -169,7 +169,7 @@ export function AdminArticlesPage() {
 
       setFormData((prev) => ({
         ...prev,
-        cover_image: res.data.url,
+        cover_image: res.data.relative_url || res.data.url,
       }));
     } catch (err: any) {
       console.error(err);

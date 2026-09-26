@@ -179,82 +179,149 @@ export function AdminQuotesPage() {
             Aucun devis ne correspond aux critères.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
-                <tr>
-                  <th className="px-4 py-3">Réf.</th>
-                  <th className="px-4 py-3">Client</th>
-                  <th className="px-4 py-3">Ville</th>
-                  <th className="px-4 py-3">Budget</th>
-                  <th className="px-4 py-3">Statut</th>
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {quotes.map((q) => (
-                  <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-4 py-3 font-mono font-bold text-emerald-400">
-                      {q.reference}
-                    </td>
-                    <td className="px-4 py-3 text-white font-medium">
-                      <div>{q.full_name}</div>
-                      <div className="text-[10px] text-slate-400">{q.phone} • {q.email}</div>
-                    </td>
-                    <td className="px-4 py-3 text-slate-300">{q.city}</td>
-                    <td className="px-4 py-3 text-slate-300">
+          <div>
+            {/* Mobile Cards (<md) */}
+            <div className="md:hidden divide-y divide-slate-800">
+              {quotes.map((q) => (
+                <div key={q.id} className="p-4 space-y-3 hover:bg-slate-800/40 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono font-bold text-sm text-emerald-400">{q.reference}</span>
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        q.status === 'pending'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                          : q.status === 'accepted'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          : q.status === 'quoted'
+                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                          : 'bg-slate-700 text-slate-300'
+                      }`}
+                    >
+                      {q.status_label || q.status}
+                    </span>
+                  </div>
+
+                  <div className="text-xs space-y-1">
+                    <p className="font-bold text-white">{q.full_name}</p>
+                    <p className="text-[11px] text-slate-400">{q.phone} • {q.email}</p>
+                    <div className="flex items-center justify-between pt-1 text-slate-400 text-[11px]">
+                      <span>Ville : <strong className="text-slate-300">{q.city}</strong></span>
+                      <span>{new Date(q.created_at).toLocaleDateString('fr-FR')}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+                    <span className="text-xs font-bold text-emerald-400">
                       {q.estimated_budget
-                        ? `${Number(q.estimated_budget).toLocaleString('fr-FR')} F`
-                        : '-'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          q.status === 'pending'
-                            ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                            : q.status === 'accepted'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                            : q.status === 'quoted'
-                            ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                            : 'bg-slate-700 text-slate-300'
-                        }`}
+                        ? `${Number(q.estimated_budget).toLocaleString('fr-FR')} FCFA`
+                        : 'Budget non précisé'}
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleOpenEdit(q)}
+                        className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors"
+                        title="Voir"
                       >
-                        {q.status_label || q.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-slate-400 text-[11px]">
-                      {new Date(q.created_at).toLocaleDateString('fr-FR')}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => handleOpenEdit(q)}
-                          className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
-                          title="Voir le dossier de devis"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleOpenEdit(q)}
-                          className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
-                          title="Traiter / Mettre à jour"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(q.id)}
-                          className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                          title="Supprimer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleOpenEdit(q)}
+                        className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                        title="Modifier"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(q.id)}
+                        className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+                        title="Supprimer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (>=md) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-800 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+                  <tr>
+                    <th className="px-4 py-3">Réf.</th>
+                    <th className="px-4 py-3">Client</th>
+                    <th className="px-4 py-3">Ville</th>
+                    <th className="px-4 py-3">Budget</th>
+                    <th className="px-4 py-3">Statut</th>
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {quotes.map((q) => (
+                    <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
+                      <td className="px-4 py-3 font-mono font-bold text-emerald-400">
+                        {q.reference}
+                      </td>
+                      <td className="px-4 py-3 text-white font-medium">
+                        <div>{q.full_name}</div>
+                        <div className="text-[10px] text-slate-400">{q.phone} • {q.email}</div>
+                      </td>
+                      <td className="px-4 py-3 text-slate-300">{q.city}</td>
+                      <td className="px-4 py-3 text-slate-300">
+                        {q.estimated_budget
+                          ? `${Number(q.estimated_budget).toLocaleString('fr-FR')} F`
+                          : '-'}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            q.status === 'pending'
+                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                              : q.status === 'accepted'
+                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                              : q.status === 'quoted'
+                              ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                              : 'bg-slate-700 text-slate-300'
+                          }`}
+                        >
+                          {q.status_label || q.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-400 text-[11px]">
+                        {new Date(q.created_at).toLocaleDateString('fr-FR')}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            onClick={() => handleOpenEdit(q)}
+                            className="p-1.5 rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors cursor-pointer"
+                            title="Voir le dossier de devis"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenEdit(q)}
+                            className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+                            title="Traiter / Mettre à jour"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(q.id)}
+                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            title="Supprimer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 

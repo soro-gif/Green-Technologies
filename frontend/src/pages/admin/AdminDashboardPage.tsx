@@ -270,58 +270,99 @@ export function AdminDashboardPage() {
                 Aucune demande de devis enregistrée pour le moment.
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-800/80 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
-                    <tr>
-                      <th className="px-4 py-3">Réf.</th>
-                      <th className="px-4 py-3">Client</th>
-                      <th className="px-4 py-3">Domaine</th>
-                      <th className="px-4 py-3">Statut</th>
-                      <th className="px-4 py-3 text-right">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60">
-                    {recentQuotes.map((q) => (
-                      <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
-                        <td className="px-4 py-3.5 font-mono font-bold text-emerald-400">
-                          {q.reference}
-                        </td>
-                        <td className="px-4 py-3.5 font-medium text-white">
-                          <div>{q.full_name}</div>
-                          {q.company && <div className="text-[10px] text-slate-400">{q.company}</div>}
-                        </td>
-                        <td className="px-4 py-3.5 text-slate-300">
-                          {q.category?.name || 'Général'}
-                        </td>
-                        <td className="px-4 py-3.5">
-                          <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                              q.status === 'pending'
-                                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                                : q.status === 'accepted'
-                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                                : q.status === 'quoted'
-                                ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-                                : 'bg-slate-700 text-slate-300'
-                            }`}
-                          >
-                            {q.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3.5 text-right">
-                          <button
-                            onClick={() => setSelectedQuote(q as unknown as QuoteRequest)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-                            title="Voir les détails"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                        </td>
+            ) : (
+              <div>
+                {/* Mobile Cards (<md) */}
+                <div className="md:hidden divide-y divide-slate-800/60">
+                  {recentQuotes.map((q) => (
+                    <div key={q.id} className="p-4 space-y-2.5 hover:bg-slate-800/40 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono font-bold text-xs text-emerald-400">{q.reference}</span>
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            q.status === 'pending'
+                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                              : q.status === 'accepted'
+                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                              : q.status === 'quoted'
+                              ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                              : 'bg-slate-700 text-slate-300'
+                          }`}
+                        >
+                          {q.status}
+                        </span>
+                      </div>
+                      <div className="text-xs text-white font-medium">
+                        <p>{q.full_name}</p>
+                        <p className="text-[11px] text-slate-400">{q.category?.name || 'Général'}</p>
+                      </div>
+                      <div className="flex justify-end pt-1">
+                        <button
+                          onClick={() => setSelectedQuote(q as unknown as QuoteRequest)}
+                          className="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Détails</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table (>=md) */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-slate-800/80 text-slate-400 uppercase font-bold text-[10px] tracking-wider border-b border-slate-800">
+                      <tr>
+                        <th className="px-4 py-3">Réf.</th>
+                        <th className="px-4 py-3">Client</th>
+                        <th className="px-4 py-3">Domaine</th>
+                        <th className="px-4 py-3">Statut</th>
+                        <th className="px-4 py-3 text-right">Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {recentQuotes.map((q) => (
+                        <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
+                          <td className="px-4 py-3.5 font-mono font-bold text-emerald-400">
+                            {q.reference}
+                          </td>
+                          <td className="px-4 py-3.5 font-medium text-white">
+                            <div>{q.full_name}</div>
+                            {q.company && <div className="text-[10px] text-slate-400">{q.company}</div>}
+                          </td>
+                          <td className="px-4 py-3.5 text-slate-300">
+                            {q.category?.name || 'Général'}
+                          </td>
+                          <td className="px-4 py-3.5">
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                                q.status === 'pending'
+                                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                                  : q.status === 'accepted'
+                                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                                  : q.status === 'quoted'
+                                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                                  : 'bg-slate-700 text-slate-300'
+                              }`}
+                            >
+                              {q.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3.5 text-right">
+                            <button
+                              onClick={() => setSelectedQuote(q as unknown as QuoteRequest)}
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                              title="Voir les détails"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>

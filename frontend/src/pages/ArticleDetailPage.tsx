@@ -122,14 +122,14 @@ export function ArticleDetailPage() {
             {article.content}
           </div>
 
-          <div className="pt-8 border-t border-slate-100 flex items-center justify-between">
-            <Link to="/actualites">
-              <Button variant="outline" size="md" leftIcon={<ChevronLeft className="w-4 h-4" />}>
+          <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+            <Link to="/actualites" className="w-full sm:w-auto">
+              <Button variant="outline" size="md" leftIcon={<ChevronLeft className="w-4 h-4" />} className="w-full sm:w-auto justify-center">
                 Toutes les actualités
               </Button>
             </Link>
-            <Link to="/devis">
-              <Button variant="accent" size="md">
+            <Link to="/devis" className="w-full sm:w-auto">
+              <Button variant="accent" size="md" className="w-full sm:w-auto justify-center">
                 Demander un devis
               </Button>
             </Link>

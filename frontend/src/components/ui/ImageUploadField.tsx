@@ -9,7 +9,7 @@ interface ImageUploadFieldProps {
   label?: string;
   value?: string | null;
   onChange: (url: string) => void;
-  folder?: 'services' | 'projects' | 'articles' | 'general';
+  folder?: 'services' | 'projects' | 'articles' | 'general' | 'categories';
   categorySlug?: string;
   helpText?: string;
 }
@@ -29,13 +29,13 @@ export function ImageUploadField({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (file: File) => {
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith('image/') && !file.name.match(/\.(jpg|jpeg|png|webp|svg|gif)$/i)) {
       setError('Veuillez sélectionner un fichier image valide (JPG, PNG, WebP, SVG).');
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError('L\'image ne doit pas dépasser 5 Mo.');
+    if (file.size > 10 * 1024 * 1024) {
+      setError('L\'image ne doit pas dépasser 10 Mo.');
       return;
     }
 
@@ -48,7 +48,13 @@ export function ImageUploadField({
       }
     } catch (err: any) {
       console.error('Erreur téléversement image:', err);
-      setError(err?.response?.data?.message || 'Échec du téléversement de l\'image.');
+      const serverMsg =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        (err?.response?.status === 413 ? 'Le fichier est trop volumineux pour le serveur.' : null) ||
+        (err?.response?.status === 401 ? 'Session expirée. Veuillez vous reconnecter.' : null) ||
+        'Échec du téléversement de l\'image.';
+      setError(serverMsg);
     } finally {
       setUploading(false);
     }
