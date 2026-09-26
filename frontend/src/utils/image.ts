@@ -1,5 +1,5 @@
 /**
- * Centralized Image Resolution & Category Fallbacks
+ * Centralized Image Resolution & Intelligent Diverse Category Fallbacks
  */
 
 const BACKEND_URL =
@@ -7,49 +7,52 @@ const BACKEND_URL =
   import.meta.env.VITE_API_URL?.replace(/\/api\/v1\/?$/, '') ||
   'http://127.0.0.1:8000';
 
-export const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
+/**
+ * Diverse pools of high-definition images per category.
+ * Each item in the same category gets a distinct image based on its unique key (id, title, or slug).
+ */
+export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
   // EAU & HYDRAULIQUE
-  'eau-hydraulique': '/forage.jpg',
-  'eau': '/forage.jpg',
-  'forage': '/forage.jpg',
-  'forages': '/forage.jpg',
-  'pompage': '/forage.jpg',
-  'pompage-solaire': '/forage.jpg',
-  'forages-hydrauliques-pompage-solaire': '/forage.jpg',
-  'filtration': '/Prefiltre.png',
-  'prefiltre': '/Prefiltre.png',
-  'traitement-eau': '/Fontaine.png',
-  'stations-filtration': '/Prefiltre.png',
-  'stations-filtration-traitement-eau-oms': '/Fontaine.png',
-  'fontaine': '/FTA.png',
-  'dispenser': '/FP.png',
+  'eau-hydraulique': [
+    '/forage.jpg',
+    '/Fontaine.png',
+    '/Prefiltre.png',
+    '/FTA.png',
+    '/FP.png',
+    '/FE.png',
+  ],
 
   // ENERGIE SOLAIRE
-  'energie-solaire': '/solaire.jpg',
-  'energie': '/solaire.jpg',
-  'solaire': '/solaire.jpg',
-  'centrales-solaires': '/solaire.jpg',
-  'centrales-solaires-photovoltaiques-hybrides': '/solaire.jpg',
-  'eclairage-public': '/eclairage.jpg',
-  'eclairage-public-solaire-autonome': '/eclairage.jpg',
-  'eclairage': '/eclairage.jpg',
+  'energie-solaire': [
+    '/solaire.jpg',
+    '/eclairage.jpg',
+    'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=800',
+    'https://images.unsplash.com/photo-1508873696983-2df5293cb32b?w=800',
+  ],
 
   // AGROTECHNOLOGIES
-  'agrotechnologies': '/agriculture.jpg',
-  'agro': '/agriculture.jpg',
-  'irrigation': '/agriculture.jpg',
-  'irrigation-goutte-a-goutte-connectee': '/agriculture.jpg',
-  'serres': '/agriculture.jpg',
+  'agrotechnologies': [
+    '/agriculture.jpg',
+    'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800',
+    'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=800',
+  ],
 
   // BTP ET GENIE CIVIL
-  'btp-genie-civil': '/btp.jpg',
-  'btp': '/btp.jpg',
-  'genie-civil': '/btp.jpg',
-  'ouvrages-genie-civil-btp-ecologique': '/btp.jpg',
-  'batiment': '/btp.jpg',
+  'btp-genie-civil': [
+    '/btp.jpg',
+    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800',
+    'https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?w=800',
+  ],
 
   // DEFAULT
-  'default': '/forage.jpg',
+  'default': [
+    '/forage.jpg',
+    '/solaire.jpg',
+    '/agriculture.jpg',
+    '/btp.jpg',
+    '/Fontaine.png',
+    '/eclairage.jpg',
+  ],
 };
 
 // Known static assets located strictly in frontend/public folder
@@ -70,6 +73,20 @@ const FRONTEND_STATIC_ASSETS = [
 ];
 
 /**
+ * Computes a deterministic integer hash from a key string or number.
+ */
+function getHashIndex(key: string | number | null | undefined, modulo: number): number {
+  if (modulo <= 1) return 0;
+  if (!key) return 0;
+  const str = String(key);
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) % 1000000007;
+  }
+  return Math.abs(hash) % modulo;
+}
+
+/**
  * Upgrades an http:// URL to https:// to prevent mixed-content warnings.
  * Only applies to actual http URLs (not data: or relative paths).
  */
@@ -85,11 +102,12 @@ function enforceHttps(url: string): string {
  * - If external (http/https/data:), returns as-is (http:// is upgraded to https://)
  * - If backend upload (/uploads/... or /storage/...), prepends backend base URL
  * - If known frontend static asset (/Fontaine.png...), returns local relative path
- * - Otherwise prepends backend base URL or falls back to category theme image
+ * - Otherwise prepends backend base URL or falls back to a unique category theme image
  */
 export function getImageUrl(
   imagePath?: string | null,
-  categoryIdentifier?: string | null
+  categoryIdentifier?: string | null,
+  itemKey?: string | number | null
 ): string {
   if (imagePath && typeof imagePath === 'string' && imagePath.trim().length > 0) {
     const trimmed = imagePath.trim();
@@ -112,73 +130,46 @@ export function getImageUrl(
     return enforceHttps(`${BACKEND_URL}${cleanPath}`);
   }
 
-  return getFallbackImage(categoryIdentifier);
+  return getFallbackImage(categoryIdentifier, itemKey);
 }
 
 /**
- * Returns a high quality theme image based on category slug or name
+ * Returns a distinct high quality theme image based on category and unique item key.
+ * This prevents any two articles or projects in the same category from having the same fallback image.
  */
-export function getFallbackImage(categoryIdentifier?: string | null): string {
-  if (!categoryIdentifier) {
-    return CATEGORY_DEFAULT_IMAGES['default'];
+export function getFallbackImage(
+  categoryIdentifier?: string | null,
+  itemKey?: string | number | null
+): string {
+  const normalizedKey = categoryIdentifier ? categoryIdentifier.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
+
+  let pool: string[] = CATEGORY_IMAGE_POOLS['default'];
+
+  if (normalizedKey.includes('forage') || normalizedKey.includes('eau') || normalizedKey.includes('hydraul') || normalizedKey.includes('filtr') || normalizedKey.includes('fontaine')) {
+    pool = CATEGORY_IMAGE_POOLS['eau-hydraulique'];
+  } else if (normalizedKey.includes('solaire') || normalizedKey.includes('energie') || normalizedKey.includes('eclairage')) {
+    pool = CATEGORY_IMAGE_POOLS['energie-solaire'];
+  } else if (normalizedKey.includes('agro') || normalizedKey.includes('agri') || normalizedKey.includes('irrig') || normalizedKey.includes('serre')) {
+    pool = CATEGORY_IMAGE_POOLS['agrotechnologies'];
+  } else if (normalizedKey.includes('btp') || normalizedKey.includes('genie') || normalizedKey.includes('batiment') || normalizedKey.includes('civil') || normalizedKey.includes('ouvrage')) {
+    pool = CATEGORY_IMAGE_POOLS['btp-genie-civil'];
   }
 
-  const key = categoryIdentifier.toLowerCase().replace(/[^a-z0-9]/g, '-');
-  
-  // 1. Direct exact match
-  if (CATEGORY_DEFAULT_IMAGES[key]) {
-    return CATEGORY_DEFAULT_IMAGES[key];
-  }
-
-  // 2. Specific keyword priorities
-  if (key.includes('forage') || key.includes('pompage')) {
-    return '/forage.jpg';
-  }
-  if (key.includes('eclairage') || key.includes('lampadaire')) {
-    return '/eclairage.jpg';
-  }
-  if (key.includes('filtr') || key.includes('prefiltr')) {
-    return '/Prefiltre.png';
-  }
-  if (key.includes('traitement') || key.includes('oms') || key.includes('potab')) {
-    return '/Fontaine.png';
-  }
-  if (key.includes('fontaine')) {
-    return '/FTA.png';
-  }
-  if (key.includes('solaire') || key.includes('photovolt') || key.includes('panneau') || key.includes('energie')) {
-    return '/solaire.jpg';
-  }
-  if (key.includes('irrig') || key.includes('agro') || key.includes('agri') || key.includes('goutte')) {
-    return '/agriculture.jpg';
-  }
-  if (key.includes('btp') || key.includes('genie') || key.includes('batiment') || key.includes('civil') || key.includes('ouvrage')) {
-    return '/btp.jpg';
-  }
-  if (key.includes('eau') || key.includes('hydraul')) {
-    return '/forage.jpg';
-  }
-
-  // 3. Fallback scan
-  for (const [catKey, url] of Object.entries(CATEGORY_DEFAULT_IMAGES)) {
-    if (key.includes(catKey) || catKey.includes(key)) {
-      return url;
-    }
-  }
-
-  return CATEGORY_DEFAULT_IMAGES['default'];
+  const index = getHashIndex(itemKey || categoryIdentifier, pool.length);
+  return pool[index] || pool[0];
 }
 
 /**
- * Safe Image error handler that replaces failed src with local guaranteed fallback
+ * Safe Image error handler that replaces failed src with a distinct local fallback
  */
 export function handleImageError(
   event: React.SyntheticEvent<HTMLImageElement, Event>,
-  categoryIdentifier?: string | null
+  categoryIdentifier?: string | null,
+  itemKey?: string | number | null
 ) {
   const target = event.target as HTMLImageElement;
-  const fallback = getFallbackImage(categoryIdentifier);
-  
+  const fallback = getFallbackImage(categoryIdentifier, itemKey);
+
   if (!target.src.endsWith(fallback) && target.src !== fallback) {
     target.src = fallback;
   }

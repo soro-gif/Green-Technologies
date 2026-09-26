@@ -153,9 +153,9 @@ export function ProjectsPage() {
                   {/* Image Header */}
                   <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
                     <img
-                      src={getImageUrl(proj.image_url || proj.main_image || proj.image, proj.slug || proj.category?.slug)}
+                      src={getImageUrl(proj.image_url || proj.main_image || proj.image, proj.slug || proj.category?.slug, proj.slug || proj.id || proj.title)}
                       alt={proj.title}
-                      onError={(e) => handleImageError(e, proj.slug || proj.category?.slug)}
+                      onError={(e) => handleImageError(e, proj.slug || proj.category?.slug, proj.slug || proj.id || proj.title)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />

@@ -142,10 +142,10 @@ export function ArticlesPage() {
                   <div>
                     <div className="h-52 w-full overflow-hidden bg-slate-100 relative">
                       <img
-                        src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name)}
+                        src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
                         alt={art.title}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, art.category?.slug || art.category?.name)}
+                        onError={(e) => handleImageError(e, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
                       />
                       {art.category?.name && (
                         <span className="absolute top-3 left-3 px-3 py-1 rounded-md text-xs font-bold bg-slate-900/85 text-white backdrop-blur-xs">

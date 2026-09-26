@@ -145,9 +145,9 @@ export function ServicesPage() {
                   {/* Image Header */}
                   <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
                     <img
-                      src={getImageUrl((srv as any).image_url || srv.image, srv.slug || srv.category?.slug)}
+                      src={getImageUrl((srv as any).image_url || srv.image, srv.slug || srv.category?.slug, srv.slug || srv.id || srv.title)}
                       alt={srv.title}
-                      onError={(e) => handleImageError(e, srv.slug || srv.category?.slug)}
+                      onError={(e) => handleImageError(e, srv.slug || srv.category?.slug, srv.slug || srv.id || srv.title)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />

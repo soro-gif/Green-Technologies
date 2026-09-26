@@ -266,10 +266,10 @@ export function HomePage() {
                   <div>
                     <div className="h-44 w-full overflow-hidden bg-slate-100 relative">
                       <img
-                        src={getImageUrl((service as any).image_url || service.image, service.slug || service.category?.slug)}
+                        src={getImageUrl((service as any).image_url || service.image, service.slug || service.category?.slug, service.slug || service.id || service.title)}
                         alt={service.title}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, service.slug || service.category?.slug)}
+                        onError={(e) => handleImageError(e, service.slug || service.category?.slug, service.slug || service.id || service.title)}
                       />
                       <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-900/80 text-white backdrop-blur-xs">
                         {service.category?.name || 'Prestation'}
@@ -351,10 +351,10 @@ export function HomePage() {
                   <div>
                     <div className="h-48 w-full overflow-hidden bg-slate-900 relative">
                       <img
-                        src={getImageUrl((project as any).image_url || project.image, project.slug || project.category?.slug)}
+                        src={getImageUrl((project as any).image_url || project.image, project.slug || project.category?.slug, project.slug || project.id || project.title)}
                         alt={project.title}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, project.slug || project.category?.slug)}
+                        onError={(e) => handleImageError(e, project.slug || project.category?.slug, project.slug || project.id || project.title)}
                       />
                       <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-900/80 text-white backdrop-blur-xs">
                         {project.category?.name || 'Projet'}
@@ -484,10 +484,10 @@ export function HomePage() {
                   <div>
                     <div className="h-48 w-full overflow-hidden bg-slate-100 relative">
                       <img
-                        src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name)}
+                        src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
                         alt={art.title}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, art.category?.slug || art.category?.name)}
+                        onError={(e) => handleImageError(e, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
                       />
                       {art.category?.name && (
                         <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-900/80 text-white backdrop-blur-xs">

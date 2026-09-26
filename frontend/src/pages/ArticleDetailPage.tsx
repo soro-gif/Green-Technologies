@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, ChevronLeft } from 'lucide-react';
 import { articlesApi } from '../api';
@@ -93,10 +93,10 @@ export function ArticleDetailPage() {
 
           <div className="w-full h-72 sm:h-[420px] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-xs my-6 relative">
             <img
-              src={getImageUrl(article.cover_image, article.category?.slug || article.category?.name)}
+              src={getImageUrl(article.cover_image, article.category?.slug || article.category?.name, article.slug || article.id || article.title)}
               alt={article.title}
               className="w-full h-full object-cover"
-              onError={(e) => handleImageError(e, article.category?.slug || article.category?.name)}
+              onError={(e) => handleImageError(e, article.category?.slug || article.category?.name, article.slug || article.id || article.title)}
             />
           </div>
 

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
   Plus,
@@ -196,15 +196,13 @@ export function AdminArticlesPage() {
         if (uploadedUrl) {
           setFormData((prev) => ({ ...prev, cover_image: uploadedUrl }));
         } else {
-          setFormData((prev) => ({ ...prev, cover_image: '' }));
+          setFormData((prev) => ({ ...prev, cover_image: optimizedDataUrl }));
         }
       } catch (uploadErr: any) {
         if (uploadSessionRef.current !== mySession) return;
-        console.warn('Backend upload failed:', uploadErr);
-        setFormData((prev) => ({ ...prev, cover_image: '' }));
-        setFormError(
-          'L\'image n\'a pas pu être téléversée sur le serveur. L\'article sera créé sans image de couverture. Veuillez réessayer ou utiliser un lien URL.'
-        );
+        console.warn('Backend upload failed, utilizing direct optimized base64 payload:', uploadErr);
+        // Fallback to local optimized base64 so the custom image is never lost
+        setFormData((prev) => ({ ...prev, cover_image: optimizedDataUrl }));
       }
     } catch (err: any) {
       if (uploadSessionRef.current !== mySession) return;
