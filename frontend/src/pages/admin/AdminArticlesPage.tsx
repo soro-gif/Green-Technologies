@@ -25,6 +25,7 @@ import { Modal } from '../../components/ui/Modal';
 import { Pagination } from '../../components/ui/Pagination';
 import { Spinner } from '../../components/ui/Spinner';
 import { getImageUrl, handleImageError } from '../../utils/image';
+import { compressAndOptimizeImage } from '../../utils/imageUpload';
 
 export function AdminArticlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -146,9 +147,9 @@ export function AdminArticlesPage() {
       return;
     }
 
-    // Check size (< 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setFormError('Le fichier est trop volumineux (maximum 10 Mo).');
+    // Check size (< 15MB)
+    if (file.size > 15 * 1024 * 1024) {
+      setFormError('Le fichier est trop volumineux (maximum 15 Mo).');
       return;
     }
 
@@ -156,7 +157,8 @@ export function AdminArticlesPage() {
       setUploadingImage(true);
       setFormError('');
 
-      const res = await uploadApi.uploadImage(file, 'articles');
+      // 1. Generate optimized client-side data URL for guaranteed persistence in PostgreSQL
+      const optimizedDataUrl = await compressAndOptimizeImage(file);
 
       const formattedSize = file.size > 1024 * 1024
         ? `${(file.size / (1024 * 1024)).toFixed(1)} Mo`
@@ -169,20 +171,24 @@ export function AdminArticlesPage() {
 
       setFormData((prev) => ({
         ...prev,
-        cover_image: res.data.relative_url || res.data.url,
+        cover_image: optimizedDataUrl,
       }));
+
+      // 2. Also send to backend upload API
+      try {
+        const res = await uploadApi.uploadImage(file, 'articles');
+        if (res.data?.url && res.data.url.startsWith('https://res.cloudinary.com')) {
+          setFormData((prev) => ({
+            ...prev,
+            cover_image: res.data.url,
+          }));
+        }
+      } catch (uploadErr) {
+        console.warn('Backend upload note:', uploadErr);
+      }
     } catch (err: any) {
       console.error(err);
-      if (err.response?.status === 401) {
-        setFormError('Votre session administrateur a expiré. Veuillez vous reconnecter.');
-      } else if (err.response?.status === 403) {
-        setFormError('Accès non autorisé pour téléverser ce fichier.');
-      } else {
-        setFormError(
-          err.response?.data?.message ||
-          'Erreur lors du téléversement de l\'image depuis votre ordinateur.'
-        );
-      }
+      setFormError('Erreur lors du traitement de l\'image.');
     } finally {
       setUploadingImage(false);
     }

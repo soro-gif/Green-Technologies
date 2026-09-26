@@ -4,6 +4,7 @@ import { uploadApi } from '../../api';
 import { Button } from './Button';
 import { Spinner } from './Spinner';
 import { getImageUrl, handleImageError } from '../../utils/image';
+import { compressAndOptimizeImage } from '../../utils/imageUpload';
 
 interface ImageUploadFieldProps {
   label?: string;
@@ -34,27 +35,32 @@ export function ImageUploadField({
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      setError('L\'image ne doit pas dépasser 10 Mo.');
+    if (file.size > 15 * 1024 * 1024) {
+      setError('L\'image ne doit pas dépasser 15 Mo.');
       return;
     }
 
     try {
       setUploading(true);
       setError(null);
-      const res = await uploadApi.uploadImage(file, folder);
-      if (res.data?.url || res.data?.relative_url) {
-        onChange(res.data.relative_url || res.data.url);
+
+      // 1. Generate optimized client-side data URL for guaranteed persistence in PostgreSQL
+      const optimizedDataUrl = await compressAndOptimizeImage(file);
+      onChange(optimizedDataUrl);
+
+      // 2. Also send to backend upload API (supports Cloudinary / local storage)
+      try {
+        const res = await uploadApi.uploadImage(file, folder);
+        if (res.data?.url && res.data.url.startsWith('https://res.cloudinary.com')) {
+          onChange(res.data.url);
+        }
+      } catch (uploadErr) {
+        // Local data URL is already set, so upload failure won't prevent image saving
+        console.warn('Backend disk upload notice:', uploadErr);
       }
     } catch (err: any) {
-      console.error('Erreur téléversement image:', err);
-      const serverMsg =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        (err?.response?.status === 413 ? 'Le fichier est trop volumineux pour le serveur.' : null) ||
-        (err?.response?.status === 401 ? 'Session expirée. Veuillez vous reconnecter.' : null) ||
-        'Échec du téléversement de l\'image.';
-      setError(serverMsg);
+      console.error('Erreur compression image:', err);
+      setError('Erreur lors du traitement de l\'image.');
     } finally {
       setUploading(false);
     }
