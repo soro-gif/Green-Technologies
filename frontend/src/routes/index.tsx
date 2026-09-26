@@ -65,6 +65,7 @@ const AdminProjectsPage = lazy(() => import('../pages/admin/AdminProjectsPage').
 const AdminTestimonialsPage = lazy(() => import('../pages/admin/AdminTestimonialsPage').then((m) => ({ default: m.AdminTestimonialsPage })));
 const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage').then((m) => ({ default: m.AdminCategoriesPage })));
 const AdminArticlesPage = lazy(() => import('../pages/admin/AdminArticlesPage').then((m) => ({ default: m.AdminArticlesPage })));
+const AdminMediaPage = lazy(() => import('../pages/admin/AdminMediaPage').then((m) => ({ default: m.AdminMediaPage })));
 const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage').then((m) => ({ default: m.AdminUsersPage })));
 const DashboardTestPage = lazy(() => import('../pages/DashboardTestPage').then((m) => ({ default: m.DashboardTestPage })));
 
@@ -262,6 +263,18 @@ export const router = createBrowserRouter([
       {
         path: 'actualites',
         element: withSuspense(AdminArticlesPage),
+      },
+      {
+        path: 'medias',
+        element: withSuspense(AdminMediaPage),
+      },
+      {
+        path: 'images',
+        element: <Navigate to="/admin/medias" replace />,
+      },
+      {
+        path: 'media',
+        element: <Navigate to="/admin/medias" replace />,
       },
       {
         path: 'utilisateurs',

@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, Link as LinkIcon, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { UploadCloud, Link as LinkIcon, Trash2, CheckCircle2, AlertCircle, Image as ImageIcon } from 'lucide-react';
 import { uploadApi } from '../../api';
 import { Button } from './Button';
 import { Spinner } from './Spinner';
 import { getImageUrl, handleImageError } from '../../utils/image';
 import { compressAndOptimizeImage } from '../../utils/imageUpload';
+import { MediaPickerModal } from './MediaPickerModal';
 
 interface ImageUploadFieldProps {
   label?: string;
@@ -24,6 +25,7 @@ export function ImageUploadField({
   helpText,
 }: ImageUploadFieldProps) {
   const [mode, setMode] = useState<'upload' | 'url'>('upload');
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -100,33 +102,52 @@ export function ImageUploadField({
         <label className="block text-sm font-bold text-slate-800">
           {label}
         </label>
-        <div className="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200">
+        <div className="flex items-center gap-2">
+          <div className="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setMode('upload')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+                mode === 'upload'
+                  ? 'bg-white text-emerald-800 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <UploadCloud className="w-3.5 h-3.5" />
+              <span>Fichier PC</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode('url')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+                mode === 'url'
+                  ? 'bg-white text-emerald-800 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <LinkIcon className="w-3.5 h-3.5" />
+              <span>Lien URL</span>
+            </button>
+          </div>
+
           <button
             type="button"
-            onClick={() => setMode('upload')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
-              mode === 'upload'
-                ? 'bg-white text-emerald-800 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
+            onClick={() => setIsMediaPickerOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100 transition-colors cursor-pointer shadow-xs"
           >
-            <UploadCloud className="w-3.5 h-3.5" />
-            <span>Fichier PC</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode('url')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
-              mode === 'url'
-                ? 'bg-white text-emerald-800 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <LinkIcon className="w-3.5 h-3.5" />
-            <span>Lien URL / Fichier public</span>
+            <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Médiathèque</span>
           </button>
         </div>
       </div>
+
+      <MediaPickerModal
+        isOpen={isMediaPickerOpen}
+        onClose={() => setIsMediaPickerOpen(false)}
+        onSelect={(url) => onChange(url)}
+        currentValue={value}
+        targetFolder={folder}
+      />
 
       {/* Hidden native input */}
       <input

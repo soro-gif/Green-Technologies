@@ -200,7 +200,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('articles', AdminArticleController::class)
             ->names('api.v1.admin.articles');
 
-        // Media & Image Upload from Computer Explorer
+        // Media & Images Management (Médiathèque)
+        Route::get('media', [AdminUploadController::class, 'index'])
+            ->name('api.v1.admin.media.index');
+        Route::get('media/stats', [AdminUploadController::class, 'stats'])
+            ->name('api.v1.admin.media.stats');
+        Route::post('media/upload', [AdminUploadController::class, 'uploadImage'])
+            ->name('api.v1.admin.media.upload');
+        Route::delete('media', [AdminUploadController::class, 'destroy'])
+            ->name('api.v1.admin.media.destroy');
+        Route::post('media/bulk-delete', [AdminUploadController::class, 'bulkDestroy'])
+            ->name('api.v1.admin.media.bulk_delete');
+
+        // Backward compatibility for direct upload
         Route::post('upload', [AdminUploadController::class, 'uploadImage'])
             ->name('api.v1.admin.upload');
 

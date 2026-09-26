@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   CheckCircle2,
@@ -107,9 +107,9 @@ export function ServiceDetailPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                 <div className="absolute bottom-5 left-6 right-6 flex items-center justify-between">
-                  <Badge variant="green" className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30">
+                  <span className="text-xs font-bold text-white bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-md">
                     {service.category?.name || 'Prestation Technique'}
-                  </Badge>
+                  </span>
                 </div>
               </div>
 

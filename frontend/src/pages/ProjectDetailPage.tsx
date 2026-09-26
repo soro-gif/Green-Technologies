@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   MapPin,
@@ -94,9 +94,9 @@ export function ProjectDetailPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <Badge variant="green" className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30">
+                <span className="text-xs font-bold text-white bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-md">
                   {project.category?.name || 'Projet Réalisé'}
-                </Badge>
+                </span>
                 {project.status_label && (
                   <span className="text-xs font-bold text-white bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
                     {project.status_label}

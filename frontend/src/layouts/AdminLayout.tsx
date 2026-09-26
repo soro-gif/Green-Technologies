@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Shield,
   MessageSquareQuote,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { Logo } from '../components/ui/Logo';
@@ -55,6 +56,11 @@ export function AdminLayout() {
         to: '/admin/articles?action=new',
         title: 'Rédiger une actualité',
       },
+    },
+    {
+      label: 'Médiathèque & images',
+      to: '/admin/medias',
+      icon: <ImageIcon className="w-4 h-4" />,
     },
     {
       label: 'Pôles et domaines',

@@ -536,7 +536,7 @@ export function HomePage() {
       <section className="bg-emerald-900 text-white py-16 px-4 sm:px-6 lg:px-8 border-t border-emerald-800">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
           <div className="space-y-3">
-            <Badge variant="orange" className="text-white border-orange-500 bg-orange-600/30">
+            <Badge variant="orangeDark" className="px-3 py-1">
               Chiffrage gratuit en ligne
             </Badge>
             <h3 className="text-2xl sm:text-3xl font-bold font-['Outfit']">
