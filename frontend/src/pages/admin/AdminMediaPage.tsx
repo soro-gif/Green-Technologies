@@ -8,7 +8,6 @@ import {
   Check,
   ExternalLink,
   RefreshCw,
-  Folder,
   Layers,
   Image as ImageIcon,
   HardDrive,
@@ -17,17 +16,14 @@ import {
   Eye,
   Grid,
   List as ListIcon,
-  Download,
   X,
   Plus,
-  Info,
 } from 'lucide-react';
 import { uploadApi, type MediaItem, type MediaStats } from '../../api/upload.api';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { getImageUrl, handleImageError } from '../../utils/image';
-import { compressAndOptimizeImage } from '../../utils/imageUpload';
 
 type FolderFilter = 'all' | 'articles' | 'projects' | 'services' | 'categories' | 'general';
 
@@ -99,7 +95,7 @@ export function AdminMediaPage() {
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchMediaData();
+      fetchMediaData(true);
     }, 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -128,10 +124,13 @@ export function AdminMediaPage() {
       }
     }
     if (validFiles.length === 0) {
-      showNotification('error', 'Veuillez sélectionner des fichiers image valides.');
+      showNotification('error', 'Veuillez sélectionner des fichiers image valides (PNG, JPG, WebP, SVG, AVIF).');
       return;
     }
     setUploadQueue((prev) => [...prev, ...validFiles]);
+    if (uploadInputRef.current) {
+      uploadInputRef.current.value = '';
+    }
   };
 
   const executeUploadQueue = async () => {
@@ -145,14 +144,18 @@ export function AdminMediaPage() {
         await uploadApi.uploadImage(file, uploadFolder);
         setUploadProgress((prev) => ({ ...prev, [file.name]: 'done' }));
         successCount++;
-      } catch (err) {
+      } catch (err: any) {
         console.error(`Erreur upload ${file.name}:`, err);
         setUploadProgress((prev) => ({ ...prev, [file.name]: 'error' }));
+        const errMsg = err.response?.data?.message || `Erreur lors du téléversement de ${file.name}`;
+        showNotification('error', errMsg);
       }
     }
 
     setIsUploading(false);
-    showNotification('success', `${successCount} image(s) téléversée(s) avec succès.`);
+    if (successCount > 0) {
+      showNotification('success', `${successCount} image(s) téléversée(s) avec succès.`);
+    }
     setUploadQueue([]);
     setUploadProgress({});
     setIsUploadModalOpen(false);
@@ -173,7 +176,7 @@ export function AdminMediaPage() {
       fetchMediaData(true);
     } catch (err: any) {
       console.error('Erreur suppression:', err);
-      showNotification('error', 'Erreur lors de la suppression du fichier.');
+      showNotification('error', err.response?.data?.message || 'Erreur lors de la suppression du fichier.');
     } finally {
       setDeleting(false);
     }
@@ -194,7 +197,7 @@ export function AdminMediaPage() {
       fetchMediaData(true);
     } catch (err: any) {
       console.error('Erreur suppression groupée:', err);
-      showNotification('error', 'Erreur lors de la suppression groupée.');
+      showNotification('error', err.response?.data?.message || 'Erreur lors de la suppression groupée.');
     } finally {
       setBulkDeleting(false);
     }
@@ -229,16 +232,16 @@ export function AdminMediaPage() {
       {/* Toast Notification */}
       {notification && (
         <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${
             notification.type === 'success'
-              ? 'bg-emerald-900/95 text-emerald-100 border-emerald-500/40'
-              : 'bg-rose-900/95 text-rose-100 border-rose-500/40'
+              ? 'bg-white text-emerald-950 border-emerald-200 shadow-emerald-950/10'
+              : 'bg-white text-rose-950 border-rose-200 shadow-rose-950/10'
           }`}
         >
           {notification.type === 'success' ? (
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
           ) : (
-            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+            <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
           )}
           <span>{notification.message}</span>
         </div>

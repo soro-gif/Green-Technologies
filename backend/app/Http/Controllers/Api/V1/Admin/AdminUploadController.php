@@ -462,24 +462,27 @@ class AdminUploadController extends BaseApiController
 
         try {
             // Articles
-            $articles = Article::select('id', 'title', 'slug', 'cover_image')->whereNotNull('cover_image')->get();
-            foreach ($articles as $art) {
-                $img = $art->cover_image;
-                if ($img) {
-                    $usages[$img][] = [
-                        'entity' => 'Article',
-                        'title' => $art->title,
-                        'id' => $art->id,
-                        'link' => "/actualites/{$art->slug}",
-                    ];
+            if (\Illuminate\Support\Facades\Schema::hasTable('articles') && \Illuminate\Support\Facades\Schema::hasColumn('articles', 'cover_image')) {
+                $articles = Article::select('id', 'title', 'slug', 'cover_image')->whereNotNull('cover_image')->get();
+                foreach ($articles as $art) {
+                    $img = $art->cover_image;
+                    if ($img) {
+                        $usages[$img][] = [
+                            'entity' => 'Article',
+                            'title' => $art->title,
+                            'id' => $art->id,
+                            'link' => "/actualites/{$art->slug}",
+                        ];
+                    }
                 }
             }
 
             // Projects
-            $projects = Project::select('id', 'title', 'slug', 'image', 'main_image', 'image_url')->get();
-            foreach ($projects as $proj) {
-                foreach ([$proj->image, $proj->main_image, $proj->image_url] as $img) {
-                    if ($img) {
+            if (\Illuminate\Support\Facades\Schema::hasTable('projects')) {
+                $cols = array_filter(['id', 'title', 'slug', 'image', 'main_image', 'image_url'], fn($c) => \Illuminate\Support\Facades\Schema::hasColumn('projects', $c));
+                $projects = Project::select($cols)->get();
+                foreach ($projects as $proj) {
+                    foreach (array_filter([$proj->image ?? null, $proj->main_image ?? null, $proj->image_url ?? null]) as $img) {
                         $usages[$img][] = [
                             'entity' => 'Projet / Réalisation',
                             'title' => $proj->title,
@@ -491,10 +494,11 @@ class AdminUploadController extends BaseApiController
             }
 
             // Services
-            $services = Service::select('id', 'title', 'slug', 'image', 'image_url')->get();
-            foreach ($services as $srv) {
-                foreach ([$srv->image, $srv->image_url] as $img) {
-                    if ($img) {
+            if (\Illuminate\Support\Facades\Schema::hasTable('services')) {
+                $cols = array_filter(['id', 'title', 'slug', 'image', 'image_url'], fn($c) => \Illuminate\Support\Facades\Schema::hasColumn('services', $c));
+                $services = Service::select($cols)->get();
+                foreach ($services as $srv) {
+                    foreach (array_filter([$srv->image ?? null, $srv->image_url ?? null]) as $img) {
                         $usages[$img][] = [
                             'entity' => 'Prestation / Service',
                             'title' => $srv->title,
@@ -506,10 +510,11 @@ class AdminUploadController extends BaseApiController
             }
 
             // Categories
-            $categories = Category::select('id', 'name', 'slug', 'image', 'icon')->get();
-            foreach ($categories as $cat) {
-                foreach ([$cat->image, $cat->icon] as $img) {
-                    if ($img) {
+            if (\Illuminate\Support\Facades\Schema::hasTable('categories')) {
+                $cols = array_filter(['id', 'name', 'slug', 'image', 'icon'], fn($c) => \Illuminate\Support\Facades\Schema::hasColumn('categories', $c));
+                $categories = Category::select($cols)->get();
+                foreach ($categories as $cat) {
+                    foreach (array_filter([$cat->image ?? null, $cat->icon ?? null]) as $img) {
                         $usages[$img][] = [
                             'entity' => 'Domaine / Pôle',
                             'title' => $cat->name,
@@ -521,15 +526,17 @@ class AdminUploadController extends BaseApiController
             }
 
             // Testimonials
-            $testimonials = Testimonial::select('id', 'author_name', 'avatar')->whereNotNull('avatar')->get();
-            foreach ($testimonials as $t) {
-                if ($t->avatar) {
-                    $usages[$t->avatar][] = [
-                        'entity' => 'Témoignage',
-                        'title' => $t->author_name,
-                        'id' => $t->id,
-                        'link' => "/#temoignages",
-                    ];
+            if (\Illuminate\Support\Facades\Schema::hasTable('testimonials') && \Illuminate\Support\Facades\Schema::hasColumn('testimonials', 'avatar')) {
+                $testimonials = Testimonial::select('id', 'author_name', 'avatar')->whereNotNull('avatar')->get();
+                foreach ($testimonials as $t) {
+                    if ($t->avatar) {
+                        $usages[$t->avatar][] = [
+                            'entity' => 'Témoignage',
+                            'title' => $t->author_name,
+                            'id' => $t->id,
+                            'link' => "/#temoignages",
+                        ];
+                    }
                 }
             }
         } catch (\Throwable $e) {
