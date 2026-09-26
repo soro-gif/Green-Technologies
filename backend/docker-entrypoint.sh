@@ -6,7 +6,7 @@ echo " GREEN TECHNOLOGIES - Laravel Startup"
 echo "========================================="
 
 # --------------------------------------------------
-# Laravel storage directories
+# Laravel storage & public upload directories
 # --------------------------------------------------
 mkdir -p \
     /var/www/html/storage/logs \
@@ -14,17 +14,27 @@ mkdir -p \
     /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
     /var/www/html/storage/app/public \
+    /var/www/html/public/uploads/articles \
+    /var/www/html/public/uploads/projects \
+    /var/www/html/public/uploads/services \
+    /var/www/html/public/uploads/general \
+    /var/www/html/public/uploads/categories \
     /var/www/html/bootstrap/cache
 
 chown -R www-data:www-data \
     /var/www/html/storage \
+    /var/www/html/public/uploads \
     /var/www/html/bootstrap/cache
 
 chmod -R 775 \
     /var/www/html/storage \
+    /var/www/html/public/uploads \
     /var/www/html/bootstrap/cache
 
-echo "Storage permissions configured."
+# Create storage symlink
+php artisan storage:link || true
+
+echo "Storage and uploads permissions configured."
 
 # --------------------------------------------------
 # Laravel package discovery

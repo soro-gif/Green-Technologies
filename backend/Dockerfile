@@ -36,21 +36,35 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # Install PHP dependencies
 RUN composer install --no-dev --no-scripts --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-# Set permissions for Laravel storage and cache
-# Set permissions for Laravel storage and cache
+# Configure PHP upload limits and performance
+RUN echo "file_uploads = On" > /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "upload_max_filesize = 25M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 30M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_execution_time = 120" >> /usr/local/etc/php/conf.d/uploads.ini
+
+# Set permissions for Laravel storage, cache, and public uploads
 RUN mkdir -p \
     /var/www/html/storage/logs \
     /var/www/html/storage/framework/cache/data \
     /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
     /var/www/html/storage/app/public \
+    /var/www/html/public/uploads/articles \
+    /var/www/html/public/uploads/projects \
+    /var/www/html/public/uploads/services \
+    /var/www/html/public/uploads/general \
+    /var/www/html/public/uploads/categories \
     /var/www/html/bootstrap/cache \
     && chown -R www-data:www-data \
     /var/www/html/storage \
+    /var/www/html/public/uploads \
     /var/www/html/bootstrap/cache \
     && chmod -R 775 \
     /var/www/html/storage \
+    /var/www/html/public/uploads \
     /var/www/html/bootstrap/cache
+
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
