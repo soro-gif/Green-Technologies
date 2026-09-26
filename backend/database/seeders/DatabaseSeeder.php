@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 2. Demo Accounts
-        User::updateOrCreate(
+        User::firstOrCreate(
             ['email' => 'admin@greentechnologies.ci'],
             [
                 'name' => 'Direction Technique Green Tech',
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        User::updateOrCreate(
+        User::firstOrCreate(
             ['email' => 'client@greentechnologies.ci'],
             [
                 'name' => 'Client Démo Green Tech',

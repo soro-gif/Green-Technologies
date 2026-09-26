@@ -93,7 +93,7 @@ class ServiceSeeder extends Seeder
 
         foreach ($services as $service) {
             if ($service['category_id']) {
-                Service::updateOrCreate(['slug' => $service['slug']], $service);
+                Service::firstOrCreate(['slug' => $service['slug']], $service);
             }
         }
     }

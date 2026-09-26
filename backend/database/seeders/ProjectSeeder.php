@@ -95,7 +95,7 @@ class ProjectSeeder extends Seeder
 
         foreach ($projects as $proj) {
             if ($proj['category_id']) {
-                Project::updateOrCreate(['slug' => $proj['slug']], $proj);
+                Project::firstOrCreate(['slug' => $proj['slug']], $proj);
             }
         }
     }

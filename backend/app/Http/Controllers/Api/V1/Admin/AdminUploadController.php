@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Api\BaseApiController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -33,6 +34,66 @@ class AdminUploadController extends BaseApiController
             $safeName = Str::slug($originalName);
             $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'jpg';
             $fileName = time() . '_' . Str::random(8) . ($safeName ? "_{$safeName}" : '') . ".{$extension}";
+
+            // Option A: If Cloudinary credentials are provided, upload to Cloudinary for permanent storage
+            $cloudinaryUrl = env('CLOUDINARY_URL');
+            $cloudinaryCloudName = env('CLOUDINARY_CLOUD_NAME');
+            $cloudinaryApiKey = env('CLOUDINARY_API_KEY');
+            $cloudinaryApiSecret = env('CLOUDINARY_API_SECRET');
+            $cloudinaryUploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
+
+            if ($cloudinaryUrl || ($cloudinaryCloudName && ($cloudinaryUploadPreset || ($cloudinaryApiKey && $cloudinaryApiSecret)))) {
+                try {
+                    $cloudName = $cloudinaryCloudName;
+                    $apiKey = $cloudinaryApiKey;
+                    $apiSecret = $cloudinaryApiSecret;
+
+                    if ($cloudinaryUrl && preg_match('/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/', $cloudinaryUrl, $matches)) {
+                        $apiKey = $matches[1];
+                        $apiSecret = $matches[2];
+                        $cloudName = $matches[3];
+                    }
+
+                    if ($cloudName) {
+                        $timestamp = time();
+                        $uploadData = [
+                            'folder' => "greentech/{$folder}",
+                        ];
+
+                        if ($cloudinaryUploadPreset) {
+                            $uploadData['upload_preset'] = $cloudinaryUploadPreset;
+                        } elseif ($apiKey && $apiSecret) {
+                            $paramsToSign = "folder=greentech/{$folder}&timestamp={$timestamp}{$apiSecret}";
+                            $signature = sha1($paramsToSign);
+                            $uploadData['timestamp'] = $timestamp;
+                            $uploadData['api_key'] = $apiKey;
+                            $uploadData['signature'] = $signature;
+                        }
+
+                        $response = Http::timeout(30)
+                            ->attach('file', file_get_contents($file->getRealPath()), $file->getClientOriginalName())
+                            ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", $uploadData);
+
+                        if ($response->successful()) {
+                            $json = $response->json();
+                            $secureUrl = $json['secure_url'] ?? $json['url'] ?? null;
+                            if ($secureUrl) {
+                                return $this->success([
+                                    'url' => $secureUrl,
+                                    'relative_url' => $secureUrl,
+                                    'file_name' => $fileName,
+                                    'original_name' => $file->getClientOriginalName(),
+                                    'size' => $file->getSize() ?: 0,
+                                ], 'Image téléversée avec succès sur Cloudinary.', 201);
+                            }
+                        } else {
+                            Log::warning('Cloudinary upload returned non-200: ' . $response->body());
+                        }
+                    }
+                } catch (\Throwable $cloudEx) {
+                    Log::warning('Cloudinary upload error, falling back to local: ' . $cloudEx->getMessage());
+                }
+            }
 
             $destinationPath = public_path("uploads/{$folder}");
             $savedSuccessfully = false;

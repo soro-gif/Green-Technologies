@@ -42,13 +42,10 @@ echo "Storage and uploads permissions configured."
 php artisan package:discover --ansi || true
 
 # --------------------------------------------------
-# Database migrations & seeds (MUST RUN BEFORE CACHE CLEAR)
+# Database migrations (MUST RUN BEFORE CACHE CLEAR)
 # --------------------------------------------------
 echo "Running database migrations..."
 php artisan migrate --force || true
-
-echo "Running database seeders..."
-php artisan db:seed --force || true
 
 # --------------------------------------------------
 # Production optimizations (after tables exist)
