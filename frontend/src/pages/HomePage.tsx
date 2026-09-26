@@ -362,7 +362,7 @@ export function HomePage() {
                     </div>
 
                     <div className="p-6">
-                      <div className="flex items-center justify-between gap-2 mb-3">
+                      <div className="flex items-center justify-between gap-2 mb-2.5">
                         {project.location && (
                           <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400 font-medium">
                             <MapPin className="w-4 h-4 text-orange-400" />
@@ -371,20 +371,13 @@ export function HomePage() {
                         )}
                       </div>
 
-                      <h4 className="text-xl font-bold text-white font-['Outfit'] mb-2.5">
+                      <h4 className="text-lg sm:text-xl font-semibold text-white font-['Outfit'] mb-2 leading-snug">
                         {project.title}
                       </h4>
 
-                      <p className="text-sm text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                      <p className="text-sm text-slate-300 line-clamp-3 leading-relaxed">
                         {project.description}
                       </p>
-
-                      {project.client_name && (
-                        <div className="text-sm text-slate-400 bg-slate-900 p-3 rounded-xl mb-4 border border-slate-700/60">
-                          <span className="font-semibold text-slate-200">Client / maître d'ouvrage :</span>{' '}
-                          {project.client_name}
-                        </div>
-                      )}
                     </div>
                   </div>
 

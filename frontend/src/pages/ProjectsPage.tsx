@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Search, MapPin, Calendar, ArrowRight } from 'lucide-react';
 import { projectsApi, categoriesApi } from '../api';
@@ -183,20 +183,13 @@ export function ProjectsPage() {
                         )}
                       </div>
 
-                      <h3 className="text-xl font-bold text-slate-900 font-['Outfit'] mb-2.5 group-hover:text-emerald-700 transition-colors">
+                      <h3 className="text-lg sm:text-xl font-semibold text-slate-900 font-['Outfit'] mb-2 group-hover:text-emerald-700 transition-colors leading-snug">
                         {proj.title}
                       </h3>
 
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4">
+                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
                         {proj.description}
                       </p>
-
-                      {proj.client_name && (
-                        <div className="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl mb-2 border border-slate-100">
-                          <span className="font-semibold text-slate-800">Client :</span>{' '}
-                          {proj.client_name}
-                        </div>
-                      )}
                     </div>
 
                     <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-2">
