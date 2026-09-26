@@ -62,6 +62,9 @@ export function AdminArticlesPage() {
   const [localFileDetails, setLocalFileDetails] = useState<{ name: string; size: string } | null>(null);
   // Local preview URL (base64) — used ONLY for display, never sent to the API
   const [previewUrl, setPreviewUrl] = useState<string>('');
+  // Session token: incremented each time the modal is opened so stale async
+  // upload callbacks from a previous article cannot overwrite the current form.
+  const uploadSessionRef = useRef<number>(0);
 
   // Load categories
   useEffect(() => {
@@ -109,6 +112,7 @@ export function AdminArticlesPage() {
   };
 
   const handleOpenCreate = () => {
+    uploadSessionRef.current += 1; // Invalidate any in-flight upload
     setEditingArticle(null);
     setFormError('');
     setLocalFileDetails(null);
@@ -126,6 +130,7 @@ export function AdminArticlesPage() {
   };
 
   const handleOpenEdit = (art: Article) => {
+    uploadSessionRef.current += 1; // Invalidate any in-flight upload
     setEditingArticle(art);
     setFormError('');
     setLocalFileDetails(null);
@@ -157,6 +162,11 @@ export function AdminArticlesPage() {
       return;
     }
 
+    // Capture the current session at the START of this upload.
+    // If the modal is closed/reset before the upload finishes, the session
+    // token will have been incremented and we must discard the stale result.
+    const mySession = uploadSessionRef.current;
+
     try {
       setUploadingImage(true);
       setFormError('');
@@ -169,31 +179,41 @@ export function AdminArticlesPage() {
 
       // 1. Generate a local base64 preview ONLY for display — never sent to the API
       const optimizedDataUrl = await compressAndOptimizeImage(file);
+
+      // Guard: if the modal was reset while we were compressing, stop here
+      if (uploadSessionRef.current !== mySession) return;
+
       setPreviewUrl(optimizedDataUrl);
 
       // 2. Upload to backend — the returned URL is what gets persisted
       try {
         const res = await uploadApi.uploadImage(file, 'articles');
+
+        // Guard: discard result if the user already opened a different article form
+        if (uploadSessionRef.current !== mySession) return;
+
         const uploadedUrl = res.data?.url || res.data?.relative_url || '';
         if (uploadedUrl) {
           setFormData((prev) => ({ ...prev, cover_image: uploadedUrl }));
         } else {
-          // Upload succeeded but no URL returned — leave cover_image empty
           setFormData((prev) => ({ ...prev, cover_image: '' }));
         }
       } catch (uploadErr: any) {
+        if (uploadSessionRef.current !== mySession) return;
         console.warn('Backend upload failed:', uploadErr);
-        // Do NOT fall back to base64 — leave cover_image empty to avoid server errors
         setFormData((prev) => ({ ...prev, cover_image: '' }));
         setFormError(
           'L\'image n\'a pas pu être téléversée sur le serveur. L\'article sera créé sans image de couverture. Veuillez réessayer ou utiliser un lien URL.'
         );
       }
     } catch (err: any) {
+      if (uploadSessionRef.current !== mySession) return;
       console.error(err);
       setFormError('Erreur lors du traitement de l\'image.');
     } finally {
-      setUploadingImage(false);
+      if (uploadSessionRef.current === mySession) {
+        setUploadingImage(false);
+      }
     }
   };
 

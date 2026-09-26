@@ -97,6 +97,7 @@ export const router = createBrowserRouter([
         path: 'services/:slug',
         element: withSuspense(ServiceDetailPage),
       },
+      // Réalisations (URL officielle)
       {
         path: 'realisations',
         element: withSuspense(ProjectsPage),
@@ -105,13 +106,14 @@ export const router = createBrowserRouter([
         path: 'realisations/:slug',
         element: withSuspense(ProjectDetailPage),
       },
+      // Redirections compatibilité anciens liens
       {
         path: 'projets',
-        element: withSuspense(ProjectsPage),
+        element: <Navigate to="/realisations" replace />,
       },
       {
         path: 'projets/:slug',
-        element: withSuspense(ProjectDetailPage),
+        element: <Navigate to="/realisations" replace />,
       },
       {
         path: 'devis',
@@ -121,6 +123,7 @@ export const router = createBrowserRouter([
         path: 'contact',
         element: withSuspense(ContactPage),
       },
+      // Actualités (URL officielle)
       {
         path: 'actualites',
         element: withSuspense(ArticlesPage),
@@ -129,33 +132,36 @@ export const router = createBrowserRouter([
         path: 'actualites/:slug',
         element: withSuspense(ArticleDetailPage),
       },
+      // Redirection compatibilité anciens liens
       {
         path: 'articles',
-        element: withSuspense(ArticlesPage),
+        element: <Navigate to="/actualites" replace />,
       },
       {
         path: 'articles/:slug',
-        element: withSuspense(ArticleDetailPage),
+        element: <Navigate to="/actualites" replace />,
       },
-      {
-        path: 'login',
-        element: withSuspense(LoginPage),
-      },
+      // Authentification (URLs françaises officielles)
       {
         path: 'connexion',
         element: withSuspense(LoginPage),
       },
       {
+        path: 'inscription',
+        element: withSuspense(RegisterPage),
+      },
+      // Redirections compatibilité anciens liens
+      {
+        path: 'login',
+        element: <Navigate to="/connexion" replace />,
+      },
+      {
         path: 'admin/login',
-        element: withSuspense(LoginPage),
+        element: <Navigate to="/connexion" replace />,
       },
       {
         path: 'register',
-        element: withSuspense(RegisterPage),
-      },
-      {
-        path: 'inscription',
-        element: withSuspense(RegisterPage),
+        element: <Navigate to="/inscription" replace />,
       },
       {
         path: 'health',
@@ -215,13 +221,10 @@ export const router = createBrowserRouter([
         index: true,
         element: withSuspense(AdminDashboardPage),
       },
+      // URLs françaises officielles du backoffice
       {
-        path: 'dashboard',
+        path: 'tableau-de-bord',
         element: withSuspense(AdminDashboardPage),
-      },
-      {
-        path: 'quotes',
-        element: withSuspense(AdminQuotesPage),
       },
       {
         path: 'devis',
@@ -236,50 +239,59 @@ export const router = createBrowserRouter([
         element: withSuspense(AdminCategoriesPage),
       },
       {
-        path: 'categories',
-        element: withSuspense(AdminCategoriesPage),
-      },
-      {
         path: 'services',
         element: withSuspense(AdminServicesPage),
-      },
-      {
-        path: 'projects',
-        element: withSuspense(AdminProjectsPage),
       },
       {
         path: 'projets',
         element: withSuspense(AdminProjectsPage),
       },
       {
-        path: 'testimonials',
-        element: withSuspense(AdminTestimonialsPage),
-      },
-      {
         path: 'temoignages',
         element: withSuspense(AdminTestimonialsPage),
-      },
-      {
-        path: 'articles',
-        element: withSuspense(AdminArticlesPage),
       },
       {
         path: 'actualites',
         element: withSuspense(AdminArticlesPage),
       },
       {
-        path: 'users',
+        path: 'utilisateurs',
         element: (
           <ProtectedRoute requiredRole="super_admin">
             {withSuspense(AdminUsersPage)}
           </ProtectedRoute>
         ),
       },
+      // Redirections compatibilité anciens liens anglais
       {
-        path: 'utilisateurs',
+        path: 'dashboard',
+        element: <Navigate to="/admin/tableau-de-bord" replace />,
+      },
+      {
+        path: 'quotes',
+        element: <Navigate to="/admin/devis" replace />,
+      },
+      {
+        path: 'categories',
+        element: <Navigate to="/admin/domaines" replace />,
+      },
+      {
+        path: 'projects',
+        element: <Navigate to="/admin/projets" replace />,
+      },
+      {
+        path: 'testimonials',
+        element: <Navigate to="/admin/temoignages" replace />,
+      },
+      {
+        path: 'articles',
+        element: <Navigate to="/admin/actualites" replace />,
+      },
+      {
+        path: 'users',
         element: (
           <ProtectedRoute requiredRole="super_admin">
-            {withSuspense(AdminUsersPage)}
+            <Navigate to="/admin/utilisateurs" replace />
           </ProtectedRoute>
         ),
       },
@@ -290,3 +302,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
