@@ -290,9 +290,9 @@ export function AdminMediaPage() {
             size="sm"
             onClick={() => fetchMediaData(true)}
             disabled={refreshing}
-            className="border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 text-xs"
+            className="border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-xs font-semibold px-4 py-2 rounded-xl shadow-xs"
           >
-            <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-emerald-600' : 'text-slate-500'}`} />
             <span>Actualiser</span>
           </Button>
 
@@ -305,9 +305,9 @@ export function AdminMediaPage() {
               }
               setIsUploadModalOpen(true);
             }}
-            className="font-semibold text-sm shadow-sm rounded-xl"
+            className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow"
           >
-            <Plus className="w-4 h-4 mr-1.5" />
+            <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Téléverser des images</span>
           </Button>
         </div>
@@ -510,16 +510,16 @@ export function AdminMediaPage() {
           </div>
           <Button
             variant="primary"
-            size="sm"
+            size="md"
             onClick={() => {
               if (selectedFolder !== 'all') {
                 setUploadFolder(selectedFolder);
               }
               setIsUploadModalOpen(true);
             }}
-            className="font-semibold text-xs rounded-xl"
+            className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:shadow"
           >
-            <Plus className="w-3.5 h-3.5 mr-1" />
+            <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Ajouter une image</span>
           </Button>
         </div>

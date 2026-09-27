@@ -83,11 +83,11 @@ export function AdminDashboardPage() {
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <Link to="/admin/medias">
               <Button
-                variant="accent"
+                variant="primary"
                 size="md"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm"
+                className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow"
               >
-                <ImageIcon className="w-4 h-4 mr-1.5" />
+                <ImageIcon className="w-4 h-4 shrink-0" />
                 <span>Médiathèque & Images</span>
               </Button>
             </Link>
