@@ -25,6 +25,8 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { getImageUrl, handleImageError } from '../../utils/image';
+import { formatDate } from '../../utils/date';
+
 
 type FolderFilter = 'all' | 'articles' | 'projects' | 'services' | 'categories' | 'general';
 
@@ -725,7 +727,7 @@ export function AdminMediaPage() {
                           <span className="text-slate-400 text-xs">Non référencé</span>
                         )}
                       </td>
-                      <td className="p-4 text-slate-500">{item.updated_at}</td>
+                      <td className="p-4 text-slate-500 font-medium text-xs">{formatDate(item.updated_at)}</td>
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
