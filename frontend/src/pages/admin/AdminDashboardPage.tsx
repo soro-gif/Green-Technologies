@@ -185,9 +185,9 @@ export function AdminDashboardPage() {
             </div>
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-lg font-bold text-slate-900 font-['Outfit']">Toutes images</div>
+            <div className="text-3xl font-extrabold text-slate-900 font-['Outfit']">10</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-800 border border-purple-200">
-              Gérer →
+              images
             </span>
           </div>
         </Link>
