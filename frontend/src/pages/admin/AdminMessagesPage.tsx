@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Trash2, Edit3, Download, CheckCircle2, Eye } from 'lucide-react';
+import { Search, Trash2, Edit3, Download, CheckCircle2, Eye, Mail } from 'lucide-react';
 import { contactApi } from '../../api';
 import type { ContactMessage, MessageStatus } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';
