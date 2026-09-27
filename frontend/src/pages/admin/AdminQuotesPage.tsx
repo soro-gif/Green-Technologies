@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Trash2, Edit3, Download, CheckCircle2, Eye, FileText } from 'lucide-react';
+import { Search, Trash2, Edit3, Download, CheckCircle2, Eye } from 'lucide-react';
 import { quotesApi } from '../../api';
 import type { QuoteRequest, QuoteStatus } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';
