@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Plus, Trash2, Edit3, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Search, Plus, Trash2, Edit3, CheckCircle2, AlertCircle, Briefcase } from 'lucide-react';
 import { projectsApi, categoriesApi } from '../../api';
 import type { Project, Category, ProjectStatus } from '../../types/models';
 import type { PaginationMeta } from '../../types/api';

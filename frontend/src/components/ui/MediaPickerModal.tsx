@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image as ImageIcon,
   Search,
   Check,
   X,
-  UploadCloud,
-  Folder,
 } from 'lucide-react';
 import { uploadApi, type MediaItem } from '../../api/upload.api';
 import { Button } from './Button';
@@ -24,7 +22,6 @@ export function MediaPickerModal({
   isOpen,
   onClose,
   onSelect,
-  currentValue,
   targetFolder,
 }: MediaPickerModalProps) {
   const [items, setItems] = useState<MediaItem[]>([]);
