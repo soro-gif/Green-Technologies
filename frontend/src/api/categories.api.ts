@@ -1,17 +1,40 @@
 import api from './client';
 import type { ApiResponse, ApiPaginatedResponse } from '../types/api';
 import type { Category } from '../types/models';
+import { FALLBACK_CATEGORIES } from '../data/fallbackData';
 
 export const categoriesApi = {
   // Public
   getAll: async (): Promise<ApiResponse<Category[]>> => {
-    const response = await api.get<ApiResponse<Category[]>>('/categories');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<Category[]>>('/categories');
+      if (response.data?.data && response.data.data.length > 0) {
+        return response.data;
+      }
+      return { success: true, message: 'Fallback local', data: FALLBACK_CATEGORIES };
+    } catch (err) {
+      console.warn('API /categories inaccessible, utilisation du catalogue local:', err);
+      return { success: true, message: 'Catalogue local', data: FALLBACK_CATEGORIES };
+    }
   },
 
   getBySlug: async (slug: string): Promise<ApiResponse<Category>> => {
-    const response = await api.get<ApiResponse<Category>>(`/categories/${slug}`);
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<Category>>(`/categories/${slug}`);
+      if (response.data?.data) {
+        return response.data;
+      }
+      const match = FALLBACK_CATEGORIES.find((c) => c.slug === slug);
+      if (match) return { success: true, message: 'Catalogue local', data: match };
+      throw new Error('Domaine introuvable');
+    } catch (err) {
+      console.warn(`API /categories/${slug} inaccessible, recherche dans le catalogue local:`, err);
+      const match = FALLBACK_CATEGORIES.find((c) => c.slug === slug);
+      if (match) {
+        return { success: true, message: 'Catalogue local', data: match };
+      }
+      throw err;
+    }
   },
 
   // Admin

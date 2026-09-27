@@ -1,6 +1,7 @@
 import api from './client';
 import type { ApiResponse, ApiPaginatedResponse } from '../types/api';
 import type { Project, ProjectStatus } from '../types/models';
+import { FALLBACK_PROJECTS } from '../data/fallbackData';
 
 export interface ProjectFilterParams {
   search?: string;
@@ -19,18 +20,80 @@ export interface ProjectFilterParams {
 export const projectsApi = {
   // Public
   getPaginated: async (params?: ProjectFilterParams): Promise<ApiPaginatedResponse<Project>> => {
-    const response = await api.get<ApiPaginatedResponse<Project>>('/projects', { params });
-    return response.data;
+    try {
+      const response = await api.get<ApiPaginatedResponse<Project>>('/projects', { params });
+      if (response.data?.data && response.data.data.length > 0) {
+        return response.data;
+      }
+      let filtered = [...FALLBACK_PROJECTS];
+      if (params?.category_id) {
+        filtered = filtered.filter((p) => p.category_id === params.category_id);
+      }
+      if (params?.is_featured) {
+        filtered = filtered.filter((p) => p.is_featured);
+      }
+      return {
+        success: true,
+        message: 'Catalogue local',
+        data: filtered,
+        meta: {
+          current_page: 1,
+          per_page: params?.per_page || 12,
+          total: filtered.length,
+          last_page: 1,
+        },
+      };
+    } catch (err) {
+      console.warn('API /projects inaccessible, utilisation du catalogue local:', err);
+      let filtered = [...FALLBACK_PROJECTS];
+      if (params?.category_id) {
+        filtered = filtered.filter((p) => p.category_id === params.category_id);
+      }
+      if (params?.is_featured) {
+        filtered = filtered.filter((p) => p.is_featured);
+      }
+      return {
+        success: true,
+        message: 'Catalogue local',
+        data: filtered,
+        meta: {
+          current_page: 1,
+          per_page: params?.per_page || 12,
+          total: filtered.length,
+          last_page: 1,
+        },
+      };
+    }
   },
 
   getFeatured: async (): Promise<ApiResponse<Project[]>> => {
-    const response = await api.get<ApiResponse<Project[]>>('/projects/featured');
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<Project[]>>('/projects/featured');
+      if (response.data?.data && response.data.data.length > 0) {
+        return response.data;
+      }
+      return { success: true, message: 'Catalogue local', data: FALLBACK_PROJECTS.filter((p) => p.is_featured) };
+    } catch (err) {
+      return { success: true, message: 'Catalogue local', data: FALLBACK_PROJECTS.filter((p) => p.is_featured) };
+    }
   },
 
   getBySlug: async (slug: string): Promise<ApiResponse<Project>> => {
-    const response = await api.get<ApiResponse<Project>>(`/projects/${slug}`);
-    return response.data;
+    try {
+      const response = await api.get<ApiResponse<Project>>(`/projects/${slug}`);
+      if (response.data?.data) {
+        return response.data;
+      }
+      const match = FALLBACK_PROJECTS.find((p) => p.slug === slug);
+      if (match) return { success: true, message: 'Catalogue local', data: match };
+      throw new Error('Projet introuvable');
+    } catch (err) {
+      const match = FALLBACK_PROJECTS.find((p) => p.slug === slug);
+      if (match) {
+        return { success: true, message: 'Catalogue local', data: match };
+      }
+      throw err;
+    }
   },
 
   // Admin
