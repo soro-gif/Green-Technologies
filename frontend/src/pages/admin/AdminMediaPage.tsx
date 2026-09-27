@@ -255,11 +255,10 @@ export function AdminMediaPage() {
       {/* Toast Notification */}
       {notification && (
         <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${
-            notification.type === 'success'
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${notification.type === 'success'
               ? 'bg-white text-emerald-950 border-emerald-200 shadow-emerald-950/10'
               : 'bg-white text-rose-950 border-rose-200 shadow-rose-950/10'
-          }`}
+            }`}
         >
           {notification.type === 'success' ? (
             <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
@@ -275,10 +274,10 @@ export function AdminMediaPage() {
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200/60">
             <ImageIcon className="w-3.5 h-3.5" />
-            <span>Gestionnaire de Médias Centralisé</span>
+            <span>Gestionnaire de médias centralisé</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 font-['Outfit']">
-            Médiathèque & Gestion des Images
+            Médiathèque et gestion des images
           </h1>
           <p className="text-sm text-slate-500 leading-relaxed">
             Téléversez, organisez, inspectez et supprimez toutes les ressources visuelles du site. Obtenez instantanément les liens publics et vérifiez où chaque image est utilisée.
@@ -341,7 +340,7 @@ export function AdminMediaPage() {
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Total Images</p>
+              <p className="text-xs text-slate-500 font-medium">Total d'images</p>
               <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
                 {stats?.total_count ?? mediaList.length}
               </p>
@@ -355,7 +354,7 @@ export function AdminMediaPage() {
               <HardDrive className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Espace Stockage</p>
+              <p className="text-xs text-slate-500 font-medium">Espace de stockage</p>
               <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
                 {stats?.total_formatted_size || 'Calculé'}
               </p>
@@ -369,7 +368,7 @@ export function AdminMediaPage() {
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Images Actives</p>
+              <p className="text-xs text-slate-500 font-medium">Images actives</p>
               <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
                 {mediaList.filter((m) => m.usage_count > 0).length}
               </p>
@@ -383,7 +382,7 @@ export function AdminMediaPage() {
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Dossiers Cibles</p>
+              <p className="text-xs text-slate-500 font-medium">Dossiers cibles</p>
               <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
                 5 dossiers
               </p>
@@ -432,22 +431,20 @@ export function AdminMediaPage() {
             <div className="flex items-center rounded-xl bg-white border border-slate-200 p-1 shadow-2xs">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                  viewMode === 'grid'
+                className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${viewMode === 'grid'
                     ? 'bg-slate-100 text-slate-900 font-bold'
                     : 'text-slate-500 hover:text-slate-900'
-                }`}
+                  }`}
                 title="Affichage Galerie"
               >
                 <Grid className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                  viewMode === 'list'
+                className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${viewMode === 'list'
                     ? 'bg-slate-100 text-slate-900 font-bold'
                     : 'text-slate-500 hover:text-slate-900'
-                }`}
+                  }`}
                 title="Affichage Liste / Tableau"
               >
                 <ListIcon className="w-4 h-4" />
@@ -470,20 +467,18 @@ export function AdminMediaPage() {
               <button
                 key={f.key}
                 onClick={() => setSelectedFolder(f.key)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
-                  isActive
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${isActive
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 shadow-2xs'
-                }`}
+                  }`}
               >
                 <span>{f.label}</span>
                 {typeof count === 'number' && (
                   <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                      isActive
+                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive
                         ? 'bg-emerald-700 text-white'
                         : 'bg-slate-100 text-slate-600'
-                    }`}
+                      }`}
                   >
                     {count}
                   </span>
@@ -539,11 +534,10 @@ export function AdminMediaPage() {
             return (
               <div
                 key={item.id}
-                className={`group relative bg-white rounded-2xl border overflow-hidden transition-all duration-200 flex flex-col justify-between shadow-xs ${
-                  isSelected
+                className={`group relative bg-white rounded-2xl border overflow-hidden transition-all duration-200 flex flex-col justify-between shadow-xs ${isSelected
                     ? 'border-emerald-500 ring-2 ring-emerald-500/30'
                     : 'border-slate-200/90 hover:border-slate-300 hover:shadow-md'
-                }`}
+                  }`}
               >
                 {/* Checkbox for bulk selection */}
                 {item.is_deletable && (
@@ -676,9 +670,8 @@ export function AdminMediaPage() {
                   return (
                     <tr
                       key={item.id}
-                      className={`hover:bg-slate-50/70 transition-colors ${
-                        isSelected ? 'bg-emerald-50/60' : ''
-                      }`}
+                      className={`hover:bg-slate-50/70 transition-colors ${isSelected ? 'bg-emerald-50/60' : ''
+                        }`}
                     >
                       <td className="p-4">
                         {item.is_deletable && (
@@ -780,7 +773,7 @@ export function AdminMediaPage() {
               <div className="flex items-center gap-2.5">
                 <ImageIcon className="w-5 h-5 text-emerald-700" />
                 <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
-                  Détails & Aperçu du Fichier
+                  Détails & aperçu du fichier
                 </h3>
               </div>
               <button
@@ -927,7 +920,7 @@ export function AdminMediaPage() {
               <div className="flex items-center gap-2.5">
                 <UploadCloud className="w-5 h-5 text-emerald-700" />
                 <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
-                  Téléverser de Nouvelles Images
+                  Téléverser de nouvelles images
                 </h3>
               </div>
               <button
@@ -954,10 +947,10 @@ export function AdminMediaPage() {
                   onChange={(e) => setUploadFolder(e.target.value as any)}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-emerald-500"
                 >
-                  <option value="services">Services & Catalogue</option>
-                  <option value="projects">Projets & Réalisations</option>
-                  <option value="articles">Articles & Actualités</option>
-                  <option value="categories">Pôles & Catégories</option>
+                  <option value="services">Services et catalogue</option>
+                  <option value="projects">Projets et réalisations</option>
+                  <option value="articles">Articles et actualités</option>
+                  <option value="categories">Pôles et catégories</option>
                   <option value="general">Général (Logos, bannières, équipe)</option>
                 </select>
               </div>
@@ -1084,7 +1077,7 @@ export function AdminMediaPage() {
               </p>
               {itemToDelete.usage_count > 0 && (
                 <div className="mt-2 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium text-left">
-                  ⚠️ Attention : cette image est utilisée dans {itemToDelete.usage_count} élément(s) du site.
+                  Attention : cette image est utilisée dans {itemToDelete.usage_count} élément(s) du site.
                 </div>
               )}
             </div>
