@@ -18,6 +18,7 @@ import {
   List as ListIcon,
   X,
   Plus,
+  AlertTriangle,
 } from 'lucide-react';
 import { uploadApi, type MediaItem, type MediaStats } from '../../api/upload.api';
 import { Button } from '../../components/ui/Button';
@@ -32,6 +33,7 @@ export function AdminMediaPage() {
   const [stats, setStats] = useState<MediaStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<FolderFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -62,10 +64,19 @@ export function AdminMediaPage() {
 
   const fetchMediaData = async (silent = false) => {
     try {
-      if (!silent) setLoading(true);
-      else setRefreshing(true);
+      if (!silent) {
+        setLoading(true);
+        setError(null);
+      } else {
+        setRefreshing(true);
+      }
 
-      const [mediaRes, statsRes] = await Promise.all([
+      // Automatically sync target upload folder when selecting a specific folder
+      if (selectedFolder !== 'all') {
+        setUploadFolder(selectedFolder);
+      }
+
+      const [mediaSettled, statsSettled] = await Promise.allSettled([
         uploadApi.getMedia({
           folder: selectedFolder === 'all' ? undefined : selectedFolder,
           search: searchQuery.trim() || undefined,
@@ -73,14 +84,20 @@ export function AdminMediaPage() {
         uploadApi.getMediaStats(),
       ]);
 
-      if (mediaRes.success && mediaRes.data) {
-        setMediaList(mediaRes.data.items || []);
+      if (mediaSettled.status === 'fulfilled' && mediaSettled.value.success && mediaSettled.value.data) {
+        setMediaList(mediaSettled.value.data.items || []);
+        setError(null);
+      } else if (mediaSettled.status === 'rejected') {
+        console.error('Erreur API getMedia:', mediaSettled.reason);
+        setError('Impossible de joindre le serveur pour récupérer la médiathèque.');
       }
-      if (statsRes.success && statsRes.data) {
-        setStats(statsRes.data);
+
+      if (statsSettled.status === 'fulfilled' && statsSettled.value.success && statsSettled.value.data) {
+        setStats(statsSettled.value.data);
       }
     } catch (err: any) {
       console.error('Erreur chargement médiathèque:', err);
+      setError(err?.response?.data?.message || 'Impossible de charger la médiathèque.');
       showNotification('error', 'Impossible de charger la médiathèque.');
     } finally {
       setLoading(false);
@@ -154,7 +171,7 @@ export function AdminMediaPage() {
 
     setIsUploading(false);
     if (successCount > 0) {
-      showNotification('success', `${successCount} image(s) téléversée(s) avec succès.`);
+      showNotification('success', `${successCount} image(s) téléversée(s) avec succès dans "${uploadFolder}".`);
     }
     setUploadQueue([]);
     setUploadProgress({});
@@ -218,13 +235,19 @@ export function AdminMediaPage() {
     );
   };
 
-  const folderBadges: { key: FolderFilter; label: string; count?: number }[] = [
-    { key: 'all', label: 'Toutes les images', count: stats?.total_count },
-    { key: 'articles', label: 'Actualités & Blog', count: stats?.by_folder?.articles?.count },
-    { key: 'projects', label: 'Projets & Réalisations', count: stats?.by_folder?.projects?.count },
-    { key: 'services', label: 'Catalogue Services', count: stats?.by_folder?.services?.count },
-    { key: 'categories', label: 'Pôles & Domaines', count: stats?.by_folder?.categories?.count },
-    { key: 'general', label: 'Général & Public', count: stats?.by_folder?.general?.count },
+  // Dynamic counts for filter badges
+  const getBadgeCount = (folder: FolderFilter) => {
+    if (folder === 'all') return stats?.total_count ?? mediaList.length;
+    return stats?.by_folder?.[folder]?.count ?? mediaList.filter((m) => m.folder === folder).length;
+  };
+
+  const folderBadges: { key: FolderFilter; label: string }[] = [
+    { key: 'all', label: 'Toutes les images' },
+    { key: 'services', label: 'Catalogue Services' },
+    { key: 'projects', label: 'Projets & Réalisations' },
+    { key: 'articles', label: 'Actualités & Blog' },
+    { key: 'categories', label: 'Pôles & Domaines' },
+    { key: 'general', label: 'Général & Public' },
   ];
 
   return (
@@ -277,7 +300,12 @@ export function AdminMediaPage() {
           <Button
             variant="primary"
             size="md"
-            onClick={() => setIsUploadModalOpen(true)}
+            onClick={() => {
+              if (selectedFolder !== 'all') {
+                setUploadFolder(selectedFolder);
+              }
+              setIsUploadModalOpen(true);
+            }}
             className="font-semibold text-sm shadow-sm rounded-xl"
           >
             <Plus className="w-4 h-4 mr-1.5" />
@@ -286,66 +314,83 @@ export function AdminMediaPage() {
         </div>
       </div>
 
-      {/* Stats Overview */}
-      {stats && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700">
-                <ImageIcon className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 font-medium">Total Images</p>
-                <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
-                  {mediaList.length}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/60 flex items-center justify-center text-sky-700">
-                <HardDrive className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 font-medium">Espace Stockage</p>
-                <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
-                  {stats.total_formatted_size}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-700">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 font-medium">Images Actives</p>
-                <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
-                  {mediaList.filter((m) => m.usage_count > 0).length}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200/60 flex items-center justify-center text-purple-700">
-                <Layers className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 font-medium">Dossiers Cibles</p>
-                <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
-                  5 dossiers
-                </p>
-              </div>
-            </div>
-          </Card>
+      {/* Error state banner */}
+      {error && (
+        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-xs font-medium">
+            <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0" />
+            <span>{error}</span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fetchMediaData()}
+            className="border-rose-300 text-rose-800 bg-white hover:bg-rose-100 text-xs shrink-0"
+          >
+            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+            <span>Réessayer</span>
+          </Button>
         </div>
       )}
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700">
+              <ImageIcon className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500 font-medium">Total Images</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+                {stats?.total_count ?? mediaList.length}
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/60 flex items-center justify-center text-sky-700">
+              <HardDrive className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500 font-medium">Espace Stockage</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+                {stats?.total_formatted_size || 'Calculé'}
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-700">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500 font-medium">Images Actives</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+                {mediaList.filter((m) => m.usage_count > 0).length}
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200/60 flex items-center justify-center text-purple-700">
+              <Layers className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500 font-medium">Dossiers Cibles</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+                5 dossiers
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* Control Bar: Search, Category Filters, Views & Bulk Actions */}
       <div className="space-y-4">
@@ -417,30 +462,35 @@ export function AdminMediaPage() {
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <span>Filtrer :</span>
           </span>
-          {folderBadges.map((f) => (
-            <button
-              key={f.key}
-              onClick={() => setSelectedFolder(f.key)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
-                selectedFolder === f.key
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 shadow-2xs'
-              }`}
-            >
-              <span>{f.label}</span>
-              {typeof f.count === 'number' && (
-                <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                    selectedFolder === f.key
-                      ? 'bg-emerald-700 text-white'
-                      : 'bg-slate-100 text-slate-600'
-                  }`}
-                >
-                  {f.count}
-                </span>
-              )}
-            </button>
-          ))}
+          {folderBadges.map((f) => {
+            const count = getBadgeCount(f.key);
+            const isActive = selectedFolder === f.key;
+
+            return (
+              <button
+                key={f.key}
+                onClick={() => setSelectedFolder(f.key)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+                  isActive
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 shadow-2xs'
+                }`}
+              >
+                <span>{f.label}</span>
+                {typeof count === 'number' && (
+                  <span
+                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                      isActive
+                        ? 'bg-emerald-700 text-white'
+                        : 'bg-slate-100 text-slate-600'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -466,7 +516,12 @@ export function AdminMediaPage() {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => setIsUploadModalOpen(true)}
+            onClick={() => {
+              if (selectedFolder !== 'all') {
+                setUploadFolder(selectedFolder);
+              }
+              setIsUploadModalOpen(true);
+            }}
             className="font-semibold text-xs rounded-xl"
           >
             <Plus className="w-3.5 h-3.5 mr-1" />
@@ -537,7 +592,7 @@ export function AdminMediaPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        copyToClipboard(item.url || item.relative_url, item.id);
+                        copyToClipboard(item.relative_url || item.url, item.id);
                       }}
                       className="p-2 rounded-xl bg-white text-emerald-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-xs"
                       title="Copier l'URL"
@@ -688,7 +743,7 @@ export function AdminMediaPage() {
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => copyToClipboard(item.url || item.relative_url, item.id)}
+                            onClick={() => copyToClipboard(item.relative_url || item.url, item.id)}
                             className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
                             title="Copier l'URL"
                           >
@@ -739,10 +794,11 @@ export function AdminMediaPage() {
             {/* Modal Body */}
             <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
               {/* Full Image Preview */}
-              <div className="w-full h-64 sm:h-72 rounded-2xl bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center relative shadow-2xs">
+              <div className="w-full h-64 sm:h-72 rounded-2xl bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center relative shadow-2xs pattern-checkered">
                 <img
                   src={getImageUrl(inspectItem.relative_url || inspectItem.url)}
                   alt={inspectItem.name}
+                  onError={(e) => handleImageError(e, inspectItem.folder)}
                   className="max-h-full max-w-full object-contain"
                 />
               </div>
@@ -769,7 +825,7 @@ export function AdminMediaPage() {
 
               {/* Public URL Box */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">URL publique utilisable</label>
+                <label className="text-xs font-bold text-slate-700">URL utilisable</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
@@ -898,11 +954,11 @@ export function AdminMediaPage() {
                   onChange={(e) => setUploadFolder(e.target.value as any)}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-emerald-500"
                 >
-                  <option value="general">Général (Logos, bannières, équipe)</option>
-                  <option value="articles">Articles & Actualités</option>
-                  <option value="projects">Projets & Réalisations</option>
                   <option value="services">Services & Catalogue</option>
+                  <option value="projects">Projets & Réalisations</option>
+                  <option value="articles">Articles & Actualités</option>
                   <option value="categories">Pôles & Catégories</option>
+                  <option value="general">Général (Logos, bannières, équipe)</option>
                 </select>
               </div>
 
