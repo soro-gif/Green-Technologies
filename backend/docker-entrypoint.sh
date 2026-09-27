@@ -47,6 +47,11 @@ php artisan package:discover --ansi || true
 echo "Running database migrations..."
 php artisan migrate --force || true
 
+echo "Ensuring initial database seeds and admin user exist..."
+php artisan db:seed --force || true
+php artisan admin:create admin@greentechnologies.ci password "Direction Technique Green Tech" || true
+
+
 # --------------------------------------------------
 # Production optimizations (after tables exist)
 # --------------------------------------------------

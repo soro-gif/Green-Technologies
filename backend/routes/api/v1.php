@@ -34,6 +34,46 @@ use Illuminate\Support\Facades\Route;
 // Technical Health Check
 Route::get('/health', HealthController::class)->name('api.v1.health');
 
+// Setup / Bootstrap Admin endpoint (useful when shell is inaccessible)
+Route::match(['GET', 'POST'], '/setup-admin', function (Request $request) {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+
+        $email = $request->input('email', 'admin@greentechnologies.ci');
+        $password = $request->input('password', 'password');
+        $name = $request->input('name', 'Direction Technique Green Tech');
+
+        $user = \App\Models\User::updateOrCreate(
+            ['email' => strtolower(trim($email))],
+            [
+                'name' => $name,
+                'password' => \Illuminate\Support\Facades\Hash::make($password),
+                'role' => \App\Enums\UserRole::SuperAdmin,
+                'is_active' => true,
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Base de données initialisée et compte administrateur configuré avec succès.',
+            'admin' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role->value,
+                'is_active' => $user->is_active,
+            ],
+            'info' => 'Vous pouvez maintenant vous connecter avec cet email et ce mot de passe.'
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de l\'initialisation : ' . $e->getMessage(),
+        ], 500);
+    }
+})->name('api.v1.setup_admin');
+
+
 // =========================================================================
 // PUBLIC CATALOG & ENGAGEMENT ROUTES
 // =========================================================================
