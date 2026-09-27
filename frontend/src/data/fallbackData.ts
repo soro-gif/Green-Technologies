@@ -1,4 +1,5 @@
-import type { Category, Service, Project, Article } from '../types/models';
+import type { Category, Service, Project, Article, Testimonial, User } from '../types/models';
+
 
 export const FALLBACK_CATEGORIES: Category[] = [
   {
