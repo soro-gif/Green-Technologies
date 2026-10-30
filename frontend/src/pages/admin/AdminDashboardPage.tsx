@@ -54,9 +54,8 @@ export function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       {/* 1. Header & Actions */}
-      <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-8 shadow-xs">
+      <div className="relative overflow-hidden rounded-lg bg-white border border-slate-200/90 p-6 sm:p-8">
         {/* Subtle decorative background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
 
         <div className="relative flex flex-col xl:flex-row xl:items-center justify-between gap-6">
           {/* User info & Subtitle */}
@@ -85,7 +84,7 @@ export function AdminDashboardPage() {
               <Button
                 variant="primary"
                 size="md"
-                className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow"
+                className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm px-5 py-2.5 rounded-md hover:shadow"
               >
                 <ImageIcon className="w-4 h-4 shrink-0" />
                 <span>Médiathèque & Images</span>
@@ -100,11 +99,11 @@ export function AdminDashboardPage() {
         {/* Devis */}
         <Link
           to="/admin/devis"
-          className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between group shadow-2xs"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-amber-400 transition-all flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-amber-600 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Demandes de devis</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-slate-500">Demandes de devis</span>
+            <div className="w-8 h-8 rounded-md bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 transition-transform">
               <FileText className="w-4 h-4" />
             </div>
           </div>
@@ -119,11 +118,11 @@ export function AdminDashboardPage() {
         {/* Messages */}
         <Link
           to="/admin/messages"
-          className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between group shadow-2xs"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-sky-400 transition-all flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-sky-600 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Messages contact</span>
-            <div className="w-8 h-8 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-slate-500">Messages contact</span>
+            <div className="w-8 h-8 rounded-md bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 transition-transform">
               <Mail className="w-4 h-4" />
             </div>
           </div>
@@ -138,11 +137,11 @@ export function AdminDashboardPage() {
         {/* Chantiers / Projets */}
         <Link
           to="/admin/projets"
-          className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-orange-400 hover:shadow-md transition-all flex flex-col justify-between group shadow-2xs"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-orange-400 transition-all flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-orange-600 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Réalisations</span>
-            <div className="w-8 h-8 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-slate-500">Réalisations</span>
+            <div className="w-8 h-8 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600 transition-transform">
               <Briefcase className="w-4 h-4" />
             </div>
           </div>
@@ -157,11 +156,11 @@ export function AdminDashboardPage() {
         {/* Services & Prestations */}
         <Link
           to="/admin/services"
-          className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-400 hover:shadow-md transition-all flex flex-col justify-between group shadow-2xs"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-emerald-400 transition-all flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-emerald-600 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Catalogue services</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-slate-500">Catalogue services</span>
+            <div className="w-8 h-8 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 transition-transform">
               <Layers className="w-4 h-4" />
             </div>
           </div>
@@ -176,11 +175,11 @@ export function AdminDashboardPage() {
         {/* Médiathèque & Images */}
         <Link
           to="/admin/medias"
-          className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-purple-400 hover:shadow-md transition-all flex flex-col justify-between group shadow-2xs"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-purple-400 transition-all flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-purple-600 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Médiathèque</span>
-            <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-slate-500">Médiathèque</span>
+            <div className="w-8 h-8 rounded-md bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 transition-transform">
               <ImageIcon className="w-4 h-4" />
             </div>
           </div>
@@ -207,7 +206,7 @@ export function AdminDashboardPage() {
             </Link>
           </div>
 
-          <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+          <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
             {recentQuotes.length === 0 ? (
               <div className="p-8 text-center text-xs text-slate-500">
                 Aucune demande de devis enregistrée pour le moment.
@@ -221,7 +220,7 @@ export function AdminDashboardPage() {
                       <div className="flex items-center justify-between">
                         <span className="font-mono font-bold text-xs text-emerald-700">{q.reference}</span>
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
                             q.status === 'pending'
                               ? 'bg-amber-50 text-amber-800 border-amber-200'
                               : q.status === 'accepted'
@@ -236,7 +235,7 @@ export function AdminDashboardPage() {
                       </div>
                       <div className="text-xs text-slate-900 font-bold">
                         <p>{q.full_name}</p>
-                        <p className="text-[11px] text-slate-500 font-normal">{q.category?.name || 'Général'}</p>
+                        <p className="text-xs text-slate-500 font-normal">{q.category?.name || 'Général'}</p>
                       </div>
                       <div className="flex justify-end pt-1">
                         <button
@@ -254,7 +253,7 @@ export function AdminDashboardPage() {
                 {/* Desktop Table (>=md) */}
                 <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50/90 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                    <thead className="bg-slate-50/90 text-slate-500 font-bold text-xs border-b border-slate-200">
                       <tr>
                         <th className="px-4 py-3">Réf.</th>
                         <th className="px-4 py-3">Client</th>
@@ -271,14 +270,14 @@ export function AdminDashboardPage() {
                           </td>
                           <td className="px-4 py-3.5 font-semibold text-slate-900">
                             <div>{q.full_name}</div>
-                            {q.company && <div className="text-[11px] text-slate-500 font-normal">{q.company}</div>}
+                            {q.company && <div className="text-xs text-slate-500 font-normal">{q.company}</div>}
                           </td>
                           <td className="px-4 py-3.5 text-slate-600 font-medium">
                             {q.category?.name || 'Général'}
                           </td>
                           <td className="px-4 py-3.5">
                             <span
-                              className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                              className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
                                 q.status === 'pending'
                                   ? 'bg-amber-50 text-amber-800 border-amber-200'
                                   : q.status === 'accepted'
@@ -322,7 +321,7 @@ export function AdminDashboardPage() {
             </Link>
           </div>
 
-          <div className="bg-white border border-slate-200/90 rounded-2xl divide-y divide-slate-100 overflow-hidden shadow-xs">
+          <div className="bg-white border border-slate-200/90 rounded-lg divide-y divide-slate-100 overflow-hidden">
             {recentMessages.length === 0 ? (
               <div className="p-8 text-center text-xs text-slate-500">
                 Aucun message reçu.
@@ -333,7 +332,7 @@ export function AdminDashboardPage() {
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-slate-900 truncate max-w-[140px]">{m.full_name}</span>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                         m.status === 'unread'
                           ? 'bg-sky-50 text-sky-800 border-sky-200'
                           : 'bg-slate-100 text-slate-600 border-slate-200'
@@ -343,7 +342,7 @@ export function AdminDashboardPage() {
                     </span>
                   </div>
                   <p className="text-xs font-semibold text-slate-700 truncate">{m.subject}</p>
-                  <p className="text-[11px] text-slate-500 flex items-center gap-1">
+                  <p className="text-xs text-slate-500 flex items-center gap-1">
                     <Clock className="w-3 h-3 text-slate-400" />
                     <span>{new Date(m.created_at).toLocaleDateString('fr-FR')}</span>
                   </p>
@@ -362,23 +361,23 @@ export function AdminDashboardPage() {
       >
         {selectedQuote && (
           <div className="space-y-4 text-xs text-slate-700">
-            <div className="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl">
+            <div className="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-md">
               <div>
-                <span className="text-slate-400 font-bold uppercase text-[10px]">Client</span>
+                <span className="text-slate-400 font-bold text-xs">Client</span>
                 <p className="font-bold text-slate-900">{selectedQuote.full_name}</p>
                 {selectedQuote.company && <p className="text-slate-500">{selectedQuote.company}</p>}
               </div>
               <div>
-                <span className="text-slate-400 font-bold uppercase text-[10px]">Coordonnées</span>
+                <span className="text-slate-400 font-bold text-xs">Coordonnées</span>
                 <p>{selectedQuote.phone}</p>
                 <p>{selectedQuote.email}</p>
               </div>
               <div>
-                <span className="text-slate-400 font-bold uppercase text-[10px]">Ville / Chantier</span>
+                <span className="text-slate-400 font-bold text-xs">Ville / Chantier</span>
                 <p className="font-bold">{selectedQuote.city}</p>
               </div>
               <div>
-                <span className="text-slate-400 font-bold uppercase text-[10px]">Budget Estimé</span>
+                <span className="text-slate-400 font-bold text-xs">Budget Estimé</span>
                 <p className="font-bold text-emerald-700">
                   {selectedQuote.estimated_budget
                     ? `${Number(selectedQuote.estimated_budget).toLocaleString('fr-FR')} FCFA`
@@ -389,8 +388,8 @@ export function AdminDashboardPage() {
 
             {selectedQuote.details && (
               <div>
-                <span className="text-slate-400 font-bold uppercase text-[10px]">Description du besoin</span>
-                <p className="p-3 bg-slate-50 rounded-xl text-slate-800 mt-1 whitespace-pre-line leading-relaxed">
+                <span className="text-slate-400 font-bold text-xs">Description du besoin</span>
+                <p className="p-3 bg-slate-50 rounded-md text-slate-800 mt-1 whitespace-pre-line leading-relaxed">
                   {selectedQuote.details}
                 </p>
               </div>

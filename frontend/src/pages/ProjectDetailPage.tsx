@@ -9,11 +9,10 @@ import {
 import { projectsApi } from '../api';
 import type { Project } from '../types/models';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
 import { Spinner } from '../components/ui/Spinner';
 import { ErrorState } from '../components/ui/ErrorState';
-import { getImageUrl, handleImageError } from '../utils/image';
+import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
 
 export function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -69,7 +68,7 @@ export function ProjectDetailPage() {
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm font-medium text-slate-500 mb-6 flex-wrap">
+        <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
           <Link to="/" className="hover:text-emerald-700">
             Accueil
           </Link>
@@ -82,30 +81,29 @@ export function ProjectDetailPage() {
         </div>
 
         {/* Hero Card for Project */}
-        <div className="bg-white rounded-3xl overflow-hidden mb-8 border border-slate-200/90 shadow-sm">
+        <div className="bg-white rounded-lg overflow-hidden mb-8 border border-slate-200/90">
           {/* Visual Image Banner */}
           <div className="relative h-64 sm:h-96 w-full bg-slate-950 overflow-hidden">
             <img
-              src={getImageUrl(project.image_url || project.main_image || project.image, project.slug || project.category?.slug)}
+              src={getImageUrl(project.image_url || project.main_image || project.image, project.category?.slug || project.slug)}
               alt={project.title}
-              onError={(e) => handleImageError(e, project.slug || project.category?.slug)}
-              className="w-full h-full object-cover"
+              onError={(e) => handleImageError(e, project.category?.slug || project.slug)}
+              className={`w-full h-full ${imageFitClass(getImageUrl(project.image_url || project.main_image || project.image, project.category?.slug || project.slug))}`}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-white bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-md">
+                <span className="text-xs font-bold text-white bg-slate-900/90 px-3.5 py-1.5 rounded-md">
                   {project.category?.name || 'Projet Réalisé'}
                 </span>
                 {project.status_label && (
-                  <span className="text-xs font-bold text-white bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+                  <span className="text-xs font-bold text-white bg-slate-900/80 px-3 py-1 rounded-md">
                     {project.status_label}
                   </span>
                 )}
               </div>
 
               {project.location && (
-                <span className="text-sm font-semibold text-white flex items-center gap-1.5 bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20">
+                <span className="text-sm font-semibold text-white flex items-center gap-1.5 bg-slate-900/80 px-3.5 py-1.5 rounded-md">
                   <MapPin className="w-4 h-4 text-orange-400" />
                   <span>{project.location}, Côte d'Ivoire</span>
                 </span>
@@ -114,25 +112,25 @@ export function ProjectDetailPage() {
           </div>
 
           <div className="p-6 sm:p-10">
-            <h1 className="text-3xl sm:text-5xl font-semibold text-slate-900 font-display mb-6">
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 font-display mb-6">
               {project.title}
             </h1>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-lg bg-slate-50 border border-slate-100">
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Maître d'Ouvrage</p>
+              <p className="text-sm text-slate-600">Maître d'Ouvrage</p>
               <p className="text-sm sm:text-base font-bold text-slate-800 mt-1">
                 {project.client_name || 'Client Institutionnel'}
               </p>
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Prestation</p>
+              <p className="text-sm text-slate-600">Prestation</p>
               <p className="text-sm sm:text-base font-bold text-slate-800 mt-1">
                 {project.service?.title || 'Ingénierie globale'}
               </p>
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Livraison</p>
+              <p className="text-sm text-slate-600">Livraison</p>
               <p className="text-sm sm:text-base font-bold text-slate-800 mt-1">
                 {project.completion_date
                   ? new Date(project.completion_date).toLocaleDateString('fr-FR', {
@@ -143,7 +141,7 @@ export function ProjectDetailPage() {
               </p>
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Garantie</p>
+              <p className="text-sm text-slate-600">Garantie</p>
               <p className="text-sm sm:text-base font-bold text-emerald-700 mt-1">
                 Garantie décennale
               </p>
@@ -168,7 +166,7 @@ export function ProjectDetailPage() {
                   <h3 className="text-xl font-bold text-slate-900 font-display mb-3">
                     Impact et résultats obtenus
                   </h3>
-                  <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200/60 text-base text-emerald-950 leading-relaxed font-medium">
+                  <div className="p-5 rounded-lg bg-emerald-50/80 border border-emerald-200/60 text-base text-emerald-950 leading-relaxed font-medium">
                     {project.results}
                   </div>
                 </div>
@@ -182,7 +180,7 @@ export function ProjectDetailPage() {
                   Retour d'expérience client
                 </h3>
                 {project.testimonials.map((test) => (
-                  <div key={test.id} className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <div key={test.id} className="p-5 rounded-lg bg-slate-50 border border-slate-100">
                     <div className="flex items-center gap-1 text-amber-400 mb-2.5">
                       {Array.from({ length: test.rating || 5 }).map((_, i) => (
                         <Star key={i} className="w-5 h-5 fill-current" />
@@ -201,14 +199,13 @@ export function ProjectDetailPage() {
           {/* Sidebar CTA */}
           <div className="space-y-6">
             <Card className="p-6 sm:p-8 bg-slate-900 text-white border border-slate-800 space-y-5">
-              <Badge variant="orange">Projet similaire</Badge>
               <h3 className="text-2xl font-bold font-display">Un projet similaire en vue ?</h3>
               <p className="text-sm text-slate-300 leading-relaxed">
                 Nos ingénieurs réalisent des études de faisabilité et vous transmettent un devis chiffré sous 48h.
               </p>
 
               <Link to="/devis">
-                <Button variant="accent" size="md" leftIcon={<FileText className="w-5 h-5" />} className="w-full font-bold shadow-lg text-base py-3">
+                <Button variant="accent" size="md" leftIcon={<FileText className="w-5 h-5" />} className="w-full font-bold text-base py-3">
                   Estimer mon projet
                 </Button>
               </Link>

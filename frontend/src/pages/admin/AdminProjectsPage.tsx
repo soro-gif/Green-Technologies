@@ -175,9 +175,9 @@ export function AdminProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-lg">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-orange-50 text-orange-600 rounded-2xl border border-orange-100">
+          <div className="p-3 bg-orange-50 text-orange-600 rounded-lg border border-orange-100">
             <Briefcase className="w-6 h-6" />
           </div>
           <div>
@@ -200,7 +200,7 @@ export function AdminProjectsPage() {
         </Button>
       </div>
 
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-lg bg-white border border-slate-200/90 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
             placeholder="Rechercher par titre, client, localité..."
@@ -230,7 +230,7 @@ export function AdminProjectsPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -242,7 +242,7 @@ export function AdminProjectsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Photo</th>
                   <th className="px-4 py-3">Projet</th>
@@ -269,13 +269,13 @@ export function AdminProjectsPage() {
                       </td>
                       <td className="px-4 py-3 text-slate-900 font-semibold">
                         <div>{p.title}</div>
-                        {p.client_name && <div className="text-[10px] text-slate-500 font-normal">{p.client_name}</div>}
+                        {p.client_name && <div className="text-xs text-slate-500 font-normal">{p.client_name}</div>}
                       </td>
                       <td className="px-4 py-3 text-slate-600 font-medium">{p.category?.name}</td>
                       <td className="px-4 py-3 text-slate-600">{p.location || '-'}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                          className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                             p.status === 'published'
                               ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                               : 'bg-slate-100 text-slate-600 border-slate-200'
@@ -323,7 +323,7 @@ export function AdminProjectsPage() {
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           {formError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 flex items-start gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
               <div className="text-xs font-medium">{formError}</div>
             </div>
@@ -352,7 +352,7 @@ export function AdminProjectsPage() {
           />
 
           {/* Image Upload & Management Component */}
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
             <ImageUploadField
               label="Photo principale du chantier / projet"
               value={formData.image}
@@ -405,7 +405,7 @@ export function AdminProjectsPage() {
               size="sm"
               isLoading={saving}
               leftIcon={<CheckCircle2 className="w-4 h-4" />}
-              className="font-bold shadow-md"
+              className="font-bold"
             >
               Valider et Enregistrer le projet
             </Button>

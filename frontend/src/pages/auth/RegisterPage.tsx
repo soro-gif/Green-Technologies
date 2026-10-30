@@ -92,7 +92,7 @@ export function RegisterPage() {
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center py-12 px-4 sm:px-6">
-      <div className="max-w-md w-full bg-white border border-slate-200 rounded-xl p-8 sm:p-10 shadow-sm space-y-6">
+      <div className="max-w-md w-full bg-white border border-slate-200 rounded-md p-8 sm:p-10 space-y-6">
         <div className="text-center space-y-2">
           <Logo size="md" className="justify-center mb-3" />
           <h1 className="text-2xl font-medium text-slate-900 font-display tracking-tight">
@@ -112,7 +112,7 @@ export function RegisterPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Nom et prénoms
             </label>
             <div className="relative">
@@ -128,7 +128,7 @@ export function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Adresse email professionnelle
             </label>
             <div className="relative">
@@ -144,7 +144,7 @@ export function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Mot de passe
             </label>
             <div className="relative">
@@ -160,7 +160,7 @@ export function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Confirmer le mot de passe
             </label>
             <div className="relative">

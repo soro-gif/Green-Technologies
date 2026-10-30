@@ -94,8 +94,8 @@ export function UserNewQuotePage() {
 
   if (successReference) {
     return (
-      <div className="max-w-xl mx-auto p-8 bg-white border border-slate-200 rounded-3xl text-center space-y-6 shadow-xs">
-        <div className="inline-flex p-4 bg-emerald-100 text-emerald-700 rounded-2xl">
+      <div className="max-w-xl mx-auto p-8 bg-white border border-slate-200 rounded-lg text-center space-y-6">
+        <div className="inline-flex p-4 bg-emerald-100 text-emerald-700 rounded-lg">
           <CheckCircle2 className="w-10 h-10" />
         </div>
         <div className="space-y-2">
@@ -107,7 +107,7 @@ export function UserNewQuotePage() {
           </p>
         </div>
 
-        <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+        <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
           <span className="text-xs text-slate-500 font-medium">Référence unique de dossier :</span>
           <p className="text-xl font-mono font-extrabold text-emerald-800 mt-1">{successReference}</p>
         </div>
@@ -144,22 +144,22 @@ export function UserNewQuotePage() {
         </p>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+      <div className="bg-white border border-slate-200 rounded-lg p-6 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-xs">
           {serverError && (
-            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 font-medium">
+            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-md text-rose-700 font-medium">
               {serverError}
             </div>
           )}
 
           {/* User readonly summary */}
-          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl grid grid-cols-2 gap-3 text-slate-700">
+          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-md grid grid-cols-2 gap-3 text-slate-700">
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400">Demandeur</span>
+              <span className="text-xs font-bold text-slate-400">Demandeur</span>
               <p className="font-bold text-slate-900">{user?.name}</p>
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400">Email du compte</span>
+              <span className="text-xs font-bold text-slate-400">Email du compte</span>
               <p className="font-bold text-slate-900">{user?.email}</p>
             </div>
           </div>

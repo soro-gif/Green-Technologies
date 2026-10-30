@@ -15,6 +15,7 @@ import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
+import { PageHeader } from '../components/ui/PageHeader';
 
 export function ContactPage() {
   const { user, isAuthenticated } = useAuth();
@@ -111,23 +112,18 @@ export function ContactPage() {
   };
 
   return (
-    <div className="py-12 sm:py-16 bg-slate-50 min-h-[85vh]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Header Section */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-display tracking-tight">
-            Contactez notre équipe
-          </h1>
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Une question technique ou un projet à dimensionner ? Nos ingénieurs vous répondent dans les plus brefs délais.
-          </p>
-        </div>
+    <div className="bg-slate-50 min-h-[85vh]">
+      <PageHeader
+        title="Contactez notre équipe"
+        description="Une question technique ou un projet à dimensionner ? Nos ingénieurs vous répondent rapidement."
+      />
 
-        {/* Main Grid: Info + Form */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16 space-y-10">
+{/* Main Grid: Info + Form */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* LEFT COLUMN: Coordonnées (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
-            <Card className="p-8 bg-white border border-slate-200/80 shadow-sm rounded-3xl space-y-6">
+            <Card className="p-8 bg-white border border-slate-200/80 rounded-lg space-y-6">
               <div>
                 <h3 className="text-xl font-bold font-display text-slate-900 mb-1">
                   Coordonnées directes
@@ -140,7 +136,7 @@ export function ContactPage() {
               <div className="space-y-5 pt-2">
                 {/* Siège Abidjan */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
+                  <div className="p-2.5 rounded-md bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
@@ -153,7 +149,7 @@ export function ContactPage() {
 
                 {/* Téléphones Directs */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
+                  <div className="p-2.5 rounded-md bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
@@ -171,7 +167,7 @@ export function ContactPage() {
 
                 {/* Email */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
+                  <div className="p-2.5 rounded-md bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
@@ -187,7 +183,7 @@ export function ContactPage() {
 
                 {/* Horaires */}
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
+                  <div className="p-2.5 rounded-md bg-emerald-50 text-emerald-700 shrink-0 border border-emerald-100">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
@@ -203,7 +199,7 @@ export function ContactPage() {
               <div className="pt-4 border-t border-slate-100">
                 <a
                   href="tel:+2252722584016"
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-all shadow-md shadow-emerald-700/15 cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-all cursor-pointer"
                 >
                   <Phone className="w-4 h-4" />
                   Appeler un conseiller
@@ -214,7 +210,7 @@ export function ContactPage() {
 
           {/* RIGHT COLUMN: Contact Form (7 Cols) */}
           <div className="lg:col-span-7">
-            <Card className="p-8 sm:p-10 bg-white border border-slate-200/80 shadow-sm rounded-3xl">
+            <Card className="p-8 sm:p-10 bg-white border border-slate-200/80 rounded-lg">
               {submitted ? (
                 <div className="text-center py-10 space-y-4">
                   <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
@@ -251,7 +247,7 @@ export function ContactPage() {
                   </div>
 
                   {generalError && (
-                    <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-start gap-3">
+                    <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-start gap-3">
                       <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                       <div className="flex-1 font-medium">{generalError}</div>
                     </div>
@@ -332,7 +328,7 @@ export function ContactPage() {
                       size="lg"
                       isLoading={loading}
                       leftIcon={<Send className="w-4 h-4" />}
-                      className="font-bold shadow-lg shadow-emerald-700/20 w-full sm:w-auto"
+                      className="font-bold w-full sm:w-auto"
                     >
                       Envoyer le message
                     </Button>

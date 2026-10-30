@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { PageHeader } from '../components/ui/PageHeader';
 import {
-  ChevronRight,
   ShieldCheck,
   CheckCircle2,
   Lightbulb,
@@ -194,32 +194,11 @@ export function AboutPage() {
       {/* ========================================================================= */}
       {/* 1. EN-TÊTE INSTITUTIONNEL COMPACT (Pas de grand hero landing page)        */}
       {/* ========================================================================= */}
-      <header className="bg-slate-950 text-white border-b border-slate-800 relative py-12 sm:py-16 overflow-hidden">
-        {/* Ambient Subtle Glows */}
-        <div className="absolute top-0 right-1/3 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Fil d'Ariane */}
-          <nav aria-label="Fil d'Ariane" className="flex items-center gap-2 text-xs sm:text-sm text-slate-400 mb-6">
-            <Link to="/" className="hover:text-emerald-400 transition-colors">
-              Accueil
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-            <span className="text-emerald-300 font-medium">À propos</span>
-          </nav>
-
-          <div className="max-w-3xl space-y-3">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold font-display tracking-tight text-white leading-tight">
-              À PROPOS DE GREEN TECHNOLOGIES
-            </h1>
-
-            <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed">
-              Découvrez notre expertise, notre vision et notre engagement pour des solutions techniques fiables et durables.
-            </p>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title="À propos de Green Technologies"
+        description="Découvrez notre expertise, notre vision et notre engagement pour des solutions techniques fiables et durables."
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'À propos' }]}
+      />
 
       {/* ========================================================================= */}
       {/* 2. SECTION PRÉSENTATION (2 Colonnes)                                      */}
@@ -229,15 +208,11 @@ export function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Colonne Gauche : Texte institutionnel */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
-                <span>Présentation</span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight leading-snug">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 tracking-tight leading-snug">
                 Un pôle de solutions techniques intégrées
               </h2>
 
-              <p className="text-base sm:text-lg text-slate-700 leading-relaxed font-normal bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <p className="text-lg text-slate-700 leading-relaxed">
                 GREEN TECHNOLOGIES est un pôle de solutions techniques spécialisées. Nous concevons, fournissons et intégrons des solutions pour l'eau, l'énergie, l'agriculture et les infrastructures, en accompagnant nos clients de l'étude à la maintenance.
               </p>
 
@@ -246,7 +221,7 @@ export function AboutPage() {
                   <div className="text-emerald-700 font-semibold text-sm font-display mb-1">
                     Accompagnement 360°
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     De la phase d'étude préliminaire jusqu'au suivi et maintenance dans la durée.
                   </p>
                 </div>
@@ -254,7 +229,7 @@ export function AboutPage() {
                   <div className="text-emerald-700 font-semibold text-sm font-display mb-1">
                     Multi-sectoriel
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     Synergie éprouvée entre eau, énergie solaire, agrotechnologies et BTP.
                   </p>
                 </div>
@@ -262,7 +237,7 @@ export function AboutPage() {
                   <div className="text-emerald-700 font-semibold text-sm font-display mb-1">
                     Rigueur technique
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     Dimensionnement rigoureux et conformité aux standards internationaux.
                   </p>
                 </div>
@@ -271,7 +246,7 @@ export function AboutPage() {
 
             {/* Colonne Droite : Visuel épuré et professionnel */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 h-[320px] sm:h-[380px] bg-slate-100">
+              <div className="relative rounded-lg overflow-hidden border border-slate-200 h-[320px] sm:h-[380px] bg-slate-100">
                 <img
                   src="/solaire.jpg"
                   alt="Green Technologies ingénierie et solutions durables"
@@ -288,71 +263,40 @@ export function AboutPage() {
       {/* ========================================================================= */}
       <section className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100/80 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
-              <span>Notre Mission</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
+          <div className="max-w-3xl mb-14 space-y-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 tracking-tight">
               Transformer les besoins et contraintes techniques en solutions concrètes, fiables et adaptées.
             </h2>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-prose">
               Nous accompagnons chaque projet à travers une approche complète : analyse, étude, dimensionnement, fourniture, installation, mise en service et maintenance.
             </p>
           </div>
 
           {/* Processus interactif 7 étapes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
-            {missionSteps.map((s, idx) => (
-              <div
-                key={s.step}
-                className="relative bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col justify-between group"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xl sm:text-2xl font-semibold font-display text-emerald-700">
-                      {s.step}
-                    </span>
-                    {idx < missionSteps.length - 1 && (
-                      <span className="hidden lg:block text-slate-300 font-bold">→</span>
-                    )}
-                  </div>
-                  <h3 className="text-base font-semibold text-slate-900 font-display group-hover:text-emerald-800 transition-colors">
-                    {s.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                    {s.desc}
-                  </p>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                  <span>Jalon {idx + 1}</span>
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform" />
-                </div>
-              </div>
+          <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {missionSteps.map((s) => (
+              <li key={s.step} className="bg-white rounded-md p-5 border border-slate-200">
+                <span className="block text-2xl font-bold font-display text-emerald-700">{s.step}</span>
+                <h3 className="text-lg font-bold text-slate-900 font-display mt-2">{s.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed mt-1">{s.desc}</p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
       {/* ========================================================================= */}
       {/* 4. SECTION NOTRE VISION                                                   */}
       {/* ========================================================================= */}
-      <section className="py-16 sm:py-20 bg-slate-950 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/20 via-slate-950 to-slate-950 pointer-events-none" />
+      <section className="py-16 sm:py-20 bg-slate-900 text-white">
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-800 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
-              <span>Notre Vision</span>
-            </div>
-
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-white tracking-tight leading-snug">
+          <div className="max-w-3xl space-y-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-white tracking-tight leading-snug">
               Contribuer au développement de projets plus performants, autonomes et durables.
             </h2>
 
-            <div className="w-16 h-1 bg-emerald-500 mx-auto rounded-full" />
-
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-prose">
               Notre ambition est de mettre les technologies et l'expertise technique au service d'une meilleure gestion de l'eau, de l'énergie, de la production agricole et des infrastructures.
             </p>
           </div>
@@ -364,11 +308,8 @@ export function AboutPage() {
       {/* ========================================================================= */}
       <section className="py-16 sm:py-20 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
-              <span>Notre Expertise</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
+          <div className="max-w-3xl mb-14 space-y-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 tracking-tight">
               Quatre pôles complémentaires pour répondre aux besoins techniques de nos clients
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -381,11 +322,11 @@ export function AboutPage() {
               <Card
                 key={bu.id}
                 hoverable
-                className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between space-y-6 group hover:border-emerald-500 transition-all shadow-sm"
+                className="bg-white border border-slate-200 rounded-md p-6 flex flex-col justify-between space-y-6 group hover:border-emerald-500 transition-all"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${bu.badgeColor}`}>
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${bu.badgeColor}`}>
                       {bu.domain}
                     </span>
                   </div>
@@ -394,7 +335,7 @@ export function AboutPage() {
                       <h3 className="text-lg font-semibold text-slate-900 font-display group-hover:text-emerald-800 transition-colors">
                         {bu.name}
                       </h3>
-                      <p className="text-xs font-semibold text-emerald-700 mt-0.5">
+                      <p className="text-sm font-semibold text-emerald-700 mt-0.5">
                         {bu.domain}
                       </p>
                     </div>
@@ -407,7 +348,7 @@ export function AboutPage() {
                   <div className="pt-4 border-t border-slate-100">
                     <Link
                       to={`/domaines/${bu.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 hover:text-emerald-900 group-hover:translate-x-1 transition-all"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 hover:text-emerald-900 transition-all"
                     >
                       <span>Découvrir le pôle</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -424,11 +365,8 @@ export function AboutPage() {
       {/* ========================================================================= */}
       <section className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100/80 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
-              <span>Nos Valeurs</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
+          <div className="max-w-3xl mb-14 space-y-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 tracking-tight">
               Les principes qui guident notre manière de travailler
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -442,14 +380,14 @@ export function AboutPage() {
               return (
                 <div
                   key={v.num}
-                  className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col justify-between group"
+                  className="bg-white rounded-md p-6 border border-slate-200 hover:border-emerald-500 transition-all flex flex-col justify-between group"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-semibold font-display text-slate-400">
+                      <span className="text-xs font-bold font-display text-slate-400">
                         {v.num}
                       </span>
                     </div>
@@ -474,11 +412,8 @@ export function AboutPage() {
       {/* ========================================================================= */}
       <section className="py-16 sm:py-20 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
-              <span>Notre Organisation</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
+          <div className="max-w-3xl mb-12 space-y-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 tracking-tight">
               Une coordination intégrée au service de chaque projet
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -487,30 +422,30 @@ export function AboutPage() {
           </div>
 
           {/* Visual Architecture Diagram */}
-          <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-10 border border-slate-800 shadow-xl space-y-8">
+          <div className="bg-slate-900 text-white rounded-lg p-6 sm:p-10 border border-slate-800 space-y-8">
             {/* 1. Level: 4 Business Units */}
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-display">
+                <span className="text-xs font-bold text-emerald-400 font-display">
                   4 Business Units Spécialisées
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <p className="text-xs text-sky-400 font-medium">Pôle Eau</p>
+                <div className="p-4 rounded-md bg-slate-800/80 border border-slate-700/80">
+                  <p className="text-sm text-sky-400 font-medium">Pôle Eau</p>
                   <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN EAU</p>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <p className="text-xs text-amber-400 font-medium">Pôle Énergie</p>
+                <div className="p-4 rounded-md bg-slate-800/80 border border-slate-700/80">
+                  <p className="text-sm text-amber-400 font-medium">Pôle Énergie</p>
                   <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN ENERGY</p>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <p className="text-xs text-emerald-400 font-medium">Pôle Agriculture</p>
+                <div className="p-4 rounded-md bg-slate-800/80 border border-slate-700/80">
+                  <p className="text-sm text-emerald-400 font-medium">Pôle Agriculture</p>
                   <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN AGROTECH</p>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <p className="text-xs text-slate-400 font-medium">Pôle BTP</p>
+                <div className="p-4 rounded-md bg-slate-800/80 border border-slate-700/80">
+                  <p className="text-sm text-slate-400 font-medium">Pôle BTP</p>
                   <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN BTP & INFRASTRUCTURES</p>
                 </div>
               </div>
@@ -522,7 +457,7 @@ export function AboutPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-sky-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-sky-400 font-display">
+                <span className="text-xs font-bold text-sky-400 font-display">
                   Fonctions Transversales d'Excellence
                 </span>
               </div>
@@ -532,15 +467,15 @@ export function AboutPage() {
                   return (
                     <div
                       key={fn.name}
-                      className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/50 text-center flex flex-col items-center justify-center space-y-2 hover:bg-slate-800 transition-colors"
+                      className="p-3.5 rounded-md bg-slate-800/50 border border-slate-700/50 text-center flex flex-col items-center justify-center space-y-2 hover:bg-slate-800 transition-colors"
                     >
                       <div className="w-8 h-8 rounded-lg bg-slate-700/60 text-emerald-400 flex items-center justify-center">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <p className="text-[11px] font-semibold text-slate-200 font-display tracking-wide">
+                      <p className="text-sm font-semibold text-slate-200 font-display tracking-wide">
                         {fn.name}
                       </p>
-                      <p className="text-[10px] text-slate-400 leading-tight">
+                      <p className="text-sm text-slate-400 leading-tight">
                         {fn.desc}
                       </p>
                     </div>
@@ -557,11 +492,8 @@ export function AboutPage() {
       {/* ========================================================================= */}
       <section className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100/80 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
-              <span>Notre Engagement</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
+          <div className="max-w-3xl mb-14 space-y-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 tracking-tight">
               « Comprendre votre besoin. Concevoir la bonne solution. Assurer sa mise en œuvre. Vous accompagner dans la durée. »
             </h2>
           </div>
@@ -570,16 +502,16 @@ export function AboutPage() {
             {engagements.map((eng) => (
               <div
                 key={eng.num}
-                className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col justify-between group"
+                className="bg-white rounded-md p-6 border border-slate-200 hover:border-emerald-500 transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-3">
-                  <span className="text-2xl font-semibold font-display text-emerald-700">
+                  <span className="text-2xl font-bold font-display text-emerald-700">
                     {eng.num}
                   </span>
-                  <h3 className="text-sm font-semibold text-slate-900 font-display tracking-wide uppercase group-hover:text-emerald-800 transition-colors">
+                  <h3 className="text-sm font-semibold text-slate-900 font-display group-hover:text-emerald-800 transition-colors">
                     {eng.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  <p className="text-sm sm:text-sm text-slate-600 leading-relaxed font-normal">
                     {eng.desc}
                   </p>
                 </div>
@@ -592,23 +524,21 @@ export function AboutPage() {
       {/* ========================================================================= */}
       {/* 9. SECTION CTA FINAL                                                      */}
       {/* ========================================================================= */}
-      <section className="py-16 sm:py-20 bg-slate-950 text-white relative overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+      <section className="py-16 sm:py-20 bg-slate-900 text-white">
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-white tracking-tight">
             Votre projet mérite une solution adaptée.
           </h2>
 
-          <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-prose">
             Vous avez un projet dans le domaine de l'eau, de l'énergie, de l'agriculture ou des infrastructures ? Parlons de votre besoin et construisons ensemble une solution adaptée.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/devis"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-orange-600/30 transition-all text-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm"
             >
               <FileText className="w-4 h-4" />
               <span>Parler de mon projet</span>

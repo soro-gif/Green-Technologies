@@ -21,7 +21,7 @@ export function Card({
   if (!hasCustomBg) {
     if (variant === 'white') baseBackground = 'bg-white';
     else if (variant === 'dark') baseBackground = 'bg-slate-900 text-white';
-    else if (variant === 'glass') baseBackground = 'bg-white/80 backdrop-blur-md';
+    else if (variant === 'glass') baseBackground = 'bg-white/80';
   }
 
   const borderClass = bordered

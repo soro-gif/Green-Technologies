@@ -13,8 +13,8 @@ export function Pagination({ meta, onPageChange, className = '' }: PaginationPro
   if (last_page <= 1) return null;
 
   return (
-    <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 py-4 ${className}`}>
-      <div className="text-xs text-slate-500">
+    <nav aria-label="Pagination" className={`flex flex-col sm:flex-row items-center justify-between gap-4 py-4 ${className}`}>
+      <div className="text-sm text-slate-600">
         Page <span className="font-semibold text-slate-800">{current_page}</span> sur{' '}
         <span className="font-semibold text-slate-800">{last_page}</span> ({total} résultats)
       </div>
@@ -22,8 +22,9 @@ export function Pagination({ meta, onPageChange, className = '' }: PaginationPro
       <div className="flex items-center gap-1.5">
         <button
           onClick={() => onPageChange(current_page - 1)}
+          aria-label="Page précédente"
           disabled={current_page <= 1}
-          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center gap-1 h-10 px-3 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
           <span className="hidden sm:inline">Précédent</span>
@@ -42,9 +43,11 @@ export function Pagination({ meta, onPageChange, className = '' }: PaginationPro
               <button
                 key={pageNum}
                 onClick={() => onPageChange(pageNum)}
-                className={`w-8 h-8 flex items-center justify-center text-xs font-bold rounded-lg transition-colors ${
+                aria-label={`Page ${pageNum}`}
+                aria-current={current_page === pageNum ? 'page' : undefined}
+                className={`w-10 h-10 flex items-center justify-center text-sm font-bold rounded-md transition-colors ${
                   current_page === pageNum
-                    ? 'bg-emerald-700 text-white shadow-sm'
+                    ? 'bg-emerald-700 text-white'
                     : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                 }`}
               >
@@ -56,13 +59,14 @@ export function Pagination({ meta, onPageChange, className = '' }: PaginationPro
 
         <button
           onClick={() => onPageChange(current_page + 1)}
+          aria-label="Page suivante"
           disabled={current_page >= last_page}
-          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center gap-1 h-10 px-3 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <span className="hidden sm:inline">Suivant</span>
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
-    </div>
+    </nav>
   );
 }

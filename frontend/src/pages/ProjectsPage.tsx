@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, MapPin, Calendar, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Calendar } from 'lucide-react';
 import { projectsApi, categoriesApi } from '../api';
 import type { Project, Category } from '../types/models';
 import type { PaginationMeta } from '../types/api';
 import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
 import { Card } from '../components/ui/Card';
+import { PageHeader } from '../components/ui/PageHeader';
 import { Badge } from '../components/ui/Badge';
 import { Pagination } from '../components/ui/Pagination';
 import { Spinner } from '../components/ui/Spinner';
 import { EmptyState } from '../components/ui/EmptyState';
-import { getImageUrl, handleImageError } from '../utils/image';
+import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
 
 export function ProjectsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -83,47 +84,39 @@ export function ProjectsPage() {
   };
 
   return (
-    <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display tracking-tight">
-            Portfolio de réalisations
-          </h1>
-          <p className="text-base sm:text-lg text-slate-600">
-            Découvrez nos chantiers d'adduction d'eau, fermes solaires, périmètres irrigués et ouvrages BTP en Côte d'Ivoire.
-          </p>
-        </div>
+        <div className="bg-slate-50 min-h-[80vh]">
+      <PageHeader
+        title="Nos réalisations"
+        description="Découvrez nos chantiers d'adduction d'eau, fermes solaires, périmètres irrigués et ouvrages BTP en Côte d'Ivoire."
+      />
 
-        {/* Filter Bar */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm mb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="sm:col-span-2">
-              <Input
-                placeholder="Rechercher par mot-clé, ville ou maître d'ouvrage (ex: Korhogo, Bouaké, Centrale...)"
-                value={search}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                leftIcon={<Search className="w-5 h-5" />}
-              />
-            </div>
-
-            <div>
-              <Select
-                value={categoryId}
-                onChange={(e) => handleCategoryChange(e.target.value)}
-              >
-                <option value="">Tous les domaines</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16">
+{/* Filter Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          <div className="sm:col-span-2">
+            <Input
+              aria-label="Rechercher une réalisation"
+              placeholder="Rechercher par mot-clé, ville ou maître d'ouvrage"
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              leftIcon={<Search className="w-5 h-5" />}
+            />
           </div>
+
+          <Select
+            aria-label="Filtrer par domaine"
+            value={categoryId}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+          >
+            <option value="">Tous les domaines</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </Select>
         </div>
 
-        {/* Results */}
         {loading ? (
           <div className="flex justify-center py-24">
             <Spinner size="lg" />
@@ -144,73 +137,66 @@ export function ProjectsPage() {
         ) : (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.map((proj) => (
-                <Card
-                  key={proj.id}
-                  hoverable
-                  className="flex flex-col justify-between overflow-hidden p-0 border-slate-200 group"
-                >
-                  {/* Image Header */}
-                  <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
-                    <img
-                      src={getImageUrl(proj.image_url || proj.main_image || proj.image, proj.slug || proj.category?.slug, proj.slug || proj.id || proj.title)}
-                      alt={proj.title}
-                      onError={(e) => handleImageError(e, proj.slug || proj.category?.slug, proj.slug || proj.id || proj.title)}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                    <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                      <span className="text-xs font-bold text-white bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/20">
-                        {proj.category?.name || 'Projet'}
-                      </span>
-                    </div>
-                  </div>
+              {projects.map((proj) => {
+                const fallbackKey = proj.category?.slug || proj.slug;
+                const itemKey = proj.slug || proj.id || proj.title;
+                const imageUrl = getImageUrl(proj.image_url || proj.main_image || proj.image, fallbackKey, itemKey);
 
-                  <div className="p-6 flex-1 flex flex-col justify-between">
+                return (
+                  <Card key={proj.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
                     <div>
-                      <div className="flex items-center justify-between gap-2 mb-2.5">
-                        {proj.location ? (
-                          <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1 font-medium">
-                            <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                            <span>{proj.location}</span>
-                          </span>
-                        ) : <div />}
+                      <img
+                        src={imageUrl}
+                        alt={proj.title}
+                        width={640}
+                        height={400}
+                        loading="lazy"
+                        onError={(e) => handleImageError(e, fallbackKey, itemKey)}
+                        className={`w-full aspect-[16/10] bg-slate-100 ${imageFitClass(imageUrl)}`}
+                      />
+
+                      <div className="p-6">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-600 mb-1.5">
+                          <span>{proj.category?.name || 'Projet'}</span>
+                          {proj.location && (
+                            <span className="inline-flex items-center gap-1.5">
+                              <MapPin className="w-4 h-4 text-orange-600 shrink-0" />
+                              {proj.location}
+                            </span>
+                          )}
+                          {proj.completion_date && (
+                            <span className="inline-flex items-center gap-1.5">
+                              <Calendar className="w-4 h-4 text-slate-500" />
+                              {new Date(proj.completion_date).getFullYear()}
+                            </span>
+                          )}
+                        </div>
+
+                        <h2 className="text-xl font-bold text-slate-900 font-display mb-2 leading-snug">
+                          {proj.title}
+                        </h2>
+
+                        <p className="text-slate-600 leading-relaxed line-clamp-3">{proj.description}</p>
+
                         {proj.status_label && (
-                          <Badge variant="green" className="text-xs py-0.5">
+                          <Badge variant="green" className="mt-3">
                             {proj.status_label}
                           </Badge>
                         )}
                       </div>
-
-                      <h3 className="text-lg sm:text-xl font-semibold text-slate-900 font-display mb-2 group-hover:text-emerald-700 transition-colors leading-snug">
-                        {proj.title}
-                      </h3>
-
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
-                        {proj.description}
-                      </p>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-2">
+                    <div className="px-6 pb-6">
                       <Link
                         to={`/realisations/${proj.slug}`}
-                        className="text-sm font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1.5 group/link"
+                        className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
                       >
-                        <span>Voir l'étude de cas</span>
-                        <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                        Voir l'étude de cas
                       </Link>
-
-                      {proj.completion_date && (
-                        <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                          {new Date(proj.completion_date).getFullYear()}
-                        </span>
-                      )}
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                );
+              })}
             </div>
 
             {/* Pagination */}

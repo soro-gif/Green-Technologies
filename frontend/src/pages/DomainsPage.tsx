@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { categoriesApi } from '../api';
 import type { Category } from '../types/models';
-import { Card } from '../components/ui/Card';
+import { POLES, getPole } from '../data/poles';
+import { PageHeader } from '../components/ui/PageHeader';
 import { Spinner } from '../components/ui/Spinner';
-import { getImageUrl, handleImageError } from '../utils/image';
+import { StratumEdge } from '../components/ui/StratumEdge';
+import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
+
+const countLabel = (count: number, singular: string, plural: string) =>
+  `${count} ${count > 1 ? plural : singular}`;
 
 export function DomainsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -26,86 +31,75 @@ export function DomainsPage() {
     load();
   }, []);
 
+  // Du terrain vers la nappe ; un pôle ajouté depuis l'admin se place à la fin
+  const rank = (category: Category) => {
+    const index = POLES.findIndex((pole) => pole.slug === category.slug);
+    return index === -1 ? POLES.length : index;
+  };
+  const orderedCategories = [...categories].sort((a, b) => rank(a) - rank(b));
+
   return (
-    <div className="py-12 sm:py-16 bg-slate-50 min-h-[70vh]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h1 className="text-3xl sm:text-5xl text-slate-900 font-display tracking-tight">
-            Nos domaines d'expertise
-          </h1>
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            De la ressource en eau à l'énergie solaire, des technologies agronomiques au génie civil,
-            découvrez nos pôles de compétences adaptés aux défis environnementaux et industriels.
-          </p>
+    <div className="bg-slate-50 min-h-[70vh]">
+      <PageHeader
+        title="Nos domaines d'expertise"
+        description="De la ressource en eau à l'énergie solaire, en passant par l'agriculture et le génie civil : choisissez le pôle qui correspond à votre projet."
+      />
+
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <Spinner size="lg" />
         </div>
+      ) : (
+        <div className="pt-5">
+          {orderedCategories.map((category, index) => {
+            const pole = getPole(category.slug);
+            const band = pole?.band ?? 'bg-white text-slate-900';
+            const muted = pole?.muted ?? 'text-slate-600';
+            const image = pole?.image ?? getImageUrl(category.image_url, category.slug);
+            const previous = orderedCategories[index - 1];
+            const previousEdge = previous ? getPole(previous.slug)?.edge : undefined;
 
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <Spinner size="lg" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {categories.map((cat) => (
-              <Card
-                key={cat.id}
-                hoverable
-                className="overflow-hidden p-0 flex flex-col justify-between bg-white border border-slate-200 group"
-              >
-                {/* Visual Image Header */}
-                <div className="relative h-52 sm:h-60 w-full bg-slate-900 overflow-hidden">
-                  <img
-                    src={cat.slug === 'eau-hydraulique' ? '/Fontaine.png' : getImageUrl(cat.image_url, cat.slug)}
-                    alt={cat.name}
-                    onError={(e) => handleImageError(e, cat.slug)}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
+            return (
+              <section key={category.id} className={`relative ${band}`}>
+                {previousEdge && <StratumEdge color={previousEdge} />}
 
-                  {/* Badges on bottom of image */}
-                  <div className="absolute bottom-3.5 left-4 right-4 flex items-center justify-between">
-                    <span className="text-xs sm:text-sm font-semibold text-white bg-slate-900/80 backdrop-blur-md px-3.5 py-1 rounded-full border border-white/20 shadow-sm">
-                      {cat.services_count || 0} prestations
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-emerald-300 bg-emerald-950/80 backdrop-blur-md px-3.5 py-1 rounded-full border border-emerald-400/40 shadow-sm">
-                      {cat.projects_count || 0} réalisations
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14 lg:items-center">
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900 font-display mb-3 group-hover:text-emerald-700 transition-colors">
-                      {cat.name}
-                    </h3>
-                    <p className="text-base text-slate-600 leading-relaxed mb-6">
-                      {cat.description ||
-                        'Expertise technique de pointe, dimensionnement rigoureux et accompagnement sur-mesure pour tous vos chantiers.'}
+                    {pole && <p className={`text-sm font-medium ${muted}`}>{pole.layer}</p>}
+                    <h2 className="text-3xl lg:text-4xl font-display font-extrabold tracking-tight mt-1">
+                      {category.name}
+                    </h2>
+                    <p className="text-lg leading-relaxed max-w-prose mt-3">
+                      {category.description || pole?.desc}
                     </p>
+                    <p className={`text-sm mt-3 ${muted}`}>
+                      {countLabel(category.services_count || 0, 'prestation', 'prestations')},{' '}
+                      {countLabel(category.projects_count || 0, 'réalisation', 'réalisations')}
+                    </p>
+                    <Link
+                      to={`/domaines/${category.slug}`}
+                      className="inline-flex items-center gap-2 mt-4 font-bold underline underline-offset-4"
+                    >
+                      <span>Découvrir ce pôle</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
 
-                  <div className="border-t border-slate-100 pt-5 sm:pt-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                    <Link
-                      to={`/domaines/${cat.slug}`}
-                      className="inline-flex items-center gap-2 text-sm sm:text-base font-bold text-emerald-700 hover:text-emerald-800 group/link"
-                    >
-                      <span>Découvrir les prestations du pôle</span>
-                      <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                    </Link>
-                    <Link
-                      to="/devis"
-                      className="text-sm font-bold text-orange-600 hover:text-orange-700 inline-flex items-center"
-                    >
-                      Devis gratuit →
-                    </Link>
-                  </div>
+                  <img
+                    src={image}
+                    alt={category.name}
+                    loading="lazy"
+                    width={760}
+                    height={480}
+                    onError={(e) => handleImageError(e, category.slug)}
+                    className={`w-full aspect-[16/10] rounded-md ${imageFitClass(image)}`}
+                  />
                 </div>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
+              </section>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

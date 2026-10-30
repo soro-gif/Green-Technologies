@@ -52,14 +52,14 @@ export function UserQuotesPage() {
         </Link>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
         {loading ? (
           <div className="p-16 flex justify-center">
             <Spinner size="md" />
           </div>
         ) : quotes.length === 0 ? (
           <div className="p-12 text-center space-y-3">
-            <div className="inline-flex p-3 rounded-2xl bg-slate-100 text-slate-400">
+            <div className="inline-flex p-3 rounded-lg bg-slate-100 text-slate-400">
               <FileText className="w-6 h-6" />
             </div>
             <p className="text-sm font-bold text-slate-800">Aucune demande de devis trouvée.</p>
@@ -83,7 +83,7 @@ export function UserQuotesPage() {
                   <div className="flex items-center justify-between">
                     <span className="font-mono font-bold text-sm text-emerald-700">{q.reference}</span>
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
                         q.status === 'pending'
                           ? 'bg-amber-100 text-amber-800 border border-amber-200'
                           : q.status === 'in_review'
@@ -130,7 +130,7 @@ export function UserQuotesPage() {
             {/* Desktop Table View (>=md) */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 text-slate-600 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200">
+                <thead className="bg-slate-50 text-slate-600 font-bold text-xs border-b border-slate-200">
                   <tr>
                     <th className="px-4 py-3">Réf. Dossier</th>
                     <th className="px-4 py-3">Pôle / Domaine</th>
@@ -149,7 +149,7 @@ export function UserQuotesPage() {
                       </td>
                       <td className="px-4 py-3.5 font-medium text-slate-800">
                         <div>{q.category?.name || 'Général'}</div>
-                        {q.service && <div className="text-[10px] text-slate-400">{q.service.title}</div>}
+                        {q.service && <div className="text-xs text-slate-400">{q.service.title}</div>}
                       </td>
                       <td className="px-4 py-3.5 text-slate-600">{q.city}</td>
                       <td className="px-4 py-3.5 font-semibold text-slate-800">
@@ -159,7 +159,7 @@ export function UserQuotesPage() {
                       </td>
                       <td className="px-4 py-3.5">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
                             q.status === 'pending'
                               ? 'bg-amber-100 text-amber-800 border border-amber-200'
                               : q.status === 'in_review'
@@ -208,10 +208,10 @@ export function UserQuotesPage() {
       >
         {selectedQuote && (
           <div className="space-y-4 text-xs">
-            <div className="p-3.5 bg-slate-50 rounded-xl space-y-2 border border-slate-100">
+            <div className="p-3.5 bg-slate-50 rounded-md space-y-2 border border-slate-100">
               <div className="flex items-center justify-between">
                 <span className="font-mono font-bold text-emerald-700">{selectedQuote.reference}</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                   {selectedQuote.status_label || selectedQuote.status}
                 </span>
               </div>
@@ -238,15 +238,15 @@ export function UserQuotesPage() {
             {selectedQuote.details && (
               <div>
                 <label className="font-bold text-slate-700">Votre description :</label>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-slate-700 mt-1 whitespace-pre-wrap max-h-36 overflow-y-auto">
+                <div className="p-3 bg-slate-50 rounded-md border border-slate-100 text-slate-700 mt-1 whitespace-pre-wrap max-h-36 overflow-y-auto">
                   {selectedQuote.details}
                 </div>
               </div>
             )}
 
             {selectedQuote.admin_notes && (
-              <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-900">
-                <p className="font-bold text-[11px] mb-1">Réponse technique de l'équipe :</p>
+              <div className="p-3 bg-emerald-50 rounded-md border border-emerald-200 text-emerald-900">
+                <p className="font-bold text-xs mb-1">Réponse technique de l'équipe :</p>
                 <p className="text-xs">{selectedQuote.admin_notes}</p>
               </div>
             )}

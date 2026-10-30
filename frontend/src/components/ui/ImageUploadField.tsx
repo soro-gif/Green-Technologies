@@ -109,7 +109,7 @@ export function ImageUploadField({
               onClick={() => setMode('upload')}
               className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
                 mode === 'upload'
-                  ? 'bg-white text-emerald-800 shadow-xs'
+                  ? 'bg-white text-emerald-800'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -121,7 +121,7 @@ export function ImageUploadField({
               onClick={() => setMode('url')}
               className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
                 mode === 'url'
-                  ? 'bg-white text-emerald-800 shadow-xs'
+                  ? 'bg-white text-emerald-800'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -133,7 +133,7 @@ export function ImageUploadField({
           <button
             type="button"
             onClick={() => setIsMediaPickerOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100 transition-colors cursor-pointer shadow-xs"
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100 transition-colors cursor-pointer"
           >
             <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
             <span>Médiathèque</span>
@@ -165,7 +165,7 @@ export function ImageUploadField({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onClick={() => !uploading && fileInputRef.current?.click()}
-          className={`relative border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition-all ${
+          className={`relative border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-all ${
             isDragOver
               ? 'border-emerald-500 bg-emerald-50/50'
               : 'border-slate-300 hover:border-emerald-500 hover:bg-slate-50/80 bg-white'
@@ -180,7 +180,7 @@ export function ImageUploadField({
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
-              <div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 shadow-xs">
+              <div className="w-11 h-11 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700">
                 <UploadCloud className="w-6 h-6" />
               </div>
               <div>
@@ -201,7 +201,7 @@ export function ImageUploadField({
             placeholder="Ex: /Fontaine.png ou https://images.unsplash.com/..."
             value={value || ''}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-white"
+            className="w-full px-4 py-2.5 rounded-md border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-white"
           />
           {/* Quick presets */}
           <div className="flex flex-wrap items-center gap-1.5 pt-1">
@@ -226,7 +226,7 @@ export function ImageUploadField({
 
       {/* Error message */}
       {error && (
-        <div className="flex items-center gap-2 text-xs font-semibold text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200">
+        <div className="flex items-center gap-2 text-xs font-semibold text-rose-600 bg-rose-50 p-2.5 rounded-md border border-rose-200">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -234,9 +234,9 @@ export function ImageUploadField({
 
       {/* Preview Card */}
       {value && previewSrc && (
-        <div className="relative rounded-2xl border border-slate-200 bg-slate-50 p-3 flex items-center justify-between gap-4">
+        <div className="relative rounded-lg border border-slate-200 bg-slate-50 p-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 shrink-0 relative">
+            <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-200 border border-slate-300 shrink-0 relative">
               <img
                 src={previewSrc}
                 alt="Aperçu"

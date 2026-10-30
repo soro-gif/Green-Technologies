@@ -17,6 +17,7 @@ import { Textarea } from '../components/ui/Textarea';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
+import { PageHeader } from '../components/ui/PageHeader';
 
 export function QuoteRequestPage() {
   const { user, isAuthenticated } = useAuth();
@@ -167,23 +168,20 @@ export function QuoteRequestPage() {
   };
 
   return (
-    <div className="py-12 sm:py-16 bg-slate-50 min-h-[85vh]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
-          <Badge variant="orange">Étude et chiffrage gratuit sous 48h</Badge>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display tracking-tight">
-            Demande de devis et suivi de dossier
-          </h1>
-          <p className="text-base sm:text-lg text-slate-600">
-            Remplissez notre formulaire pour vos travaux en Côte d'Ivoire ou suivez l'état d'avancement de votre devis.
-          </p>
+    <div className="bg-slate-50 min-h-[85vh]">
+      <PageHeader
+        title="Demander un devis"
+        description="Décrivez vos travaux en Côte d'Ivoire : l'étude et le chiffrage sont gratuits, sous 48 h. Vous pouvez aussi suivre un devis en cours."
+      />
 
-          <div className="flex flex-col sm:flex-row w-full max-w-lg mx-auto p-1.5 bg-slate-200/80 rounded-xl mt-4 gap-1 sm:gap-0">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16">
+        <div className="mb-10">
+          <div role="group" aria-label="Choisir une action" className="flex flex-col sm:flex-row w-full max-w-xl p-1.5 bg-slate-200 rounded-md gap-1 sm:gap-0">
             <button
               onClick={() => setActiveTab('request')}
-              className={`flex-1 px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer ${activeTab === 'request'
-                ? 'bg-white text-emerald-800 shadow-sm'
+              aria-pressed={activeTab === 'request'}
+              className={`flex-1 min-h-11 px-4 sm:px-6 text-sm font-bold rounded-md transition-colors cursor-pointer ${activeTab === 'request'
+                ? 'bg-white text-emerald-800'
                 : 'text-slate-600 hover:text-slate-900'
                 }`}
             >
@@ -191,8 +189,9 @@ export function QuoteRequestPage() {
             </button>
             <button
               onClick={() => setActiveTab('track')}
-              className={`flex-1 px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer ${activeTab === 'track'
-                ? 'bg-white text-emerald-800 shadow-sm'
+              aria-pressed={activeTab === 'track'}
+              className={`flex-1 min-h-11 px-4 sm:px-6 text-sm font-bold rounded-md transition-colors cursor-pointer ${activeTab === 'track'
+                ? 'bg-white text-emerald-800'
                 : 'text-slate-600 hover:text-slate-900'
                 }`}
             >
@@ -204,7 +203,7 @@ export function QuoteRequestPage() {
         {activeTab === 'request' && (
           <div>
             {submittedQuote ? (
-              <Card className="p-8 sm:p-12 text-center bg-white border-emerald-200 shadow-xl space-y-6">
+              <Card className="p-8 sm:p-12 text-center bg-white border-emerald-200 space-y-6">
                 <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
@@ -218,8 +217,8 @@ export function QuoteRequestPage() {
                   </p>
                 </div>
 
-                <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl max-w-md mx-auto">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                <div className="p-6 bg-slate-50 border border-slate-200 rounded-lg max-w-md mx-auto">
+                  <p className="text-xs font-bold text-slate-400 mb-1">
                     Votre numéro de référence unique
                   </p>
                   <div className="flex items-center justify-center gap-3">
@@ -234,7 +233,7 @@ export function QuoteRequestPage() {
                       {copied ? <Check className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5" />}
                     </button>
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-2">
+                  <p className="text-xs text-slate-500 mt-2">
                     Conservez cette référence pour suivre l'état de votre devis en ligne.
                   </p>
                 </div>
@@ -276,7 +275,7 @@ export function QuoteRequestPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-8">
                 {generalError && (
-                  <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-start gap-3">
+                  <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                     <div className="flex-1 font-medium">{generalError}</div>
                   </div>
@@ -467,7 +466,7 @@ export function QuoteRequestPage() {
                   </div>
                 </Card>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
                   <div className="flex items-center gap-3">
                     <ShieldCheck className="w-6 h-6 text-emerald-700 shrink-0" />
                     <p className="text-xs text-emerald-900 leading-snug">
@@ -481,7 +480,7 @@ export function QuoteRequestPage() {
                     size="lg"
                     isLoading={loading}
                     leftIcon={<Send className="w-4 h-4" />}
-                    className="w-full sm:w-auto font-bold shadow-md"
+                    className="w-full sm:w-auto font-bold"
                   >
                     Envoyer ma demande de devis
                   </Button>
@@ -508,7 +507,7 @@ export function QuoteRequestPage() {
                   placeholder="ex: DEV-2026-00001"
                   value={trackRef}
                   onChange={(e) => setTrackRef(e.target.value.toUpperCase())}
-                  className="font-mono uppercase font-bold text-center sm:text-left"
+                  className="font-mono font-bold text-center sm:text-left"
                 />
               </div>
               <Button type="submit" variant="primary" isLoading={trackLoading} leftIcon={<Search className="w-4 h-4" />} className="w-full sm:w-auto">
@@ -521,7 +520,7 @@ export function QuoteRequestPage() {
             )}
 
             {trackedQuote && (
-              <div className="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-6 max-w-2xl mx-auto">
+              <div className="mt-8 p-6 bg-slate-50 rounded-lg border border-slate-200 space-y-6 max-w-2xl mx-auto">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                   <div>
                     <span className="text-xs font-mono font-bold text-slate-400">RÉFÉRENCE</span>
@@ -546,19 +545,19 @@ export function QuoteRequestPage() {
 
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase">Demandeur</span>
+                    <span className="text-slate-400 font-semibold">Demandeur</span>
                     <p className="font-bold text-slate-800">{trackedQuote.full_name}</p>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase">Ville</span>
+                    <span className="text-slate-400 font-semibold">Ville</span>
                     <p className="font-bold text-slate-800">{trackedQuote.city}</p>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase">Domaine</span>
+                    <span className="text-slate-400 font-semibold">Domaine</span>
                     <p className="font-bold text-slate-800">{trackedQuote.category?.name || 'Général'}</p>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase">Date de demande</span>
+                    <span className="text-slate-400 font-semibold">Date de demande</span>
                     <p className="font-bold text-slate-800">
                       {new Date(trackedQuote.created_at).toLocaleDateString('fr-FR')}
                     </p>
@@ -566,7 +565,7 @@ export function QuoteRequestPage() {
                 </div>
 
                 {trackedQuote.admin_notes && (
-                  <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100 text-xs text-emerald-900">
+                  <div className="p-4 bg-emerald-50 rounded-md border border-emerald-100 text-xs text-emerald-900">
                     <span className="font-bold">Note du bureau d'études :</span> {trackedQuote.admin_notes}
                   </div>
                 )}

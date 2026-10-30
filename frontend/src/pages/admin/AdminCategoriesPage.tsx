@@ -134,7 +134,7 @@ export function AdminCategoriesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-lg">
         <div>
           <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-display">
             Pôles Majeurs et Domaines d'Expertise
@@ -148,13 +148,13 @@ export function AdminCategoriesPage() {
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
-          className="shadow-sm font-semibold rounded-xl"
+          className=" font-semibold rounded-md"
         >
           Nouveau Pôle
         </Button>
       </div>
 
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs max-w-md">
+      <div className="p-4 rounded-lg bg-white border border-slate-200/90 max-w-md">
         <Input
           placeholder="Rechercher un pôle..."
           value={search}
@@ -166,7 +166,7 @@ export function AdminCategoriesPage() {
         />
       </div>
 
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -178,7 +178,7 @@ export function AdminCategoriesPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Bannière</th>
                   <th className="px-4 py-3">Pôle</th>
@@ -194,7 +194,7 @@ export function AdminCategoriesPage() {
                   return (
                     <tr key={c.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-4 py-2.5">
-                        <div className="w-14 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-2xs">
+                        <div className="w-14 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                           <img
                             src={c.slug === 'eau-hydraulique' && !catImage ? '/Fontaine.png' : getImageUrl(catImage, c.slug)}
                             alt={c.name}
@@ -205,18 +205,18 @@ export function AdminCategoriesPage() {
                       </td>
                       <td className="px-4 py-3 text-slate-900 font-bold">{c.name}</td>
                       <td className="px-4 py-3 text-slate-700 font-medium">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200/60">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
                           {c.services_count || 0} prestations
                         </span>
                       </td>
                       <td className="px-4 py-3 font-medium">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-200/60">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-xs font-medium border border-emerald-200/60">
                           {c.projects_count || 0} projets
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                          className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                             c.is_active
                               ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                               : 'bg-slate-100 text-slate-600 border-slate-200'
@@ -264,7 +264,7 @@ export function AdminCategoriesPage() {
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           {formError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 flex items-start gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
               <div className="text-xs font-medium">{formError}</div>
             </div>
@@ -279,7 +279,7 @@ export function AdminCategoriesPage() {
           />
 
           {/* Image Upload & Management Component */}
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
             <ImageUploadField
               label="Photo de couverture du pôle"
               value={formData.image}
@@ -308,7 +308,7 @@ export function AdminCategoriesPage() {
               size="sm"
               isLoading={saving}
               leftIcon={<CheckCircle2 className="w-4 h-4" />}
-              className="font-bold shadow-md"
+              className="font-bold"
             >
               Valider et Enregistrer le pôle
             </Button>

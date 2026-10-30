@@ -1,14 +1,14 @@
-﻿import { CheckCircle2, Server, Activity, RefreshCw } from 'lucide-react';
+import { CheckCircle2, Server, Activity, RefreshCw } from 'lucide-react';
 import { useHealthCheck } from '../hooks/useHealthCheck';
 
 export function HealthPage() {
   const { data, isLoading, isError, error, refetch, isFetching } = useHealthCheck();
 
   return (
-    <div className="max-w-2xl w-full bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+    <div className="max-w-2xl w-full bg-slate-900/90 border border-slate-800 rounded-lg p-6 sm:p-8 shadow-2xl space-y-6">
       <div className="flex items-center justify-between border-b border-slate-800 pb-5">
         <div className="flex items-center space-x-3">
-          <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
+          <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-md border border-emerald-500/20">
             <Activity className="w-6 h-6" />
           </div>
           <div>
@@ -29,19 +29,19 @@ export function HealthPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Frontend Status */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex items-start space-x-3">
+        <div className="bg-slate-950/60 border border-slate-800/80 rounded-md p-4 flex items-start space-x-3">
           <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-semibold text-white">Frontend SPA</p>
             <p className="text-xs text-slate-400 mt-0.5">React 19, Vite, TypeScript, Tailwind CSS</p>
-            <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-medium bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20">
+            <span className="inline-block mt-2 px-2 py-0.5 text-xs font-medium bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20">
               Opérationnel
             </span>
           </div>
         </div>
 
         {/* Backend API Status */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex items-start space-x-3">
+        <div className="bg-slate-950/60 border border-slate-800/80 rounded-md p-4 flex items-start space-x-3">
           <Server className={`w-5 h-5 shrink-0 mt-0.5 ${data?.success ? 'text-emerald-400' : isLoading ? 'text-amber-400' : 'text-rose-400'}`} />
           <div className="flex-1">
             <p className="text-sm font-semibold text-white">Backend REST API</p>
@@ -51,7 +51,7 @@ export function HealthPage() {
               {isError && (error?.message || 'Serveur injoignable')}
             </p>
             <span
-              className={`inline-block mt-2 px-2 py-0.5 text-[10px] font-medium rounded border ${data?.success
+              className={`inline-block mt-2 px-2 py-0.5 text-xs font-medium rounded border ${data?.success
                   ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                   : isLoading
                     ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
@@ -66,19 +66,19 @@ export function HealthPage() {
 
       {/* Technical Response Details */}
       {data?.success && (
-        <div className="p-4 bg-slate-950/80 rounded-xl border border-slate-800 text-xs font-mono text-slate-400 space-y-1">
+        <div className="p-4 bg-slate-950/80 rounded-md border border-slate-800 text-xs font-mono text-slate-400 space-y-1">
           <p className="text-slate-300 font-semibold mb-1 flex items-center justify-between">
             <span>Contrat de Réponse API v1 :</span>
-            <span className="text-emerald-400 text-[11px]">HTTP 200 OK</span>
+            <span className="text-emerald-400 text-xs">HTTP 200 OK</span>
           </p>
-          <pre className="text-emerald-300/90 text-[11px] overflow-x-auto p-2 bg-slate-900/50 rounded border border-slate-800">
+          <pre className="text-emerald-300/90 text-xs overflow-x-auto p-2 bg-slate-900/50 rounded border border-slate-800">
             {JSON.stringify(data, null, 2)}
           </pre>
         </div>
       )}
 
       {/* Dev Commands Note */}
-      <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50 text-xs text-slate-400 space-y-1 font-mono">
+      <div className="p-4 bg-slate-800/30 rounded-md border border-slate-800/50 text-xs text-slate-400 space-y-1 font-mono">
         <p className="text-slate-300 font-semibold mb-1">Démarrage local :</p>
         <p>• Backend : <code className="text-emerald-400">cd backend && php artisan serve</code></p>
         <p>• Frontend : <code className="text-emerald-400">cd frontend && npm run dev</code></p>

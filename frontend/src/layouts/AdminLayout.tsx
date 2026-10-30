@@ -99,14 +99,14 @@ export function AdminLayout() {
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-900/60 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transition-transform duration-200 shadow-xl lg:shadow-none ${
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transition-transform duration-200 lg:shadow-none ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -123,15 +123,15 @@ export function AdminLayout() {
           </div>
 
           {/* User Profile Card */}
-          <div className="p-3 mx-3 my-3 rounded-xl bg-slate-800/70 border border-slate-700/60 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm uppercase shrink-0 shadow-xs">
+          <div className="p-3 mx-3 my-3 rounded-md bg-slate-800/70 border border-slate-700/60 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shrink-0">
               {user?.name?.charAt(0) || 'A'}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-white truncate">{user?.name || 'Administrateur'}</p>
               <div className="flex items-center gap-1 mt-0.5">
                 <Shield className="w-3 h-3 text-emerald-400" />
-                <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider">
+                <span className="text-xs font-semibold text-emerald-400">
                   {user?.role_label || user?.role || 'Super Admin'}
                 </span>
               </div>
@@ -149,9 +149,9 @@ export function AdminLayout() {
               return (
                 <div
                   key={item.to}
-                  className={`group flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  className={`group flex items-center justify-between px-3 py-2 rounded-md text-xs font-semibold transition-all ${
                     active
-                      ? 'bg-emerald-600 text-white shadow-sm'
+                      ? 'bg-emerald-600 text-white'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >
@@ -180,18 +180,18 @@ export function AdminLayout() {
           <Link
             to="/"
             target="_blank"
-            className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            className="flex items-center justify-between px-3 py-2 rounded-md text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
           >
             <div className="flex items-center gap-2">
               <ExternalLink className="w-4 h-4 text-emerald-400" />
               <span>Voir le Site Public</span>
             </div>
-            <span className="text-[10px] text-slate-500">↗</span>
+            <span className="text-xs text-slate-500">↗</span>
           </Link>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 transition-colors cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span>Se déconnecter</span>
@@ -202,7 +202,7 @@ export function AdminLayout() {
       {/* Main Content Body */}
       <div className="flex-1 flex flex-col min-w-0 bg-slate-50">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 h-16 bg-white border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-2xs">
+        <header className="sticky top-0 z-30 h-16 bg-white border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}

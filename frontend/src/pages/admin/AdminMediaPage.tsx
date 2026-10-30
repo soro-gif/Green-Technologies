@@ -257,8 +257,8 @@ export function AdminMediaPage() {
       {/* Toast Notification */}
       {notification && (
         <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${notification.type === 'success'
-              ? 'bg-white text-emerald-950 border-emerald-200 shadow-emerald-950/10'
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${notification.type === 'success'
+              ? 'bg-white text-emerald-950 border-emerald-200'
               : 'bg-white text-rose-950 border-rose-200 shadow-rose-950/10'
             }`}
         >
@@ -272,7 +272,7 @@ export function AdminMediaPage() {
       )}
 
       {/* Hero / Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xs relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-lg border border-slate-200/90 relative overflow-hidden">
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200/60">
             <ImageIcon className="w-3.5 h-3.5" />
@@ -292,7 +292,7 @@ export function AdminMediaPage() {
             size="sm"
             onClick={() => fetchMediaData(true)}
             disabled={refreshing}
-            className="border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-xs font-semibold px-4 py-2 rounded-xl shadow-xs"
+            className="border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-xs font-semibold px-4 py-2 rounded-md"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-emerald-600' : 'text-slate-500'}`} />
             <span>Actualiser</span>
@@ -307,7 +307,7 @@ export function AdminMediaPage() {
               }
               setIsUploadModalOpen(true);
             }}
-            className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow"
+            className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm px-5 py-2.5 rounded-md hover:shadow"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Téléverser des images</span>
@@ -317,7 +317,7 @@ export function AdminMediaPage() {
 
       {/* Error state banner */}
       {error && (
-        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-center justify-between gap-4">
+        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-xs font-medium">
             <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0" />
             <span>{error}</span>
@@ -336,9 +336,9 @@ export function AdminMediaPage() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+        <Card className="p-5 bg-white border-slate-200/90">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700">
+            <div className="w-10 h-10 rounded-md bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700">
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
@@ -350,9 +350,9 @@ export function AdminMediaPage() {
           </div>
         </Card>
 
-        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+        <Card className="p-5 bg-white border-slate-200/90">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/60 flex items-center justify-center text-sky-700">
+            <div className="w-10 h-10 rounded-md bg-sky-50 border border-sky-200/60 flex items-center justify-center text-sky-700">
               <HardDrive className="w-5 h-5" />
             </div>
             <div>
@@ -364,9 +364,9 @@ export function AdminMediaPage() {
           </div>
         </Card>
 
-        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+        <Card className="p-5 bg-white border-slate-200/90">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-700">
+            <div className="w-10 h-10 rounded-md bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-700">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
@@ -378,9 +378,9 @@ export function AdminMediaPage() {
           </div>
         </Card>
 
-        <Card className="p-5 bg-white border-slate-200/90 shadow-xs">
+        <Card className="p-5 bg-white border-slate-200/90">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200/60 flex items-center justify-center text-purple-700">
+            <div className="w-10 h-10 rounded-md bg-purple-50 border border-purple-200/60 flex items-center justify-center text-purple-700">
               <Layers className="w-5 h-5" />
             </div>
             <div>
@@ -404,7 +404,7 @@ export function AdminMediaPage() {
               placeholder="Rechercher par nom, dossier ou utilisation..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 shadow-2xs"
+              className="w-full pl-10 pr-10 py-2.5 rounded-md bg-white border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
             />
             {searchQuery && (
               <button
@@ -430,7 +430,7 @@ export function AdminMediaPage() {
               </Button>
             )}
 
-            <div className="flex items-center rounded-xl bg-white border border-slate-200 p-1 shadow-2xs">
+            <div className="flex items-center rounded-md bg-white border border-slate-200 p-1">
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${viewMode === 'grid'
@@ -470,14 +470,14 @@ export function AdminMediaPage() {
                 key={f.key}
                 onClick={() => setSelectedFolder(f.key)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${isActive
-                    ? 'bg-emerald-600 text-white shadow-xs'
-                    : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 shadow-2xs'
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200'
                   }`}
               >
                 <span>{f.label}</span>
                 {typeof count === 'number' && (
                   <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive
+                    className={`text-xs px-1.5 py-0.2 rounded-full font-bold ${isActive
                         ? 'bg-emerald-700 text-white'
                         : 'bg-slate-100 text-slate-600'
                       }`}
@@ -498,8 +498,8 @@ export function AdminMediaPage() {
           <p className="text-sm text-slate-500">Chargement de la médiathèque...</p>
         </div>
       ) : mediaList.length === 0 ? (
-        <div className="py-20 text-center bg-white rounded-3xl border border-slate-200/90 shadow-xs p-8 space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+        <div className="py-20 text-center bg-white rounded-lg border border-slate-200/90 p-8 space-y-4">
+          <div className="w-16 h-16 rounded-lg bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
             <ImageIcon className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -519,7 +519,7 @@ export function AdminMediaPage() {
               }
               setIsUploadModalOpen(true);
             }}
-            className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:shadow"
+            className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs px-4 py-2.5 rounded-md hover:shadow"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Ajouter une image</span>
@@ -536,9 +536,9 @@ export function AdminMediaPage() {
             return (
               <div
                 key={item.id}
-                className={`group relative bg-white rounded-2xl border overflow-hidden transition-all duration-200 flex flex-col justify-between shadow-xs ${isSelected
+                className={`group relative bg-white rounded-lg border overflow-hidden transition-all duration-200 flex flex-col justify-between ${isSelected
                     ? 'border-emerald-500 ring-2 ring-emerald-500/30'
-                    : 'border-slate-200/90 hover:border-slate-300 hover:shadow-md'
+                    : 'border-slate-200/90 hover:border-slate-300'
                   }`}
               >
                 {/* Checkbox for bulk selection */}
@@ -548,14 +548,14 @@ export function AdminMediaPage() {
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => toggleSelectItem(item.id)}
-                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 bg-white cursor-pointer shadow-xs"
+                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 bg-white cursor-pointer"
                     />
                   </div>
                 )}
 
                 {/* Folder Badge */}
                 <div className="absolute top-2.5 right-2.5 z-20">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/95 text-slate-700 border border-slate-200/80 shadow-2xs backdrop-blur-md">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-white/95 text-slate-700 border border-slate-200/80">
                     {item.folder}
                   </span>
                 </div>
@@ -570,7 +570,7 @@ export function AdminMediaPage() {
                     alt={item.name}
                     loading="lazy"
                     onError={(e) => handleImageError(e, item.folder)}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover transition-transform duration-300"
                   />
 
                   {/* Hover Overlay Actions */}
@@ -580,7 +580,7 @@ export function AdminMediaPage() {
                         e.stopPropagation();
                         setInspectItem(item);
                       }}
-                      className="p-2 rounded-xl bg-white text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer shadow-xs"
+                      className="p-2 rounded-md bg-white text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
                       title="Inspecter"
                     >
                       <Eye className="w-4 h-4" />
@@ -590,7 +590,7 @@ export function AdminMediaPage() {
                         e.stopPropagation();
                         copyToClipboard(item.relative_url || item.url, item.id);
                       }}
-                      className="p-2 rounded-xl bg-white text-emerald-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-xs"
+                      className="p-2 rounded-md bg-white text-emerald-700 hover:bg-slate-100 transition-colors cursor-pointer"
                       title="Copier l'URL"
                     >
                       {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -601,7 +601,7 @@ export function AdminMediaPage() {
                           e.stopPropagation();
                           setItemToDelete(item);
                         }}
-                        className="p-2 rounded-xl bg-white text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer shadow-xs"
+                        className="p-2 rounded-md bg-white text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                         title="Supprimer"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -620,7 +620,7 @@ export function AdminMediaPage() {
                     {item.file_name}
                   </p>
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-500">
+                  <div className="flex items-center justify-between text-xs text-slate-500">
                     <span>{item.formatted_size}</span>
                     {item.usage_count > 0 ? (
                       <span className="text-emerald-700 font-medium flex items-center gap-0.5" title={`Utilisé dans ${item.usage_count} élément(s)`}>
@@ -628,7 +628,7 @@ export function AdminMediaPage() {
                         <span>{item.usage_count} util.</span>
                       </span>
                     ) : (
-                      <span className="text-slate-400 text-[10px]">Non lié</span>
+                      <span className="text-slate-400 text-xs">Non lié</span>
                     )}
                   </div>
                 </div>
@@ -638,10 +638,10 @@ export function AdminMediaPage() {
         </div>
       ) : (
         /* TABLE LIST VIEW */
-        <div className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs">
+        <div className="bg-white rounded-lg border border-slate-200/90 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider font-bold text-[10px] border-b border-slate-200">
+              <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
                   <th className="p-4 w-10">
                     <input
@@ -688,7 +688,7 @@ export function AdminMediaPage() {
                       <td className="p-4">
                         <div
                           onClick={() => setInspectItem(item)}
-                          className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden cursor-pointer shrink-0 relative shadow-2xs"
+                          className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden cursor-pointer shrink-0 relative"
                         >
                           <img
                             src={previewUrl}
@@ -706,13 +706,13 @@ export function AdminMediaPage() {
                           >
                             {item.file_name}
                           </p>
-                          <p className="text-[10px] text-slate-400 font-mono truncate max-w-xs">
+                          <p className="text-xs text-slate-400 font-mono truncate max-w-xs">
                             {item.relative_url}
                           </p>
                         </div>
                       </td>
                       <td className="p-4">
-                        <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200/60">
+                        <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
                           {item.folder_label || item.folder}
                         </span>
                       </td>
@@ -768,8 +768,8 @@ export function AdminMediaPage() {
       {/* 1. INSPECT IMAGE DETAILS MODAL */}
       {/* ========================================================================= */}
       {inspectItem && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200/90 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200/90 rounded-lg max-w-2xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -789,7 +789,7 @@ export function AdminMediaPage() {
             {/* Modal Body */}
             <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
               {/* Full Image Preview */}
-              <div className="w-full h-64 sm:h-72 rounded-2xl bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center relative shadow-2xs pattern-checkered">
+              <div className="w-full h-64 sm:h-72 rounded-lg bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center relative pattern-checkered">
                 <img
                   src={getImageUrl(inspectItem.relative_url || inspectItem.url)}
                   alt={inspectItem.name}
@@ -800,20 +800,20 @@ export function AdminMediaPage() {
 
               {/* Information Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-                  <p className="text-[10px] text-slate-500 uppercase font-semibold">Nom du fichier</p>
+                <div className="p-3 bg-slate-50 rounded-md border border-slate-200/80">
+                  <p className="text-xs text-slate-500 font-semibold">Nom du fichier</p>
                   <p className="text-xs font-bold text-slate-900 truncate mt-0.5" title={inspectItem.file_name}>
                     {inspectItem.file_name}
                   </p>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-                  <p className="text-[10px] text-slate-500 uppercase font-semibold">Dossier</p>
+                <div className="p-3 bg-slate-50 rounded-md border border-slate-200/80">
+                  <p className="text-xs text-slate-500 font-semibold">Dossier</p>
                   <p className="text-xs font-bold text-emerald-700 mt-0.5 capitalize">
                     {inspectItem.folder}
                   </p>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-                  <p className="text-[10px] text-slate-500 uppercase font-semibold">Taille</p>
+                <div className="p-3 bg-slate-50 rounded-md border border-slate-200/80">
+                  <p className="text-xs text-slate-500 font-semibold">Taille</p>
                   <p className="text-xs font-bold text-slate-900 mt-0.5">{inspectItem.formatted_size}</p>
                 </div>
               </div>
@@ -826,7 +826,7 @@ export function AdminMediaPage() {
                     type="text"
                     readOnly
                     value={inspectItem.relative_url || inspectItem.url}
-                    className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700 focus:outline-none"
+                    className="flex-1 px-3.5 py-2 rounded-md bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700 focus:outline-none"
                   />
                   <Button
                     variant="primary"
@@ -851,7 +851,7 @@ export function AdminMediaPage() {
                     {inspectItem.used_in.map((u, i) => (
                       <div
                         key={i}
-                        className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs"
+                        className="flex items-center justify-between p-3 rounded-md bg-slate-50 border border-slate-200 text-xs"
                       >
                         <div>
                           <span className="font-bold text-emerald-700">{u.entity} : </span>
@@ -872,7 +872,7 @@ export function AdminMediaPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-slate-500 italic p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <p className="text-xs text-slate-500 italic p-3 bg-slate-50 rounded-md border border-slate-200">
                     Cette image n'est actuellement liée à aucun article, projet ou service.
                   </p>
                 )}
@@ -894,7 +894,7 @@ export function AdminMediaPage() {
                   <span>Supprimer définitivement</span>
                 </Button>
               ) : (
-                <div className="text-[11px] text-slate-500 italic">
+                <div className="text-xs text-slate-500 italic">
                   Fichier système protégé
                 </div>
               )}
@@ -916,8 +916,8 @@ export function AdminMediaPage() {
       {/* 2. UPLOAD MODAL */}
       {/* ========================================================================= */}
       {isUploadModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200/90 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200/90 rounded-lg max-w-lg w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <UploadCloud className="w-5 h-5 text-emerald-700" />
@@ -947,7 +947,7 @@ export function AdminMediaPage() {
                 <select
                   value={uploadFolder}
                   onChange={(e) => setUploadFolder(e.target.value as any)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3.5 py-2.5 rounded-md bg-slate-50 border border-slate-200 text-xs text-slate-800 font-semibold focus:outline-none focus:border-emerald-500"
                 >
                   <option value="services">Services et catalogue</option>
                   <option value="projects">Projets et réalisations</option>
@@ -975,16 +975,16 @@ export function AdminMediaPage() {
                 }}
                 onDragOver={(e) => e.preventDefault()}
                 onClick={() => !isUploading && uploadInputRef.current?.click()}
-                className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center cursor-pointer bg-slate-50 hover:bg-emerald-50/30 transition-colors space-y-2"
+                className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-lg p-6 text-center cursor-pointer bg-slate-50 hover:bg-emerald-50/30 transition-colors space-y-2"
               >
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto border border-emerald-200/60">
+                <div className="w-12 h-12 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto border border-emerald-200/60">
                   <UploadCloud className="w-6 h-6" />
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-800">
                     Cliquez ou glissez-déposez vos images ici
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 mt-0.5">
                     PNG, JPG, WebP, SVG, AVIF (plusieurs fichiers acceptés)
                   </p>
                 </div>
@@ -1001,27 +1001,27 @@ export function AdminMediaPage() {
                     return (
                       <div
                         key={i}
-                        className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs"
+                        className="flex items-center justify-between p-2.5 rounded-md bg-slate-50 border border-slate-200 text-xs"
                       >
                         <span className="text-slate-800 font-medium truncate max-w-xs">
                           {file.name}
                         </span>
                         <div className="flex items-center gap-2 shrink-0">
                           {status === 'pending' && (
-                            <span className="text-[10px] text-slate-500">Prêt</span>
+                            <span className="text-xs text-slate-500">Prêt</span>
                           )}
                           {status === 'uploading' && (
-                            <span className="text-[10px] text-emerald-700 flex items-center gap-1 font-semibold">
+                            <span className="text-xs text-emerald-700 flex items-center gap-1 font-semibold">
                               <Spinner size="sm" /> En cours...
                             </span>
                           )}
                           {status === 'done' && (
-                            <span className="text-[10px] text-emerald-700 flex items-center gap-1 font-bold">
+                            <span className="text-xs text-emerald-700 flex items-center gap-1 font-bold">
                               <Check className="w-3.5 h-3.5" /> Fait
                             </span>
                           )}
                           {status === 'error' && (
-                            <span className="text-[10px] text-rose-600 font-bold">Erreur</span>
+                            <span className="text-xs text-rose-600 font-bold">Erreur</span>
                           )}
                         </div>
                       </div>
@@ -1050,7 +1050,7 @@ export function AdminMediaPage() {
                 size="sm"
                 disabled={uploadQueue.length === 0 || isUploading}
                 onClick={executeUploadQueue}
-                className="text-xs font-semibold rounded-xl"
+                className="text-xs font-semibold rounded-md"
               >
                 {isUploading ? <Spinner size="sm" className="mr-1.5" /> : <UploadCloud className="w-3.5 h-3.5 mr-1.5" />}
                 <span>Démarrer le téléversement ({uploadQueue.length})</span>
@@ -1064,9 +1064,9 @@ export function AdminMediaPage() {
       {/* 3. DELETE CONFIRMATION MODAL */}
       {/* ========================================================================= */}
       {itemToDelete && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200/90 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl p-6 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200/90 rounded-lg max-w-md w-full overflow-hidden shadow-2xl p-6 space-y-4">
+            <div className="w-12 h-12 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
               <Trash2 className="w-6 h-6" />
             </div>
             <div className="text-center space-y-1">
@@ -1078,7 +1078,7 @@ export function AdminMediaPage() {
                 <span className="font-bold text-slate-900">{itemToDelete.file_name}</span> ?
               </p>
               {itemToDelete.usage_count > 0 && (
-                <div className="mt-2 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium text-left">
+                <div className="mt-2 p-2.5 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium text-left">
                   Attention : cette image est utilisée dans {itemToDelete.usage_count} élément(s) du site.
                 </div>
               )}
@@ -1099,7 +1099,7 @@ export function AdminMediaPage() {
                 size="sm"
                 disabled={deleting}
                 onClick={handleDeleteItem}
-                className="text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded-xl"
+                className="text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded-md"
               >
                 {deleting ? <Spinner size="sm" className="mr-1.5" /> : <Trash2 className="w-3.5 h-3.5 mr-1.5" />}
                 <span>Supprimer</span>
@@ -1113,9 +1113,9 @@ export function AdminMediaPage() {
       {/* 4. BULK DELETE CONFIRMATION MODAL */}
       {/* ========================================================================= */}
       {isBulkDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200/90 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl p-6 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200/90 rounded-lg max-w-md w-full overflow-hidden shadow-2xl p-6 space-y-4">
+            <div className="w-12 h-12 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
               <Trash2 className="w-6 h-6" />
             </div>
             <div className="text-center space-y-1">
@@ -1143,7 +1143,7 @@ export function AdminMediaPage() {
                 size="sm"
                 disabled={bulkDeleting}
                 onClick={handleBulkDelete}
-                className="text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded-xl"
+                className="text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded-md"
               >
                 {bulkDeleting ? <Spinner size="sm" className="mr-1.5" /> : <Trash2 className="w-3.5 h-3.5 mr-1.5" />}
                 <span>Confirmer ({selectedIds.length})</span>

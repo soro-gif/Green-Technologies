@@ -24,7 +24,7 @@ export function Header() {
           {isAuthenticated && user ? (
             <Link
               to="/dashboard-test"
-              className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-white font-medium transition-colors"
+              className="flex items-center space-x-2 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-white font-medium transition-colors"
             >
               <User className="w-3.5 h-3.5 text-emerald-400" />
               <span>{user.name.split(' ')[0]} ({user.role})</span>
@@ -32,7 +32,7 @@ export function Header() {
           ) : (
             <Link
               to="/login"
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs text-white font-semibold transition-colors"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-xs text-white font-semibold transition-colors"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Connexion</span>

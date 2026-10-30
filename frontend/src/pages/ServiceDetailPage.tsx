@@ -12,11 +12,10 @@ import {
 import { servicesApi } from '../api';
 import type { Service } from '../types/models';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
 import { Spinner } from '../components/ui/Spinner';
 import { ErrorState } from '../components/ui/ErrorState';
-import { getImageUrl, handleImageError } from '../utils/image';
+import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
 
 export function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -71,7 +70,7 @@ export function ServiceDetailPage() {
   return (
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 text-sm font-medium text-slate-500 mb-6 flex-wrap">
+        <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
           <Link to="/" className="hover:text-emerald-700">
             Accueil
           </Link>
@@ -96,30 +95,29 @@ export function ServiceDetailPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white overflow-hidden rounded-3xl border border-slate-200/80 shadow-sm">
+            <div className="bg-white overflow-hidden rounded-lg border border-slate-200/80">
               {/* Cover Image */}
               <div className="relative h-64 sm:h-80 w-full bg-slate-950 overflow-hidden">
                 <img
-                  src={getImageUrl((service as any).image_url || service.image, service.slug || service.category?.slug)}
+                  src={getImageUrl((service as any).image_url || service.image, service.category?.slug || service.slug)}
                   alt={service.title}
-                  onError={(e) => handleImageError(e, service.slug || service.category?.slug)}
-                  className="w-full h-full object-cover"
+                  onError={(e) => handleImageError(e, service.category?.slug || service.slug)}
+                  className={`w-full h-full ${imageFitClass(getImageUrl((service as any).image_url || service.image, service.category?.slug || service.slug))}`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                 <div className="absolute bottom-5 left-6 right-6 flex items-center justify-between">
-                  <span className="text-xs font-bold text-white bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-md">
+                  <span className="text-xs font-bold text-white bg-slate-900/90 px-3.5 py-1.5 rounded-md">
                     {service.category?.name || 'Prestation Technique'}
                   </span>
                 </div>
               </div>
 
               <div className="p-6 sm:p-10 space-y-6">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display">
+                <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
                   {service.title}
                 </h1>
 
                 {service.summary && (
-                  <p className="text-base sm:text-lg font-medium text-emerald-900 bg-emerald-50/70 p-5 rounded-2xl border border-emerald-100 leading-relaxed">
+                  <p className="text-base sm:text-lg font-medium text-emerald-900 bg-emerald-50/70 p-5 rounded-lg border border-emerald-100 leading-relaxed">
                     {service.summary}
                   </p>
                 )}
@@ -137,7 +135,7 @@ export function ServiceDetailPage() {
                     {service.features.map((feat, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-800"
+                        className="flex items-start gap-3 p-3.5 rounded-md bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-800"
                       >
                         <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{feat}</span>
@@ -152,7 +150,6 @@ export function ServiceDetailPage() {
 
           <div className="space-y-6">
             <Card className="p-6 sm:p-8 bg-slate-900 text-white border border-slate-800 space-y-6">
-              <Badge variant="orange">Chiffrage express</Badge>
               <h3 className="text-2xl font-bold font-display">Besoin de cette prestation ?</h3>
               <p className="text-sm text-slate-300 leading-relaxed">
                 Remplissez notre formulaire pour recevoir un devis et une étude technique sous 48h.
@@ -163,7 +160,7 @@ export function ServiceDetailPage() {
                   variant="accent"
                   size="md"
                   leftIcon={<FileText className="w-5 h-5" />}
-                  className="w-full font-bold shadow-lg text-base py-3"
+                  className="w-full font-bold text-base py-3"
                 >
                   Demander un devis
                 </Button>
@@ -186,7 +183,7 @@ export function ServiceDetailPage() {
             </Card>
 
             <Card className="p-6 bg-white space-y-4">
-              <h4 className="text-base font-bold text-slate-900 font-display uppercase tracking-wider">
+              <h4 className="text-base font-bold text-slate-900 font-displayr">
                 Autres prestations
               </h4>
               <p className="text-sm text-slate-600">

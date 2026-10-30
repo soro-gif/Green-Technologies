@@ -101,16 +101,16 @@ export function UserProfilePage() {
         </p>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+      <div className="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 space-y-6">
         {/* Account Info Header */}
-        <div className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-700 text-white font-extrabold flex items-center justify-center text-lg shadow-xs">
+        <div className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+          <div className="w-12 h-12 rounded-lg bg-emerald-700 text-white font-extrabold flex items-center justify-center text-lg">
             {user?.name.charAt(0).toUpperCase()}
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-medium text-slate-900">{user?.name}</h2>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+              <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                 {user?.role_label || 'Utilisateur'}
               </span>
             </div>
@@ -119,14 +119,14 @@ export function UserProfilePage() {
         </div>
 
         {successMessage && (
-          <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-semibold flex items-center gap-2">
+          <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-md text-emerald-800 text-xs font-semibold flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>{successMessage}</span>
           </div>
         )}
 
         {serverError && (
-          <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-medium">
+          <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-md text-rose-700 text-xs font-medium">
             {serverError}
           </div>
         )}

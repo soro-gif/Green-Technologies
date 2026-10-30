@@ -11,10 +11,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, error, helperText, className = '', id, ...props }, ref) => {
     const textareaId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
 
+    const errorId = error && textareaId ? `${textareaId}-error` : undefined;
+
     return (
       <div className="w-full flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={textareaId} className="text-xs font-bold uppercase tracking-wider text-slate-700">
+          <label htmlFor={textareaId} className="text-sm font-semibold text-slate-700">
             {label} {props.required && <span className="text-red-500">*</span>}
           </label>
         )}
@@ -22,13 +24,13 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={textareaId}
           rows={props.rows || 4}
-          className={`w-full bg-white text-slate-900 placeholder:text-slate-400 text-sm rounded-xl border border-slate-300 p-3.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 disabled:bg-slate-100 disabled:cursor-not-allowed shadow-sm ${
-            error ? 'border-red-400 focus:ring-red-400 focus:border-red-400' : ''
+          className={`w-full bg-white text-slate-900 placeholder:text-slate-500 text-base rounded-md border border-slate-300 p-3.5 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 disabled:bg-slate-100 disabled:cursor-not-allowed ${
+            error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''
           } ${className}`}
-          {...props}
+          aria-invalid={error ? true : undefined}          aria-describedby={errorId}          {...props}
         />
-        {error && <p className="text-xs text-red-600 font-medium">{error}</p>}
-        {!error && helperText && <p className="text-xs text-slate-500">{helperText}</p>}
+        {error && <p id={errorId} className="text-sm text-red-600 font-medium">{error}</p>}
+        {!error && helperText && <p className="text-sm text-slate-500">{helperText}</p>}
       </div>
     );
   }

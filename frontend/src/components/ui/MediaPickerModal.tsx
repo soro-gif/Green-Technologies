@@ -56,12 +56,12 @@ export function MediaPickerModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-4xl w-full h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4">
+      <div className="bg-slate-900 border border-slate-800 rounded-lg max-w-4xl w-full h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+            <div className="w-9 h-9 rounded-md bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
@@ -91,7 +91,7 @@ export function MediaPickerModal({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchMedia()}
-              className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
             />
           </div>
 
@@ -137,7 +137,7 @@ export function MediaPickerModal({
                   <div
                     key={item.id}
                     onClick={() => setSelectedItem(item)}
-                    className={`group relative rounded-xl border overflow-hidden cursor-pointer bg-slate-950 transition-all flex flex-col justify-between ${
+                    className={`group relative rounded-md border overflow-hidden cursor-pointer bg-slate-950 transition-all flex flex-col justify-between ${
                       isSelected
                         ? 'border-emerald-500 ring-2 ring-emerald-500/50 scale-[1.02]'
                         : 'border-slate-800 hover:border-slate-700'
@@ -160,10 +160,10 @@ export function MediaPickerModal({
                       )}
                     </div>
                     <div className="p-2 bg-slate-900 border-t border-slate-800/80">
-                      <p className="text-[11px] font-semibold text-slate-300 truncate">
+                      <p className="text-xs font-semibold text-slate-300 truncate">
                         {item.file_name}
                       </p>
-                      <p className="text-[10px] text-slate-500 mt-0.5">{item.formatted_size}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{item.formatted_size}</p>
                     </div>
                   </div>
                 );

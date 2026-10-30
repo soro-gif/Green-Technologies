@@ -58,14 +58,14 @@ export function Modal({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthStyles[maxWidth]} max-h-[90vh] flex flex-col bg-white rounded-2xl border border-slate-200 z-10 overflow-hidden shadow-2xl`}
+        className={`relative w-full ${maxWidthStyles[maxWidth]} max-h-[90vh] flex flex-col bg-white rounded-lg border border-slate-200 z-10 overflow-hidden shadow-2xl`}
       >
         {title && (
           <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 shrink-0">
             <h3 className="text-base font-bold text-slate-900 font-display">{title}</h3>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-700 rounded-lg p-1 transition-colors cursor-pointer"
+              className="text-slate-500 hover:text-slate-800 rounded-md p-2 -mr-2 transition-colors cursor-pointer"
               aria-label="Fermer la boîte de dialogue"
             >
               <X className="w-5 h-5" />

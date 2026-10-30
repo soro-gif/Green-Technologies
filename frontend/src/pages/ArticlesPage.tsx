@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Calendar, User as UserIcon, ArrowRight, Search } from 'lucide-react';
+import { Calendar, User as UserIcon, Search } from 'lucide-react';
 import { articlesApi, categoriesApi } from '../api';
 import type { Article, Category } from '../types/models';
 import type { PaginationMeta } from '../types/api';
 import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
 import { Card } from '../components/ui/Card';
+import { PageHeader } from '../components/ui/PageHeader';
 import { Pagination } from '../components/ui/Pagination';
 import { Spinner } from '../components/ui/Spinner';
 import { EmptyState } from '../components/ui/EmptyState';
-import { getImageUrl, handleImageError } from '../utils/image';
+import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
 
 export function ArticlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,43 +83,37 @@ export function ArticlesPage() {
   };
 
   return (
-    <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-display tracking-tight">
-            Publications et études sectorielles
-          </h1>
-          <p className="text-base sm:text-lg text-slate-600">
-            Retrouvez les dernières avancées en énergie renouvelable, hydraulique et BTP durable.
-          </p>
-        </div>
+        <div className="bg-slate-50 min-h-[80vh]">
+      <PageHeader
+        title="Publications et études"
+        description="Retrouvez les dernières avancées en énergie renouvelable, hydraulique et BTP durable."
+      />
 
-        {/* Filter Bar */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm mb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="sm:col-span-2">
-              <Input
-                placeholder="Rechercher un article ou un thème technique..."
-                value={search}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                leftIcon={<Search className="w-5 h-5" />}
-              />
-            </div>
-
-            <div>
-              <Select
-                value={categoryId}
-                onChange={(e) => handleCategoryChange(e.target.value)}
-              >
-                <option value="">Tous les domaines</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16">
+{/* Filter Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          <div className="sm:col-span-2">
+            <Input
+              aria-label="Rechercher un article"
+              placeholder="Rechercher un article ou un thème technique"
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              leftIcon={<Search className="w-5 h-5" />}
+            />
           </div>
+
+          <Select
+            aria-label="Filtrer par domaine"
+            value={categoryId}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+          >
+            <option value="">Tous les domaines</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </Select>
         </div>
 
         {loading ? (
@@ -133,68 +128,63 @@ export function ArticlesPage() {
         ) : (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((art) => (
-                <Card
-                  key={art.id}
-                  hoverable
-                  className="flex flex-col justify-between overflow-hidden p-0 border-slate-200 group bg-white shadow-xs hover:shadow-md transition-all"
-                >
-                  <div>
-                    <div className="h-52 w-full overflow-hidden bg-slate-100 relative">
-                      <img
-                        src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
-                        alt={art.title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
-                      />
-                      {art.category?.name && (
-                        <span className="absolute top-3 left-3 px-3 py-1 rounded-md text-xs font-bold bg-slate-900/85 text-white backdrop-blur-xs">
-                          {art.category.name}
-                        </span>
-                      )}
-                    </div>
+              {articles.map((art) => {
+                const fallbackKey = art.category?.slug || art.category?.name;
+                const itemKey = art.slug || art.id || art.title;
+                const imageUrl = getImageUrl(art.cover_image, fallbackKey, itemKey);
 
-                    <div className="p-6">
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                          {art.category?.name || 'Actualité'}
-                        </span>
-                        {art.published_at && (
-                          <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5 ml-auto">
-                            <Calendar className="w-4 h-4 text-slate-400" />
-                            <span>{new Date(art.published_at).toLocaleDateString('fr-FR')}</span>
-                          </span>
+                return (
+                  <Card key={art.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
+                    <div>
+                      <img
+                        src={imageUrl}
+                        alt={art.title}
+                        width={640}
+                        height={400}
+                        loading="lazy"
+                        onError={(e) => handleImageError(e, fallbackKey, itemKey)}
+                        className={`w-full aspect-[16/10] bg-slate-100 ${imageFitClass(imageUrl)}`}
+                      />
+
+                      <div className="p-6">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-600 mb-1.5">
+                          <span>{art.category?.name || 'Actualité'}</span>
+                          {art.published_at && (
+                            <span className="inline-flex items-center gap-1.5">
+                              <Calendar className="w-4 h-4 text-slate-500" />
+                              {new Date(art.published_at).toLocaleDateString('fr-FR')}
+                            </span>
+                          )}
+                        </div>
+
+                        <h2 className="text-xl font-bold text-slate-900 font-display mb-2 line-clamp-2">
+                          {art.title}
+                        </h2>
+
+                        <p className="text-slate-600 leading-relaxed line-clamp-3">
+                          {art.excerpt || art.content}
+                        </p>
+
+                        {art.author && (
+                          <p className="flex items-center gap-2 text-sm text-slate-600 mt-3">
+                            <UserIcon className="w-4 h-4 text-slate-500" />
+                            <span>Rédigé par {art.author.name}</span>
+                          </p>
                         )}
                       </div>
-
-                      <h3 className="text-xl font-bold text-slate-900 font-display mb-2.5 group-hover:text-emerald-700 transition-colors line-clamp-2">
-                        {art.title}
-                      </h3>
-
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4">
-                        {art.excerpt || art.content}
-                      </p>
-
-                      {art.author && (
-                        <div className="flex items-center gap-2 text-sm text-slate-500 pt-3 border-t border-slate-100">
-                          <UserIcon className="w-4 h-4 text-slate-400" />
-                          <span>Rédigé par {art.author.name}</span>
-                        </div>
-                      )}
                     </div>
-                  </div>
 
-                  <div className="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
-                    <Link
-                      to={`/actualites/${art.slug}`}
-                      className="text-sm font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1.5 group/link"
-                    >
-                      <span>Lire l'article</span>
-                      <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </Card>
-              ))}
+                    <div className="px-6 pb-6">
+                      <Link
+                        to={`/actualites/${art.slug}`}
+                        className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
+                      >
+                        Lire l'article
+                      </Link>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
 
             <Pagination meta={meta} onPageChange={handlePageChange} className="mt-8" />

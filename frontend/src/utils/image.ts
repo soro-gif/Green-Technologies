@@ -160,6 +160,14 @@ export function getFallbackImage(
 }
 
 /**
+ * Les PNG du catalogue sont des photos produit sur fond blanc : on les montre entières,
+ * alors que les photos de terrain remplissent leur cadre.
+ */
+export function imageFitClass(src: string): string {
+  return /\.png($|\?)/i.test(src) ? 'object-contain bg-white p-3' : 'object-cover';
+}
+
+/**
  * Safe Image error handler that replaces failed src with a distinct local fallback
  */
 export function handleImageError(

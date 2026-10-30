@@ -11,8 +11,10 @@ import {
 import { servicesApi, projectsApi, testimonialsApi, articlesApi, categoriesApi } from '../api';
 import type { Service, Project, Testimonial, Article } from '../types/models';
 import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
-import { getImageUrl, handleImageError } from '../utils/image';
+import { ServiceCard } from '../components/ui/ServiceCard';
+import { StratumEdge } from '../components/ui/StratumEdge';
+import { POLES } from '../data/poles';
+import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
 
 /*
   Coupe de forage : le tuyau part de la pompe visible sur forage.jpg.
@@ -20,77 +22,6 @@ import { getImageUrl, handleImageError } from '../utils/image';
   toute sa largeur et s'ancre en bas, donc ce repère reste valable à toute taille.
 */
 const PUMP_X = '37%';
-
-const strata = [
-  {
-    title: 'Énergie solaire',
-    slug: 'energie-solaire',
-    layer: 'Sur le terrain',
-    image: '/solaire.jpg',
-    desc: 'Centrales photovoltaïques, pompage solaire autonome, éclairage public et kits pour sites isolés.',
-    features: ['Pompage solaire immergé', 'Micro-centrales hybrides', 'Onduleurs industriels'],
-    band: 'bg-emerald-600 text-white',
-    muted: 'text-emerald-100',
-    edge: 'var(--color-emerald-600)',
-    link: 'text-white',
-  },
-  {
-    title: 'Agrotechnologies',
-    slug: 'agrotechnologies',
-    layer: 'Dans la terre arable',
-    image: '/agriculture.jpg',
-    desc: 'Irrigation goutte-à-goutte, serres automatisées, mécanisation agricole et valorisation des sols.',
-    features: ['Irrigation goutte-à-goutte', 'Serres climatisées', 'Automatisation hydrique'],
-    band: 'bg-pousse text-slate-900',
-    muted: 'text-slate-700',
-    edge: 'var(--color-pousse)',
-    link: 'text-slate-900',
-  },
-  {
-    title: 'BTP et génie civil',
-    slug: 'btp-genie-civil',
-    layer: 'Dans la latérite',
-    image: '/btp.jpg',
-    desc: 'Bâtiments professionnels et industriels, voiries, pistes rurales et ouvrages d\'art.',
-    features: ['Ouvrages béton armé', 'Génie civil durable', 'Pistes de désenclavement'],
-    band: 'bg-laterite text-white',
-    muted: 'text-orange-100',
-    edge: 'var(--color-laterite)',
-    link: 'text-white',
-  },
-  {
-    title: 'Eau et hydraulique',
-    slug: 'eau-hydraulique',
-    layer: 'Dans la nappe',
-    image: '/Fontaine.png',
-    desc: 'Forages industriels et villageois, châteaux d\'eau, réseaux d\'adduction d\'eau potable et assainissement.',
-    features: ['Forages gros débit', 'Châteaux d\'eau jusqu\'à 200 m³', 'Réseaux certifiés OMS'],
-    band: 'bg-sky-900 text-white',
-    muted: 'text-sky-100',
-    edge: 'var(--color-sky-900)',
-    link: 'text-white',
-  },
-];
-
-function StratumEdge({ color, raised = false }: { color: string; raised?: boolean }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 1440 24"
-      preserveAspectRatio="none"
-      className={`absolute left-0 w-full h-5 ${raised ? '-top-5' : 'top-0'}`}
-    >
-      <path
-        fill={color}
-        d={
-          raised
-            ? 'M0 24V14C180 4 320 18 520 12S860 2 1040 10 1320 18 1440 8V24Z'
-            : 'M0 0V10C200 20 340 6 540 12S880 22 1060 12 1320 4 1440 14V0Z'
-        }
-      />
-    </svg>
-  );
-}
 
 export function HomePage() {
   const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
@@ -242,12 +173,12 @@ export function HomePage() {
           style={{ left: PUMP_X, top: 'calc(var(--photo-h) - 6.3vw)', bottom: '3rem' }}
         />
 
-        {strata.map((stratum, index) => (
+        {POLES.map((stratum, index) => (
           <div key={stratum.slug} className={`relative ${stratum.band}`}>
             {index === 0 ? (
-              <StratumEdge color={stratum.edge} raised />
+              <StratumEdge color={stratum.edge} position="raised" />
             ) : (
-              <StratumEdge color={strata[index - 1].edge} />
+              <StratumEdge color={POLES[index - 1].edge} />
             )}
 
             {/* Repère du pôle sur le tuyau */}
@@ -275,7 +206,7 @@ export function HomePage() {
                   </ul>
                   <Link
                     to={`/domaines/${stratum.slug}`}
-                    className={`inline-flex items-center gap-2 mt-4 font-bold underline underline-offset-4 ${stratum.link}`}
+                    className="inline-flex items-center gap-2 mt-4 font-bold underline underline-offset-4"
                   >
                     <span>Découvrir ce pôle</span>
                     <ArrowRight className="w-4 h-4" />
@@ -288,7 +219,7 @@ export function HomePage() {
                   loading="lazy"
                   onError={(e) => handleImageError(e, stratum.slug)}
                   className={`hidden lg:block w-full h-36 rounded-md ${
-                    stratum.image.endsWith('.png') ? 'object-contain bg-white p-2' : 'object-cover'
+                    imageFitClass(stratum.image)
                   }`}
                 />
               </div>
@@ -331,39 +262,7 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredServices.map((service) => (
-                <Card key={service.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
-                  <div>
-                    <img
-                      src={getImageUrl((service as any).image_url || service.image, service.slug || service.category?.slug, service.slug || service.id || service.title)}
-                      alt={service.title}
-                      loading="lazy"
-                      className="h-44 w-full object-cover bg-slate-100"
-                      onError={(e) => handleImageError(e, service.slug || service.category?.slug, service.slug || service.id || service.title)}
-                    />
-
-                    <div className="p-6">
-                      <p className="text-sm text-slate-500 mb-1">{service.category?.name || 'Prestation'}</p>
-                      <h3 className="text-xl font-bold text-slate-900 font-display mb-2.5">
-                        {service.title}
-                      </h3>
-                      <p className="text-slate-600 leading-relaxed line-clamp-3">
-                        {service.summary || service.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="px-6 pb-6 flex items-center justify-between gap-4">
-                    <Link
-                      to={`/services/${service.slug}`}
-                      className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
-                    >
-                      Voir le détail
-                    </Link>
-                    <Link to="/devis" className="font-bold text-slate-700 hover:text-slate-900">
-                      Demander un devis
-                    </Link>
-                  </div>
-                </Card>
+                <ServiceCard key={service.id} service={service} categoryName={service.category?.name} />
               ))}
             </div>
           </div>
@@ -394,11 +293,11 @@ export function HomePage() {
               {featuredProjects.map((project, index) => (
                 <article key={project.id} className={index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}>
                   <img
-                    src={getImageUrl((project as any).image_url || project.image, project.slug || project.category?.slug, project.slug || project.id || project.title)}
+                    src={getImageUrl((project as any).image_url || project.image, project.category?.slug || project.slug, project.slug || project.id || project.title)}
                     alt={project.title}
                     loading="lazy"
                     className={`w-full object-cover rounded-md bg-slate-800 ${index === 0 ? 'h-56 lg:h-[420px]' : 'h-48'}`}
-                    onError={(e) => handleImageError(e, project.slug || project.category?.slug, project.slug || project.id || project.title)}
+                    onError={(e) => handleImageError(e, project.category?.slug || project.slug, project.slug || project.id || project.title)}
                   />
 
                   <div className="mt-4">

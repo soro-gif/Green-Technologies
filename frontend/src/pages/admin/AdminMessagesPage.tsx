@@ -107,9 +107,9 @@ export function AdminMessagesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-lg">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-sky-50 text-sky-600 rounded-2xl border border-sky-100">
+          <div className="p-3 bg-sky-50 text-sky-600 rounded-lg border border-sky-100">
             <Mail className="w-6 h-6" />
           </div>
           <div>
@@ -134,7 +134,7 @@ export function AdminMessagesPage() {
         </Button>
       </div>
 
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-lg bg-white border border-slate-200/90 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
             placeholder="Rechercher par nom, email, sujet..."
@@ -163,7 +163,7 @@ export function AdminMessagesPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -188,7 +188,7 @@ export function AdminMessagesPage() {
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-900 text-xs">{m.full_name}</span>
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
                         m.status === 'unread'
                           ? 'bg-sky-50 text-sky-800 border-sky-200'
                           : m.status === 'replied'
@@ -202,7 +202,7 @@ export function AdminMessagesPage() {
 
                   <div className="text-xs space-y-1">
                     <p className="font-medium text-emerald-700">{m.subject}</p>
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                    <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
                       <span>{m.email}</span>
                       <span>{new Date(m.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
@@ -238,7 +238,7 @@ export function AdminMessagesPage() {
             {/* Desktop Table (>=md) */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                   <tr>
                     <th className="px-4 py-3">Expéditeur</th>
                     <th className="px-4 py-3">Sujet</th>
@@ -252,12 +252,12 @@ export function AdminMessagesPage() {
                     <tr key={m.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-4 py-3 text-slate-900 font-semibold">
                         <div>{m.full_name}</div>
-                        <div className="text-[10px] text-slate-500 font-normal">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
+                        <div className="text-xs text-slate-500 font-normal">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
                       </td>
                       <td className="px-4 py-3 text-slate-700 font-medium">{m.subject}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
                             m.status === 'unread'
                               ? 'bg-sky-50 text-sky-800 border-sky-200'
                               : m.status === 'replied'
@@ -268,7 +268,7 @@ export function AdminMessagesPage() {
                           {m.status_label || m.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-slate-500 text-[11px]">
+                      <td className="px-4 py-3 text-slate-500 text-xs">
                         {new Date(m.created_at).toLocaleDateString('fr-FR')}
                       </td>
                       <td className="px-4 py-3 text-right">
@@ -317,19 +317,19 @@ export function AdminMessagesPage() {
       >
         {selectedMsg && (
           <form onSubmit={handleSaveStatus} className="space-y-4 text-xs">
-            <div className="p-3.5 bg-slate-50 rounded-xl space-y-1.5 border border-slate-100">
+            <div className="p-3.5 bg-slate-50 rounded-md space-y-1.5 border border-slate-100">
               <div className="flex items-center justify-between">
                 <p className="font-bold text-slate-900 text-sm">{selectedMsg.full_name}</p>
-                <span className="font-mono text-[10px] text-slate-500">
+                <span className="font-mono text-xs text-slate-500">
                   {new Date(selectedMsg.created_at).toLocaleDateString('fr-FR')}
                 </span>
               </div>
               <p className="text-slate-600 font-medium">{selectedMsg.email} {selectedMsg.phone ? `• ${selectedMsg.phone}` : ''}</p>
               <div className="pt-2 border-t border-slate-200 mt-2">
-                <span className="font-bold text-slate-700 uppercase text-[10px] tracking-wider block mb-1">
+                <span className="font-bold text-slate-700 text-xs block mb-1">
                   Message reçu :
                 </span>
-                <div className="max-h-32 overflow-y-auto p-2.5 bg-white rounded-lg border border-slate-200 text-slate-800 whitespace-pre-line leading-relaxed text-[11px]">
+                <div className="max-h-32 overflow-y-auto p-2.5 bg-white rounded-lg border border-slate-200 text-slate-800 whitespace-pre-line leading-relaxed text-xs">
                   {selectedMsg.message}
                 </div>
               </div>
@@ -364,7 +364,7 @@ export function AdminMessagesPage() {
                 size="sm"
                 isLoading={saving}
                 leftIcon={<CheckCircle2 className="w-4 h-4" />}
-                className="font-bold shadow-md"
+                className="font-bold"
               >
                 Valider le statut du message
               </Button>

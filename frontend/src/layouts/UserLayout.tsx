@@ -43,7 +43,7 @@ export function UserLayout() {
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-['Plus_Jakarta_Sans']">
       <ScrollToTop />
       {/* Top Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo & Portal Label */}
@@ -60,7 +60,7 @@ export function UserLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors ${
+                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-bold transition-colors ${
                     isActive(item.path)
                       ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -88,7 +88,7 @@ export function UserLayout() {
                 </div>
                 <div className="text-left">
                   <p className="text-xs font-bold text-slate-900 leading-tight">{user?.name}</p>
-                  <p className="text-[10px] text-slate-500 truncate max-w-[120px]">{user?.email}</p>
+                  <p className="text-xs text-slate-500 truncate max-w-[120px]">{user?.email}</p>
                 </div>
               </div>
               <button
@@ -116,14 +116,14 @@ export function UserLayout() {
         {/* Mobile Navigation Drawer */}
         {mobileOpen && (
           <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 space-y-3">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+            <div className="p-3 bg-slate-50 rounded-md border border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-sm">
                   {user?.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-900">{user?.name}</p>
-                  <p className="text-[10px] text-slate-500">{user?.email}</p>
+                  <p className="text-xs text-slate-500">{user?.email}</p>
                 </div>
               </div>
               <button
@@ -141,7 +141,7 @@ export function UserLayout() {
                   key={item.path}
                   to={item.path}
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-xs font-bold ${
                     isActive(item.path)
                       ? 'bg-emerald-50 text-emerald-800'
                       : 'text-slate-700 hover:bg-slate-100'

@@ -64,7 +64,7 @@ export function ArticleDetailPage() {
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm font-medium text-slate-500 mb-6 flex-wrap">
+        <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
           <Link to="/" className="hover:text-emerald-700">
             Accueil
           </Link>
@@ -87,11 +87,11 @@ export function ArticleDetailPage() {
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 font-display leading-tight">
             {article.title}
           </h1>
 
-          <div className="w-full h-72 sm:h-[420px] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-xs my-6 relative">
+          <div className="w-full h-72 sm:h-[420px] rounded-lg overflow-hidden bg-slate-100 border border-slate-200 my-6 relative">
             <img
               src={getImageUrl(article.cover_image, article.category?.slug || article.category?.name, article.slug || article.id || article.title)}
               alt={article.title}
@@ -113,7 +113,7 @@ export function ArticleDetailPage() {
           )}
 
           {article.excerpt && (
-            <p className="text-lg sm:text-xl font-medium text-slate-800 italic border-l-4 border-emerald-600 pl-5 py-2 leading-relaxed bg-slate-50/50 rounded-r-xl">
+            <p className="text-lg sm:text-xl font-medium text-slate-800 italic border-l-4 border-emerald-600 pl-5 py-2 leading-relaxed bg-slate-50/50 rounded-r-md">
               {article.excerpt}
             </p>
           )}

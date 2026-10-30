@@ -157,7 +157,7 @@ export function AdminServicesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-lg">
         <div>
           <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-display">
             Catalogue des Prestations
@@ -171,13 +171,13 @@ export function AdminServicesPage() {
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
-          className="shadow-sm font-semibold rounded-xl"
+          className=" font-semibold rounded-md"
         >
           Nouvelle Prestation
         </Button>
       </div>
 
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-lg bg-white border border-slate-200/90 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
             placeholder="Rechercher une prestation..."
@@ -207,7 +207,7 @@ export function AdminServicesPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -219,7 +219,7 @@ export function AdminServicesPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Visuel</th>
                   <th className="px-4 py-3">Titre</th>
@@ -234,7 +234,7 @@ export function AdminServicesPage() {
                   return (
                     <tr key={s.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-4 py-2.5">
-                        <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-2xs">
+                        <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                           <img
                             src={getImageUrl(srvImage, s.slug || s.category?.slug)}
                             alt={s.title}
@@ -245,13 +245,13 @@ export function AdminServicesPage() {
                       </td>
                       <td className="px-4 py-3 text-slate-900 font-semibold">{s.title}</td>
                       <td className="px-4 py-3 text-slate-600 font-medium">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200/60">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
                           {s.category?.name || 'Général'}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                          className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                             s.is_active
                               ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                               : 'bg-slate-100 text-slate-600 border-slate-200'
@@ -299,7 +299,7 @@ export function AdminServicesPage() {
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           {formError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 flex items-start gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
               <div className="text-xs font-medium">{formError}</div>
             </div>
@@ -328,7 +328,7 @@ export function AdminServicesPage() {
           />
 
           {/* Image Upload & Management Component */}
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
             <ImageUploadField
               label="Photo illustrative de la prestation"
               value={formData.image}
@@ -364,7 +364,7 @@ export function AdminServicesPage() {
               size="sm"
               isLoading={saving}
               leftIcon={<CheckCircle2 className="w-4 h-4" />}
-              className="font-bold shadow-md"
+              className="font-bold"
             >
               Valider et Enregistrer la prestation
             </Button>

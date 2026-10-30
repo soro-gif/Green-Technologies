@@ -107,9 +107,9 @@ export function AdminQuotesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-lg">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl border border-amber-100">
+          <div className="p-3 bg-amber-50 text-amber-600 rounded-lg border border-amber-100">
             <FileText className="w-6 h-6" />
           </div>
           <div>
@@ -135,7 +135,7 @@ export function AdminQuotesPage() {
       </div>
 
       {/* Filters */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="p-4 rounded-lg bg-white border border-slate-200/90 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="sm:col-span-2">
           <Input
             placeholder="Rechercher par référence, nom, email, ville..."
@@ -166,7 +166,7 @@ export function AdminQuotesPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -191,7 +191,7 @@ export function AdminQuotesPage() {
                   <div className="flex items-center justify-between">
                     <span className="font-mono font-bold text-sm text-emerald-700">{q.reference}</span>
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
                         q.status === 'pending'
                           ? 'bg-amber-50 text-amber-800 border-amber-200'
                           : q.status === 'accepted'
@@ -207,8 +207,8 @@ export function AdminQuotesPage() {
 
                   <div className="text-xs space-y-1">
                     <p className="font-bold text-slate-900">{q.full_name}</p>
-                    <p className="text-[11px] text-slate-500">{q.phone} • {q.email}</p>
-                    <div className="flex items-center justify-between pt-1 text-slate-500 text-[11px]">
+                    <p className="text-xs text-slate-500">{q.phone} • {q.email}</p>
+                    <div className="flex items-center justify-between pt-1 text-slate-500 text-xs">
                       <span>Ville : <strong className="text-slate-800">{q.city}</strong></span>
                       <span>{new Date(q.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
@@ -251,7 +251,7 @@ export function AdminQuotesPage() {
             {/* Desktop Table (>=md) */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                   <tr>
                     <th className="px-4 py-3">Réf.</th>
                     <th className="px-4 py-3">Client</th>
@@ -270,7 +270,7 @@ export function AdminQuotesPage() {
                       </td>
                       <td className="px-4 py-3 text-slate-900 font-semibold">
                         <div>{q.full_name}</div>
-                        <div className="text-[10px] text-slate-500 font-normal">{q.phone} • {q.email}</div>
+                        <div className="text-xs text-slate-500 font-normal">{q.phone} • {q.email}</div>
                       </td>
                       <td className="px-4 py-3 text-slate-600 font-medium">{q.city}</td>
                       <td className="px-4 py-3 text-slate-700 font-medium font-mono">
@@ -280,7 +280,7 @@ export function AdminQuotesPage() {
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
                             q.status === 'pending'
                               ? 'bg-amber-50 text-amber-800 border-amber-200'
                               : q.status === 'accepted'
@@ -293,7 +293,7 @@ export function AdminQuotesPage() {
                           {q.status_label || q.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-slate-500 text-[11px]">
+                      <td className="px-4 py-3 text-slate-500 text-xs">
                         {new Date(q.created_at).toLocaleDateString('fr-FR')}
                       </td>
                       <td className="px-4 py-3 text-right">
@@ -343,7 +343,7 @@ export function AdminQuotesPage() {
       >
         {selectedQuote && (
           <form onSubmit={handleSaveStatus} className="space-y-4 text-xs">
-            <div className="p-3.5 bg-slate-50 rounded-xl space-y-1.5 border border-slate-100">
+            <div className="p-3.5 bg-slate-50 rounded-md space-y-1.5 border border-slate-100">
               <div className="flex items-center justify-between">
                 <p className="font-bold text-slate-900 text-sm">{selectedQuote.full_name}</p>
                 <span className="font-bold text-emerald-700 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -352,14 +352,14 @@ export function AdminQuotesPage() {
               </div>
               <p className="text-slate-600 font-medium">{selectedQuote.phone} • {selectedQuote.email}</p>
               {selectedQuote.company && (
-                <p className="text-slate-500 text-[11px] font-semibold">Entreprise : {selectedQuote.company}</p>
+                <p className="text-slate-500 text-xs font-semibold">Entreprise : {selectedQuote.company}</p>
               )}
               {selectedQuote.details && (
                 <div className="pt-2 border-t border-slate-200 mt-2">
-                  <span className="font-bold text-slate-700 uppercase text-[10px] tracking-wider block mb-1">
+                  <span className="font-bold text-slate-700 text-xs block mb-1">
                     Cahier des charges et détails :
                   </span>
-                  <div className="max-h-32 overflow-y-auto p-2.5 bg-white rounded-lg border border-slate-200 text-slate-800 whitespace-pre-line leading-relaxed text-[11px]">
+                  <div className="max-h-32 overflow-y-auto p-2.5 bg-white rounded-lg border border-slate-200 text-slate-800 whitespace-pre-line leading-relaxed text-xs">
                     {selectedQuote.details}
                   </div>
                 </div>
@@ -396,7 +396,7 @@ export function AdminQuotesPage() {
                 size="sm"
                 isLoading={saving}
                 leftIcon={<CheckCircle2 className="w-4 h-4" />}
-                className="font-bold shadow-md"
+                className="font-bold"
               >
                 Valider le statut du devis
               </Button>

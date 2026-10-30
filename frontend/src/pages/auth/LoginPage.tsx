@@ -60,7 +60,7 @@ export function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center py-12 px-4 sm:px-6">
-      <div className="max-w-md w-full bg-white border border-slate-200/90 rounded-3xl p-8 sm:p-10 shadow-xl space-y-6">
+      <div className="max-w-md w-full bg-white border border-slate-200/90 rounded-lg p-8 sm:p-10 space-y-6">
         <div className="text-center space-y-2">
           <Logo size="md" className="justify-center mb-4" />
           <h1 className="text-2xl font-semibold text-slate-900 font-display tracking-tight">
@@ -72,7 +72,7 @@ export function LoginPage() {
         </div>
 
         {serverError && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700 text-xs font-medium">
+          <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-700 text-xs font-medium">
             <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{serverError}</span>
           </div>
@@ -80,7 +80,7 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Adresse Email Professionnelle
             </label>
             <div className="relative">
@@ -89,14 +89,14 @@ export function LoginPage() {
                 type="email"
                 placeholder="admin@greentechnologies.ci"
                 {...register('email')}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all shadow-sm"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
               />
             </div>
             {errors.email && <p className="text-red-600 text-xs mt-1 font-medium">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Mot de passe
             </label>
             <div className="relative">
@@ -105,7 +105,7 @@ export function LoginPage() {
                 type="password"
                 placeholder="••••••••"
                 {...register('password')}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all shadow-sm"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
               />
             </div>
             {errors.password && <p className="text-red-600 text-xs mt-1 font-medium">{errors.password.message}</p>}
@@ -117,7 +117,7 @@ export function LoginPage() {
             size="lg"
             isLoading={isSubmitting}
             leftIcon={<LogIn className="w-4 h-4" />}
-            className="w-full font-bold shadow-md mt-2"
+            className="w-full font-bold mt-2"
           >
             Se connecter
           </Button>

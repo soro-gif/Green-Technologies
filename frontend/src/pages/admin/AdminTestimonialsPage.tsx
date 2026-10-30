@@ -134,7 +134,7 @@ export function AdminTestimonialsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-lg">
         <div>
           <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-display">
             Avis et témoignages clients
@@ -148,13 +148,13 @@ export function AdminTestimonialsPage() {
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
-          className="shadow-sm font-semibold rounded-xl"
+          className=" font-semibold rounded-md"
         >
           Nouveau témoignage
         </Button>
       </div>
 
-      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-lg overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-20">
             <Spinner size="lg" />
@@ -166,7 +166,7 @@ export function AdminTestimonialsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+              <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3">Auteur</th>
                   <th className="px-4 py-3">Entreprise / Rôle</th>
@@ -187,7 +187,7 @@ export function AdminTestimonialsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                        className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                           t.is_published
                             ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                             : 'bg-slate-100 text-slate-600 border-slate-200'
@@ -241,7 +241,7 @@ export function AdminTestimonialsPage() {
       >
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           {formError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 animate-fadeIn">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 flex items-start gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-red-500" />
               <div className="text-xs font-medium">{formError}</div>
             </div>
@@ -294,7 +294,7 @@ export function AdminTestimonialsPage() {
               size="sm"
               isLoading={saving}
               leftIcon={<CheckCircle2 className="w-4 h-4" />}
-              className="font-bold shadow-md"
+              className="font-bold"
             >
               Valider et Enregistrer le témoignage
             </Button>

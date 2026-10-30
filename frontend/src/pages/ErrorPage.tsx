@@ -18,13 +18,13 @@ export function ErrorPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center space-y-6 bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
-        <div className="inline-flex p-4 bg-amber-500/10 text-amber-400 rounded-2xl border border-amber-500/20">
+      <div className="max-w-md w-full text-center space-y-6 bg-slate-900 border border-slate-800 p-8 rounded-lg shadow-2xl">
+        <div className="inline-flex p-4 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
           <AlertTriangle className="w-10 h-10" />
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-medium font-display text-white">
+          <h1 className="text-2xl font-bold font-display text-white">
             {isChunkError ? 'Mise à jour disponible' : 'Une erreur est survenue'}
           </h1>
           <p className="text-sm text-slate-400">

@@ -31,9 +31,9 @@ export function Logo({
   };
 
   const subSizes = {
-    sm: 'text-[8px] tracking-normal',
-    md: 'text-[9px] tracking-wide',
-    lg: 'text-[10px] tracking-wider',
+    sm: 'text-xs tracking-normal',
+    md: 'text-xs tracking-wide',
+    lg: 'text-xs tracking-wider',
     xl: 'text-xs tracking-wider',
   };
 

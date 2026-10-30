@@ -78,14 +78,14 @@ export function Navbar() {
             <div className="inline-flex items-center gap-2.5 sm:gap-4 flex-wrap">
               <a
                 href="tel:+2252722584016"
-                className="inline-flex items-center gap-1.5 hover:text-white transition-colors text-[11px] sm:text-xs"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors text-xs"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Fixe : +225 27 22 58 40 16</span>
               </a>
               <a
                 href="tel:+2250704901034"
-                className="hidden xs:inline-flex items-center gap-1.5 hover:text-white transition-colors text-[11px] sm:text-xs"
+                className="hidden xs:inline-flex items-center gap-1.5 hover:text-white transition-colors text-xs"
               >
                 <Smartphone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Tél : +225 07 04 90 10 34</span>
@@ -105,14 +105,14 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-3 text-xs font-medium shrink-0 ml-auto">
-            <span className="hidden sm:inline-block text-emerald-400 font-semibold text-[11px] sm:text-xs">
+            <span className="hidden sm:inline-block text-emerald-400 font-semibold text-xs">
               Devis sous 48h
             </span>
             {isAuthenticated ? (
               user?.role !== 'user' ? (
                 <Link
                   to="/admin/dashboard"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-300 hover:text-white hover:bg-emerald-900 transition-colors font-semibold text-[11px] sm:text-xs"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-300 hover:text-white hover:bg-emerald-900 transition-colors font-semibold text-xs"
                 >
                   <LayoutDashboard className="w-3 h-3 text-emerald-400 shrink-0" />
                   <span>Admin ({user?.name.split(' ')[0]})</span>
@@ -120,7 +120,7 @@ export function Navbar() {
               ) : (
                 <Link
                   to="/mon-espace"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 hover:text-white hover:bg-slate-700 transition-colors font-semibold text-[11px] sm:text-xs"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 hover:text-white hover:bg-slate-700 transition-colors font-semibold text-xs"
                 >
                   <UserIcon className="w-3 h-3 text-emerald-400 shrink-0" />
                   <span>Mon espace ({user?.name.split(' ')[0]})</span>
@@ -129,7 +129,7 @@ export function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1 text-slate-300 hover:text-white text-[11px] sm:text-xs"
+                className="inline-flex items-center gap-1 text-slate-300 hover:text-white text-xs"
               >
                 <UserIcon className="w-3.5 h-3.5 shrink-0" />
                 <span>Espace client / pro</span>
@@ -146,7 +146,7 @@ export function Navbar() {
           <Logo size="md" />
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
               if (link.hasDropdown) {
                 return (
@@ -158,7 +158,7 @@ export function Navbar() {
                   >
                     <Link
                       to={link.to}
-                      className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-colors ${isActive(link.to)
+                      className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors ${isActive(link.to)
                           ? 'text-emerald-800 bg-emerald-50'
                           : 'text-slate-700 hover:text-emerald-800 hover:bg-slate-50'
                         }`}
@@ -200,7 +200,7 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   to={link.to}
-                  className={`px-3 py-2 rounded-lg text-sm font-semibold transition-colors ${isActive(link.to)
+                  className={`px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors ${isActive(link.to)
                       ? 'text-emerald-800 bg-emerald-50'
                       : 'text-slate-700 hover:text-emerald-800 hover:bg-slate-50'
                     }`}
@@ -215,7 +215,7 @@ export function Navbar() {
           <div className="hidden sm:flex items-center gap-3">
             <Link
               to="/devis"
-              className="inline-flex items-center gap-2 bg-orange-400 hover:bg-orange-300 text-slate-950 text-sm font-bold px-4 py-2 rounded-md transition-colors"
+              className="inline-flex items-center gap-2 bg-orange-400 hover:bg-orange-300 text-slate-950 text-sm font-bold whitespace-nowrap px-4 py-2 rounded-md transition-colors"
             >
               <FileText className="w-4 h-4" />
               <span>Demander un devis</span>
@@ -225,7 +225,7 @@ export function Navbar() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
+            className="xl:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             aria-label="Menu principal"
             aria-expanded={isOpen}
           >
@@ -235,7 +235,7 @@ export function Navbar() {
 
         {/* Mobile Navigation Drawer */}
         {isOpen && (
-          <div className="lg:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 max-h-[calc(100vh-5rem)] overflow-y-auto">
+          <div className="xl:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 max-h-[calc(100vh-5rem)] overflow-y-auto">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => {
                 if (link.hasDropdown) {
