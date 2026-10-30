@@ -47,9 +47,13 @@ php artisan package:discover --ansi || true
 echo "Running database migrations..."
 php artisan migrate --force || true
 
-echo "Ensuring initial database seeds and admin user exist..."
+echo "Ensuring initial database seeds exist..."
 php artisan db:seed --force || true
-php artisan admin:create admin@greentechnologies.ci password "Direction Technique Green Tech" || true
+if [ -n "${ADMIN_EMAIL:-}" ] && [ -n "${ADMIN_PASSWORD:-}" ]; then
+    php artisan admin:create "$ADMIN_EMAIL" "$ADMIN_PASSWORD" "Direction Technique Green Tech" || true
+else
+    echo "ADMIN_EMAIL or ADMIN_PASSWORD is not set: admin account left unchanged."
+fi
 
 
 # --------------------------------------------------

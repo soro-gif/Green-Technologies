@@ -21,7 +21,11 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
         ]);
 
-        // 2. Demo Accounts
+        // 2. Demo Accounts: their password is public, so they never reach production
+        if (! app()->environment('local', 'testing')) {
+            return;
+        }
+
         User::firstOrCreate(
             ['email' => 'admin@greentechnologies.ci'],
             [

@@ -119,7 +119,7 @@ GREEN TECHNOLOGIES WEBSITE/
 
 ## Comptes de Démonstration
 
-Après l'exécution des seeders (`php artisan db:seed`), les comptes suivants sont immédiatement opérationnels :
+En développement uniquement, après l'exécution des seeders (`php artisan db:seed`), les comptes suivants sont disponibles. Ils ne sont jamais créés en production, où le compte administrateur vient des variables `ADMIN_EMAIL` et `ADMIN_PASSWORD` :
 
 | Rôle | Email | Mot de passe | Accès |
 | :--- | :--- | :--- | :--- |

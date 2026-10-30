@@ -15,8 +15,8 @@ class CreateAdminUser extends Command
      * @var string
      */
     protected $signature = 'admin:create 
-                            {email=admin@greentechnologies.ci : Email de l\'administrateur} 
-                            {password=password : Mot de passe}
+                            {email : Email de l\'administrateur} 
+                            {password : Mot de passe (12 caractères minimum)}
                             {name=Direction Technique Green Tech : Nom complet}';
 
     /**
@@ -35,6 +35,12 @@ class CreateAdminUser extends Command
         $password = $this->argument('password');
         $name = $this->argument('name');
 
+        if (mb_strlen($password) < 12) {
+            $this->error('Le mot de passe doit contenir au moins 12 caractères.');
+
+            return Command::FAILURE;
+        }
+
         $user = User::updateOrCreate(
             ['email' => $email],
             [
@@ -51,7 +57,6 @@ class CreateAdminUser extends Command
             [
                 ['Nom', $user->name],
                 ['Email', $user->email],
-                ['Mot de passe', $password],
                 ['Rôle', $user->role->value],
                 ['Statut', $user->is_active ? 'Actif' : 'Inactif'],
             ]

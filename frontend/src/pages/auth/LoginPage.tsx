@@ -54,7 +54,11 @@ export function LoginPage() {
       }
     } catch (err) {
       const axiosErr = err as AxiosError<ApiErrorResponse>;
-      setServerError(axiosErr.response?.data?.message || 'Identifiants invalides ou compte désactivé.');
+      setServerError(
+        axiosErr.response
+          ? axiosErr.response.data?.message || 'Identifiants invalides ou compte désactivé.'
+          : 'Connexion au serveur impossible. Vérifiez votre réseau, puis réessayez.'
+      );
     }
   };
 
@@ -72,7 +76,7 @@ export function LoginPage() {
         </div>
 
         {serverError && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-700 text-xs font-medium">
+          <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-700 text-sm font-medium">
             <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{serverError}</span>
           </div>
@@ -80,35 +84,43 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
-              Adresse Email Professionnelle
+            <label htmlFor="login-email" className="block text-sm font-semibold text-slate-700 mb-1.5">
+              Adresse email professionnelle
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
               <input
+                id="login-email"
                 type="email"
-                placeholder="admin@greentechnologies.ci"
+                autoComplete="username"
+                aria-invalid={errors.email ? true : undefined}
+                aria-describedby={errors.email ? 'login-email-error' : undefined}
+                placeholder="vous@entreprise.ci"
                 {...register('email')}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-base text-slate-900 placeholder:text-slate-500 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
               />
             </div>
-            {errors.email && <p className="text-red-600 text-xs mt-1 font-medium">{errors.email.message}</p>}
+            {errors.email && <p id="login-email-error" className="text-red-600 text-sm mt-1 font-medium">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label htmlFor="login-password" className="block text-sm font-semibold text-slate-700 mb-1.5">
               Mot de passe
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
               <input
+                id="login-password"
                 type="password"
+                autoComplete="current-password"
+                aria-invalid={errors.password ? true : undefined}
+                aria-describedby={errors.password ? 'login-password-error' : undefined}
                 placeholder="••••••••"
                 {...register('password')}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-base text-slate-900 placeholder:text-slate-500 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
               />
             </div>
-            {errors.password && <p className="text-red-600 text-xs mt-1 font-medium">{errors.password.message}</p>}
+            {errors.password && <p id="login-password-error" className="text-red-600 text-sm mt-1 font-medium">{errors.password.message}</p>}
           </div>
 
           <Button
