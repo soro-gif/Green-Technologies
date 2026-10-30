@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -103,6 +103,27 @@ export function HomePage() {
     yearsWarranty: 10,
     responseHours: 48,
   });
+  const pumpRef = useRef<HTMLDivElement>(null);
+  const [pumpVisible, setPumpVisible] = useState(false);
+
+  // Le tuyau ne descend que lorsque la pompe entre à l'écran
+  useEffect(() => {
+    const pump = pumpRef.current;
+    if (!pump) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPumpVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' }
+    );
+
+    observer.observe(pump);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -146,50 +167,39 @@ export function HomePage() {
   ];
 
   return (
-    <div className="w-full">
-      {/* 1. HERO */}
-      <section className="bg-sky-100 text-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-16 lg:pb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-            <h1 className="lg:col-span-7 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-extrabold tracking-tight leading-[1.04]">
+    <div className="relative w-full">
+      {/* 1. HERO : le texte passe sur la photo à partir de 1280 px */}
+      <section className="relative z-20 bg-slate-900 text-white xl:bg-transparent xl:absolute xl:inset-x-0 xl:top-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 xl:pt-12 xl:pb-0">
+          <div className="xl:max-w-[48vw] space-y-5">
+            <h1 className="text-4xl sm:text-5xl xl:text-[clamp(3rem,4.2vw,4.5rem)] font-display font-extrabold tracking-tight leading-[1.04]">
               Du soleil à la nappe, des ouvrages qui durent.
             </h1>
 
-            <div className="lg:col-span-5 space-y-6">
-              <p className="text-lg text-slate-700 leading-relaxed max-w-prose">
-                GREEN TECHNOLOGIES BTP conçoit et réalise vos forages, centrales solaires, systèmes
-                d'irrigation et bâtiments en Côte d'Ivoire, pour les collectivités, les entreprises
-                et les particuliers.
-              </p>
+            <p className="text-lg text-slate-100 leading-relaxed max-w-prose">
+              GREEN TECHNOLOGIES BTP conçoit et réalise vos forages, centrales solaires, systèmes
+              d'irrigation et bâtiments en Côte d'Ivoire, pour les collectivités, les entreprises
+              et les particuliers.
+            </p>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <Link to="/devis">
-                  <Button
-                    variant="accent"
-                    size="lg"
-                    leftIcon={<FileText className="w-5 h-5" />}
-                    className="w-full sm:w-auto font-bold"
-                  >
-                    Demander un devis
-                  </Button>
-                </Link>
-                <Link to="/realisations">
-                  <Button variant="secondary" size="lg" className="w-full sm:w-auto font-bold">
-                    Voir nos réalisations
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+              <Link to="/devis">
+                <Button
+                  variant="accent"
+                  size="lg"
+                  leftIcon={<FileText className="w-5 h-5" />}
+                  className="w-full sm:w-auto font-bold"
+                >
+                  Demander un devis
+                </Button>
+              </Link>
+              <Link to="/realisations">
+                <Button variant="outline-dark" size="lg" className="w-full sm:w-auto font-bold">
+                  Voir nos réalisations
+                </Button>
+              </Link>
             </div>
           </div>
-
-          <dl className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-5 mt-10 lg:mt-12">
-            {keyFigures.map((figure) => (
-              <div key={figure.label} className="flex flex-col-reverse">
-                <dt className="text-sm text-slate-600 mt-0.5">{figure.label}</dt>
-                <dd className="text-2xl sm:text-3xl font-display font-extrabold">{figure.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
@@ -197,7 +207,7 @@ export function HomePage() {
       <section
         id="domaines"
         aria-labelledby="domaines-titre"
-        className="relative [--photo-h:clamp(280px,44vw,560px)]"
+        className="relative [--photo-h:74.67vw] xl:[--photo-h:min(74.67vw,1000px)]"
       >
         <h2 id="domaines-titre" className="sr-only">
           Nos 4 pôles d'expertise
@@ -206,14 +216,29 @@ export function HomePage() {
         <img
           src="/forage.jpg"
           alt="Pompe solaire, panneaux et château d'eau alimentant les robinets d'un village"
+          width={1200}
+          height={896}
           fetchPriority="high"
           className="w-full object-cover object-bottom h-[var(--photo-h)]"
+        />
+
+        {/* Voile limité à la zone du texte : le château d'eau reste lumineux */}
+        <div aria-hidden="true" className="hero-veil hidden xl:block absolute inset-x-0 top-0 h-[var(--photo-h)]" />
+
+        {/* Repère invisible posé sur la pompe : déclenche le tuyau */}
+        <div
+          ref={pumpRef}
+          aria-hidden="true"
+          className="absolute w-px h-px"
+          style={{ left: PUMP_X, top: 'calc(var(--photo-h) - 6.3vw)' }}
         />
 
         {/* Tuyau : descend de la pompe de la photo jusqu'à la nappe */}
         <div
           aria-hidden="true"
-          className="bore-line hidden md:block absolute z-10 w-1.5 -ml-[3px] bg-white shadow-[0_0_0_1px_var(--color-slate-900)]"
+          className={`bore-line hidden md:block absolute z-10 w-1.5 -ml-[3px] bg-white shadow-[0_0_0_1px_var(--color-slate-900)] ${
+            pumpVisible ? 'is-drilling' : ''
+          }`}
           style={{ left: PUMP_X, top: 'calc(var(--photo-h) - 6.3vw)', bottom: '3rem' }}
         />
 
@@ -270,6 +295,18 @@ export function HomePage() {
             </div>
           </div>
         ))}
+      </section>
+
+      {/* CHIFFRES CLÉS */}
+      <section aria-label="Chiffres clés" className="bg-slate-900 text-white py-10">
+        <dl className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6">
+          {keyFigures.map((figure) => (
+            <div key={figure.label} className="flex flex-col-reverse">
+              <dt className="text-sm text-slate-300 mt-0.5">{figure.label}</dt>
+              <dd className="text-2xl sm:text-3xl font-display font-extrabold">{figure.value}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* 3. SERVICES PHARES */}

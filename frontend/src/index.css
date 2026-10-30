@@ -133,7 +133,30 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Le tuyau de forage descend une seule fois au chargement */
+/* Voile du hero : opaque sous le texte, il s'efface vers la droite et vers le bas */
+.hero-veil {
+  background: linear-gradient(
+    to right,
+    rgb(10 30 54 / 0.88) 0%,
+    rgb(10 30 54 / 0.8) 52%,
+    rgb(10 30 54 / 0) 74%
+  );
+  mask-image: linear-gradient(to bottom, #000 44%, transparent 66%);
+}
+
+/* Sur grand écran, le texte reste centré dans la grille : le voile l'accompagne */
+@media (min-width: 1536px) {
+  .hero-veil {
+    background: linear-gradient(
+      to right,
+      rgb(10 30 54 / 0.88) 0%,
+      rgb(10 30 54 / 0.8) 62%,
+      rgb(10 30 54 / 0) 82%
+    );
+  }
+}
+
+/* Le tuyau de forage descend une seule fois, quand la pompe arrive à l'écran */
 @keyframes bore {
   from {
     transform: scaleY(0);
@@ -145,7 +168,11 @@
 
 .bore-line {
   transform-origin: top;
-  animation: bore 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+  animation: bore 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both paused;
+}
+
+.bore-line.is-drilling {
+  animation-play-state: running;
 }
 
 /* Reduced Motion Support */
