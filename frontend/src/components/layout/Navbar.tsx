@@ -106,7 +106,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-3 text-xs font-medium shrink-0 ml-auto">
             <span className="hidden sm:inline-block text-emerald-400 font-semibold text-[11px] sm:text-xs">
-              ● Devis sous 48h
+              Devis sous 48h
             </span>
             {isAuthenticated ? (
               user?.role !== 'user' ? (
@@ -175,8 +175,8 @@ export function Navbar() {
                         }`}
                     >
                       <div className="p-2 border-b border-slate-100 mb-1">
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                          4 pôles stratégiques
+                        <p className="text-xs font-semibold text-slate-500">
+                          Nos 4 pôles
                         </p>
                       </div>
                       {domainSubmenu.map((sub) => (
@@ -215,7 +215,7 @@ export function Navbar() {
           <div className="hidden sm:flex items-center gap-3">
             <Link
               to="/devis"
-              className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 bg-orange-400 hover:bg-orange-300 text-slate-950 text-sm font-bold px-4 py-2 rounded-md transition-colors"
             >
               <FileText className="w-4 h-4" />
               <span>Demander un devis</span>
@@ -295,7 +295,7 @@ export function Navbar() {
               <div className="pt-4 flex flex-col gap-2">
                 <Link
                   to="/devis"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold py-2.5 rounded-lg"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-orange-400 hover:bg-orange-300 text-slate-950 text-sm font-bold py-2.5 rounded-md"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Demander un devis</span>

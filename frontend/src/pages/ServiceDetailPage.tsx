@@ -114,7 +114,7 @@ export function ServiceDetailPage() {
               </div>
 
               <div className="p-6 sm:p-10 space-y-6">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-['Outfit']">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display">
                   {service.title}
                 </h1>
 
@@ -130,7 +130,7 @@ export function ServiceDetailPage() {
 
               {service.features && service.features.length > 0 && (
                 <div className="pt-6 border-t border-slate-100 space-y-4">
-                  <h3 className="text-xl font-bold text-slate-900 font-['Outfit']">
+                  <h3 className="text-xl font-bold text-slate-900 font-display">
                     Avantages techniques et spécifications
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -153,7 +153,7 @@ export function ServiceDetailPage() {
           <div className="space-y-6">
             <Card className="p-6 sm:p-8 bg-slate-900 text-white border border-slate-800 space-y-6">
               <Badge variant="orange">Chiffrage express</Badge>
-              <h3 className="text-2xl font-bold font-['Outfit']">Besoin de cette prestation ?</h3>
+              <h3 className="text-2xl font-bold font-display">Besoin de cette prestation ?</h3>
               <p className="text-sm text-slate-300 leading-relaxed">
                 Remplissez notre formulaire pour recevoir un devis et une étude technique sous 48h.
               </p>
@@ -186,7 +186,7 @@ export function ServiceDetailPage() {
             </Card>
 
             <Card className="p-6 bg-white space-y-4">
-              <h4 className="text-base font-bold text-slate-900 font-['Outfit'] uppercase tracking-wider">
+              <h4 className="text-base font-bold text-slate-900 font-display uppercase tracking-wider">
                 Autres prestations
               </h4>
               <p className="text-sm text-slate-600">

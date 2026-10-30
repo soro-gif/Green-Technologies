@@ -37,7 +37,7 @@ export function Footer() {
 
           {/* Col 2: Nos 4 Domaines */}
           <div className="space-y-3">
-            <h5 className="text-white font-bold text-sm sm:text-base font-['Outfit'] uppercase tracking-wider">
+            <h5 className="text-white font-bold text-sm sm:text-base font-display">
               Nos 4 domaines
             </h5>
             <ul className="space-y-2.5 text-sm sm:text-base text-slate-300">
@@ -78,7 +78,7 @@ export function Footer() {
 
           {/* Col 3: Navigation */}
           <div className="space-y-3">
-            <h5 className="text-white font-bold text-sm sm:text-base font-['Outfit'] uppercase tracking-wider">
+            <h5 className="text-white font-bold text-sm sm:text-base font-display">
               Liens rapides
             </h5>
             <ul className="space-y-2.5 text-sm sm:text-base text-slate-300">
@@ -117,7 +117,7 @@ export function Footer() {
 
           {/* Col 4: Contact & Agences */}
           <div className="space-y-3">
-            <h5 className="text-white font-bold text-sm sm:text-base font-['Outfit'] uppercase tracking-wider">
+            <h5 className="text-white font-bold text-sm sm:text-base font-display">
               Siège et contact
             </h5>
             <ul className="space-y-2.5 text-sm text-slate-300">

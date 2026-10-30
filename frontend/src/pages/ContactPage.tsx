@@ -115,7 +115,7 @@ export function ContactPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header Section */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-display tracking-tight">
             Contactez notre équipe
           </h1>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
@@ -129,7 +129,7 @@ export function ContactPage() {
           <div className="lg:col-span-5 space-y-6">
             <Card className="p-8 bg-white border border-slate-200/80 shadow-sm rounded-3xl space-y-6">
               <div>
-                <h3 className="text-xl font-bold font-['Outfit'] text-slate-900 mb-1">
+                <h3 className="text-xl font-bold font-display text-slate-900 mb-1">
                   Coordonnées directes
                 </h3>
                 <p className="text-sm text-slate-500">
@@ -221,7 +221,7 @@ export function ContactPage() {
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-2xl font-bold text-slate-900 font-['Outfit']">
+                    <h3 className="text-2xl font-bold text-slate-900 font-display">
                       Message transmis avec succès !
                     </h3>
                     <p className="text-base text-slate-600 max-w-md mx-auto leading-relaxed">
@@ -242,7 +242,7 @@ export function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="border-b border-slate-100 pb-4">
-                    <h3 className="text-2xl font-bold text-slate-900 font-['Outfit']">
+                    <h3 className="text-2xl font-bold text-slate-900 font-display">
                       Laissez-nous un message
                     </h3>
                     <p className="text-sm text-slate-500 mt-1">

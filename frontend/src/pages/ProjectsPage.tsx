@@ -87,7 +87,7 @@ export function ProjectsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display tracking-tight">
             Portfolio de réalisations
           </h1>
           <p className="text-base sm:text-lg text-slate-600">
@@ -183,7 +183,7 @@ export function ProjectsPage() {
                         )}
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-semibold text-slate-900 font-['Outfit'] mb-2 group-hover:text-emerald-700 transition-colors leading-snug">
+                      <h3 className="text-lg sm:text-xl font-semibold text-slate-900 font-display mb-2 group-hover:text-emerald-700 transition-colors leading-snug">
                         {proj.title}
                       </h3>
 

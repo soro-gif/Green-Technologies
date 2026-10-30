@@ -187,13 +187,10 @@ export const FALLBACK_PROJECTS: Project[] = [
     completion_date: '2025-11-15',
     description: "Fourniture en eau potable saine pour plus de 4 500 habitants grâce à une pompe solaire Lorentz sans aucun coût de carburant récurrent. Forage à 95m de profondeur avec château d'eau métallique de 25m³ et 8 bornes fontaines connectées.",
     results: 'Débit continu garanti de 12 m³/h, eau 100% conforme aux normes sanitaires.',
-    main_image: 'https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?w=800',
-    image: 'https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?w=800',
-    image_url: 'https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?w=800',
-    gallery: [
-      'https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?w=800',
-      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800'
-    ],
+    main_image: '/forage.jpg',
+    image: '/forage.jpg',
+    image_url: '/forage.jpg',
+    gallery: ['/forage.jpg'],
     status: 'published',
     budget_indicative: 25000000,
     is_featured: true,

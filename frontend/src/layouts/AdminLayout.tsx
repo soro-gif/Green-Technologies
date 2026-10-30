@@ -213,7 +213,7 @@ export function AdminLayout() {
             </button>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <h2 className="text-sm font-bold text-slate-800 font-['Outfit']">
+              <h2 className="text-sm font-bold text-slate-800 font-display">
                 Portail d'Administration GREEN TECHNOLOGIES
               </h2>
             </div>

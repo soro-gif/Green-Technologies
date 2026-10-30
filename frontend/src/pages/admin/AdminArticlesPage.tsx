@@ -289,7 +289,7 @@ export function AdminArticlesPage() {
             <span className="p-2 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/60">
               <Newspaper className="w-5 h-5" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-['Outfit']">
+            <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-display">
               Actualités et veille technique
             </h1>
           </div>

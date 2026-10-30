@@ -278,7 +278,7 @@ export function AdminMediaPage() {
             <ImageIcon className="w-3.5 h-3.5" />
             <span>Gestionnaire de médias centralisé</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 font-['Outfit']">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 font-display">
             Médiathèque et gestion des images
           </h1>
           <p className="text-sm text-slate-500 leading-relaxed">
@@ -343,7 +343,7 @@ export function AdminMediaPage() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Total d'images</p>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                 {stats?.total_count ?? mediaList.length}
               </p>
             </div>
@@ -357,7 +357,7 @@ export function AdminMediaPage() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Espace de stockage</p>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                 {stats?.total_formatted_size || 'Calculé'}
               </p>
             </div>
@@ -371,7 +371,7 @@ export function AdminMediaPage() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Images actives</p>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                 {mediaList.filter((m) => m.usage_count > 0).length}
               </p>
             </div>
@@ -385,7 +385,7 @@ export function AdminMediaPage() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Dossiers cibles</p>
-              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+              <p className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                 5 dossiers
               </p>
             </div>
@@ -774,7 +774,7 @@ export function AdminMediaPage() {
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <ImageIcon className="w-5 h-5 text-emerald-700" />
-                <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
+                <h3 className="text-base font-bold text-slate-900 font-display">
                   Détails & aperçu du fichier
                 </h3>
               </div>
@@ -921,7 +921,7 @@ export function AdminMediaPage() {
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <UploadCloud className="w-5 h-5 text-emerald-700" />
-                <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
+                <h3 className="text-base font-bold text-slate-900 font-display">
                   Téléverser de nouvelles images
                 </h3>
               </div>
@@ -1070,7 +1070,7 @@ export function AdminMediaPage() {
               <Trash2 className="w-6 h-6" />
             </div>
             <div className="text-center space-y-1">
-              <h3 className="text-lg font-bold text-slate-900 font-['Outfit']">
+              <h3 className="text-lg font-bold text-slate-900 font-display">
                 Confirmer la suppression
               </h3>
               <p className="text-xs text-slate-600">
@@ -1119,7 +1119,7 @@ export function AdminMediaPage() {
               <Trash2 className="w-6 h-6" />
             </div>
             <div className="text-center space-y-1">
-              <h3 className="text-lg font-bold text-slate-900 font-['Outfit']">
+              <h3 className="text-lg font-bold text-slate-900 font-display">
                 Suppression groupée
               </h3>
               <p className="text-xs text-slate-600">

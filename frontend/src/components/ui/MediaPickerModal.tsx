@@ -65,7 +65,7 @@ export function MediaPickerModal({
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white font-['Outfit']">
+              <h3 className="text-base font-bold text-white font-display">
                 Médiathèque - Choisir une image
               </h3>
               <p className="text-xs text-slate-400">

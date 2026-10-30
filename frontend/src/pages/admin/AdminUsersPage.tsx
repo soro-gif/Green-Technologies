@@ -142,7 +142,7 @@ export function AdminUsersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 bg-white border border-slate-200/90 rounded-3xl shadow-xs">
         <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-['Outfit']">
+          <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 font-display">
             Collaborateurs et contrôle d'accès
           </h1>
           <p className="text-xs text-slate-500 mt-1">

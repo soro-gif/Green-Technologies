@@ -62,7 +62,7 @@ export function Modal({
       >
         {title && (
           <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 shrink-0">
-            <h3 className="text-base font-bold text-slate-900 font-['Outfit']">{title}</h3>
+            <h3 className="text-base font-bold text-slate-900 font-display">{title}</h3>
             <button
               onClick={onClose}
               className="text-slate-400 hover:text-slate-700 rounded-lg p-1 transition-colors cursor-pointer"

@@ -113,7 +113,7 @@ export function AdminQuotesPage() {
             <FileText className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
               Gestion des Demandes de Devis
             </h1>
             <p className="text-xs sm:text-sm text-slate-500">

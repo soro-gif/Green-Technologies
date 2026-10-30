@@ -31,7 +31,7 @@ export function DomainsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h1 className="text-3xl sm:text-5xl text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl text-slate-900 font-display tracking-tight">
             Nos domaines d'expertise
           </h1>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
@@ -76,7 +76,7 @@ export function DomainsPage() {
 
                 <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900 font-['Outfit'] mb-3 group-hover:text-emerald-700 transition-colors">
+                    <h3 className="text-2xl font-bold text-slate-900 font-display mb-3 group-hover:text-emerald-700 transition-colors">
                       {cat.name}
                     </h3>
                     <p className="text-base text-slate-600 leading-relaxed mb-6">

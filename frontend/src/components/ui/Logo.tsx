@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../assets/logo-mark.png';
 
 interface LogoProps {
   className?: string;
@@ -25,7 +25,7 @@ export function Logo({
 
   const titleSizes = {
     sm: 'text-xs',
-    md: 'text-sm sm:text-base',
+    md: 'text-xs sm:text-base',
     lg: 'text-lg sm:text-xl',
     xl: 'text-2xl sm:text-3xl',
   };
@@ -49,11 +49,11 @@ export function Logo({
       <img
         src={logoImg}
         alt="GREEN TECHNOLOGIES BTP"
-        className={`${sizeClasses[size]} w-auto shrink-0 object-contain transition-transform duration-300 hover:scale-105`}
+        className={`${sizeClasses[size]} aspect-square shrink-0 rounded-full bg-white object-contain`}
       />
       {showText && (
         <div className="flex flex-col leading-tight min-w-0">
-          <div className={`flex items-center gap-1 font-extrabold tracking-tight font-['Outfit'] ${titleSizes[size]} truncate`}>
+          <div className={`flex items-center gap-1 font-extrabold tracking-tight [font-variation-settings:'wdth'_100] sm:[font-variation-settings:'wdth'_118] ${titleSizes[size]} truncate`}>
             <span className={isLight ? 'text-white' : 'text-emerald-800'}>
               GREEN
             </span>
@@ -64,8 +64,8 @@ export function Logo({
               BTP
             </span>
           </div>
-          <span className={`uppercase font-semibold truncate ${subSizes[size]} ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>
-            Eau • Énergie • Agro • BTP
+          <span className={`font-medium truncate ${subSizes[size]} ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>
+            Eau, énergie, agro et BTP
           </span>
         </div>
       )}

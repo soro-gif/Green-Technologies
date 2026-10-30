@@ -1,38 +1,106 @@
 @import "tailwindcss";
 
+/*
+  Palette tirée du logo et du terrain ivoirien.
+  Les échelles Tailwind sont redéfinies ici : toutes les pages en héritent.
+*/
+@theme {
+  --font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display--font-variation-settings: 'wdth' 118;
+
+  /* Nuit : texte, surfaces sombres */
+  --color-slate-50: #f4f7f2;
+  --color-slate-100: #e9eeea;
+  --color-slate-200: #d6dedc;
+  --color-slate-300: #b8c4c6;
+  --color-slate-400: #8697a3;
+  --color-slate-500: #5c6f80;
+  --color-slate-600: #43576a;
+  --color-slate-700: #2f4459;
+  --color-slate-800: #1c3550;
+  --color-slate-900: #0f2a4a;
+  --color-slate-950: #0a1e36;
+
+  /* Feuille : marque */
+  --color-emerald-50: #edf6ec;
+  --color-emerald-100: #d6ebd4;
+  --color-emerald-200: #afd7ab;
+  --color-emerald-300: #7fbe79;
+  --color-emerald-400: #57a850;
+  --color-emerald-500: #3a9032;
+  --color-emerald-600: #2c7a2e;
+  --color-emerald-700: #236425;
+  --color-emerald-800: #1c4f1e;
+  --color-emerald-900: #163f18;
+  --color-emerald-950: #0c2610;
+
+  /* Chantier : action principale */
+  --color-orange-50: #fff5e6;
+  --color-orange-100: #ffe7c2;
+  --color-orange-200: #ffd08a;
+  --color-orange-300: #fdb655;
+  --color-orange-400: #f59e2b;
+  --color-orange-500: #e8890f;
+  --color-orange-600: #b8600a;
+  --color-orange-700: #96490a;
+  --color-orange-800: #7a3a0c;
+  --color-orange-900: #64300e;
+  --color-orange-950: #3a1804;
+
+  /* Eau */
+  --color-sky-100: #dceffa;
+  --color-sky-400: #4fa9e0;
+  --color-sky-500: #1b7fc4;
+  --color-sky-600: #1670af;
+  --color-sky-900: #0f3f6e;
+
+  /* Couches du terrain */
+  --color-pousse: #cfe3b5;
+  --color-laterite: #8a3d1c;
+}
+
 @layer base {
   :root {
     /* Brand Solid Colors */
-    --brand-primary: #047857;
-    --brand-primary-hover: #065f46;
-    --brand-primary-subtle: #ecfdf5;
-    --brand-orange: #ea580c;
-    --brand-orange-hover: #c2410c;
-    --brand-blue: #0284c7;
-    --brand-lime: #4d7c0f;
-    --brand-dark: #0f172a;
+    --brand-primary: #2c7a2e;
+    --brand-primary-hover: #236425;
+    --brand-primary-subtle: #edf6ec;
+    --brand-orange: #f59e2b;
+    --brand-orange-hover: #e8890f;
+    --brand-blue: #1b7fc4;
+    --brand-lime: #cfe3b5;
+    --brand-dark: #0f2a4a;
     --brand-surface: #ffffff;
-    --brand-border: #e2e8f0;
-    --brand-border-dark: #1e293b;
-    --brand-text: #0f172a;
-    --brand-text-muted: #64748b;
+    --brand-border: #d6dedc;
+    --brand-border-dark: #1c3550;
+    --brand-text: #0f2a4a;
+    --brand-text-muted: #5c6f80;
   }
 
   html {
     scroll-behavior: smooth;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Archivo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: var(--color-slate-50);
+    color: var(--color-slate-900);
     overflow-x: hidden;
     min-width: 320px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--color-sky-500);
+    outline-offset: 2px;
   }
 
   /* Responsive media defaults */
@@ -47,14 +115,14 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: var(--color-slate-100);
   }
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: var(--color-slate-300);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: var(--color-slate-400);
   }
 }
 
@@ -65,9 +133,25 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* Le tuyau de forage descend une seule fois au chargement */
+@keyframes bore {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.bore-line {
+  transform-origin: top;
+  animation: bore 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   * {
+    animation-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

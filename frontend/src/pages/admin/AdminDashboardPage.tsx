@@ -71,7 +71,7 @@ export function AdminDashboardPage() {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight leading-snug font-['Outfit']">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight leading-snug font-display">
               Bonjour, <span className="text-emerald-700 font-bold">{user?.name || 'Administrateur'}</span>
             </h1>
 
@@ -109,7 +109,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-extrabold text-slate-900 font-['Outfit']">{overview?.quotes_total || 0}</div>
+            <div className="text-3xl font-extrabold text-slate-900 font-display">{overview?.quotes_total || 0}</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
               {overview?.quotes_pending || 0} en attente
             </span>
@@ -128,7 +128,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-extrabold text-slate-900 font-['Outfit']">{overview?.messages_total || 0}</div>
+            <div className="text-3xl font-extrabold text-slate-900 font-display">{overview?.messages_total || 0}</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200">
               {overview?.messages_unread || 0} non lu(s)
             </span>
@@ -147,7 +147,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-extrabold text-slate-900 font-['Outfit']">{overview?.projects_total || 0}</div>
+            <div className="text-3xl font-extrabold text-slate-900 font-display">{overview?.projects_total || 0}</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-orange-50 text-orange-800 border border-orange-200">
               {overview?.projects_published || 0} en ligne
             </span>
@@ -166,7 +166,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-extrabold text-slate-900 font-['Outfit']">{overview?.services_total || 0}</div>
+            <div className="text-3xl font-extrabold text-slate-900 font-display">{overview?.services_total || 0}</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
               {overview?.services_active || 0} actifs
             </span>
@@ -185,7 +185,7 @@ export function AdminDashboardPage() {
             </div>
           </div>
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-extrabold text-slate-900 font-['Outfit']">10</div>
+            <div className="text-3xl font-extrabold text-slate-900 font-display">10</div>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-800 border border-purple-200">
               images
             </span>
@@ -198,7 +198,7 @@ export function AdminDashboardPage() {
         {/* LEFT (8 Cols): Dernières demandes de devis */}
         <div className="lg:col-span-8 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 font-['Outfit'] flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
               <FileText className="w-4 h-4 text-emerald-600" />
               <span>Dernières demandes de devis</span>
             </h3>
@@ -313,7 +313,7 @@ export function AdminDashboardPage() {
         {/* RIGHT (4 Cols): Derniers Messages */}
         <div className="lg:col-span-4 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 font-['Outfit'] flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
               <Mail className="w-4 h-4 text-sky-600" />
               <span>Derniers messages</span>
             </h3>

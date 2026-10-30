@@ -114,7 +114,7 @@ export function ProjectDetailPage() {
           </div>
 
           <div className="p-6 sm:p-10">
-            <h1 className="text-3xl sm:text-5xl font-semibold text-slate-900 font-['Outfit'] mb-6">
+            <h1 className="text-3xl sm:text-5xl font-semibold text-slate-900 font-display mb-6">
               {project.title}
             </h1>
 
@@ -156,7 +156,7 @@ export function ProjectDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <Card className="p-8 sm:p-10 space-y-6">
-              <h2 className="text-2xl font-medium text-slate-900 font-['Outfit']">
+              <h2 className="text-2xl font-medium text-slate-900 font-display">
                 Présentation et objectifs du chantier
               </h2>
               <div className="text-base sm:text-lg text-slate-700 leading-relaxed whitespace-pre-line">
@@ -165,7 +165,7 @@ export function ProjectDetailPage() {
 
               {project.results && (
                 <div className="pt-6 border-t border-slate-100">
-                  <h3 className="text-xl font-bold text-slate-900 font-['Outfit'] mb-3">
+                  <h3 className="text-xl font-bold text-slate-900 font-display mb-3">
                     Impact et résultats obtenus
                   </h3>
                   <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200/60 text-base text-emerald-950 leading-relaxed font-medium">
@@ -178,7 +178,7 @@ export function ProjectDetailPage() {
             {/* Testimonials for this project */}
             {project.testimonials && project.testimonials.length > 0 && (
               <Card className="p-8 space-y-4">
-                <h3 className="text-xl font-bold text-slate-900 font-['Outfit']">
+                <h3 className="text-xl font-bold text-slate-900 font-display">
                   Retour d'expérience client
                 </h3>
                 {project.testimonials.map((test) => (
@@ -202,7 +202,7 @@ export function ProjectDetailPage() {
           <div className="space-y-6">
             <Card className="p-6 sm:p-8 bg-slate-900 text-white border border-slate-800 space-y-5">
               <Badge variant="orange">Projet similaire</Badge>
-              <h3 className="text-2xl font-bold font-['Outfit']">Un projet similaire en vue ?</h3>
+              <h3 className="text-2xl font-bold font-display">Un projet similaire en vue ?</h3>
               <p className="text-sm text-slate-300 leading-relaxed">
                 Nos ingénieurs réalisent des études de faisabilité et vous transmettent un devis chiffré sous 48h.
               </p>

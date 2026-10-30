@@ -210,7 +210,7 @@ export function AboutPage() {
           </nav>
 
           <div className="max-w-3xl space-y-3">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold font-['Outfit'] tracking-tight text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold font-display tracking-tight text-white leading-tight">
               À PROPOS DE GREEN TECHNOLOGIES
             </h1>
 
@@ -233,7 +233,7 @@ export function AboutPage() {
                 <span>Présentation</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-slate-900 tracking-tight leading-snug">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight leading-snug">
                 Un pôle de solutions techniques intégrées
               </h2>
 
@@ -243,7 +243,7 @@ export function AboutPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-                  <div className="text-emerald-700 font-semibold text-sm font-['Outfit'] mb-1">
+                  <div className="text-emerald-700 font-semibold text-sm font-display mb-1">
                     Accompagnement 360°
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -251,7 +251,7 @@ export function AboutPage() {
                   </p>
                 </div>
                 <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-                  <div className="text-emerald-700 font-semibold text-sm font-['Outfit'] mb-1">
+                  <div className="text-emerald-700 font-semibold text-sm font-display mb-1">
                     Multi-sectoriel
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -259,7 +259,7 @@ export function AboutPage() {
                   </p>
                 </div>
                 <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-                  <div className="text-emerald-700 font-semibold text-sm font-['Outfit'] mb-1">
+                  <div className="text-emerald-700 font-semibold text-sm font-display mb-1">
                     Rigueur technique
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -292,7 +292,7 @@ export function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100/80 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
               <span>Notre Mission</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
               Transformer les besoins et contraintes techniques en solutions concrètes, fiables et adaptées.
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
@@ -309,14 +309,14 @@ export function AboutPage() {
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xl sm:text-2xl font-semibold font-['Outfit'] text-emerald-700">
+                    <span className="text-xl sm:text-2xl font-semibold font-display text-emerald-700">
                       {s.step}
                     </span>
                     {idx < missionSteps.length - 1 && (
                       <span className="hidden lg:block text-slate-300 font-bold">→</span>
                     )}
                   </div>
-                  <h3 className="text-base font-semibold text-slate-900 font-['Outfit'] group-hover:text-emerald-800 transition-colors">
+                  <h3 className="text-base font-semibold text-slate-900 font-display group-hover:text-emerald-800 transition-colors">
                     {s.title}
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed font-normal">
@@ -346,7 +346,7 @@ export function AboutPage() {
               <span>Notre Vision</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-white tracking-tight leading-snug">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-white tracking-tight leading-snug">
               Contribuer au développement de projets plus performants, autonomes et durables.
             </h2>
 
@@ -368,7 +368,7 @@ export function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
               <span>Notre Expertise</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
               Quatre pôles complémentaires pour répondre aux besoins techniques de nos clients
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -391,7 +391,7 @@ export function AboutPage() {
                   </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900 font-['Outfit'] group-hover:text-emerald-800 transition-colors">
+                      <h3 className="text-lg font-semibold text-slate-900 font-display group-hover:text-emerald-800 transition-colors">
                         {bu.name}
                       </h3>
                       <p className="text-xs font-semibold text-emerald-700 mt-0.5">
@@ -428,7 +428,7 @@ export function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100/80 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
               <span>Nos Valeurs</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
               Les principes qui guident notre manière de travailler
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -449,12 +449,12 @@ export function AboutPage() {
                       <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-semibold font-['Outfit'] text-slate-400">
+                      <span className="text-xs font-semibold font-display text-slate-400">
                         {v.num}
                       </span>
                     </div>
 
-                    <h3 className="text-base font-semibold text-slate-900 font-['Outfit']">
+                    <h3 className="text-base font-semibold text-slate-900 font-display">
                       {v.num} — {v.title}
                     </h3>
 
@@ -478,7 +478,7 @@ export function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
               <span>Notre Organisation</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
               Une coordination intégrée au service de chaque projet
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -492,26 +492,26 @@ export function AboutPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-['Outfit']">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-display">
                   4 Business Units Spécialisées
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
                   <p className="text-xs text-sky-400 font-medium">Pôle Eau</p>
-                  <p className="text-sm font-semibold text-white font-['Outfit'] mt-0.5">GREEN EAU</p>
+                  <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN EAU</p>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
                   <p className="text-xs text-amber-400 font-medium">Pôle Énergie</p>
-                  <p className="text-sm font-semibold text-white font-['Outfit'] mt-0.5">GREEN ENERGY</p>
+                  <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN ENERGY</p>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
                   <p className="text-xs text-emerald-400 font-medium">Pôle Agriculture</p>
-                  <p className="text-sm font-semibold text-white font-['Outfit'] mt-0.5">GREEN AGROTECH</p>
+                  <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN AGROTECH</p>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
                   <p className="text-xs text-slate-400 font-medium">Pôle BTP</p>
-                  <p className="text-sm font-semibold text-white font-['Outfit'] mt-0.5">GREEN BTP & INFRASTRUCTURES</p>
+                  <p className="text-sm font-semibold text-white font-display mt-0.5">GREEN BTP & INFRASTRUCTURES</p>
                 </div>
               </div>
             </div>
@@ -522,7 +522,7 @@ export function AboutPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-sky-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-sky-400 font-['Outfit']">
+                <span className="text-xs font-bold uppercase tracking-wider text-sky-400 font-display">
                   Fonctions Transversales d'Excellence
                 </span>
               </div>
@@ -537,7 +537,7 @@ export function AboutPage() {
                       <div className="w-8 h-8 rounded-lg bg-slate-700/60 text-emerald-400 flex items-center justify-center">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <p className="text-[11px] font-semibold text-slate-200 font-['Outfit'] tracking-wide">
+                      <p className="text-[11px] font-semibold text-slate-200 font-display tracking-wide">
                         {fn.name}
                       </p>
                       <p className="text-[10px] text-slate-400 leading-tight">
@@ -561,7 +561,7 @@ export function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-100/80 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
               <span>Notre Engagement</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-slate-900 tracking-tight">
               « Comprendre votre besoin. Concevoir la bonne solution. Assurer sa mise en œuvre. Vous accompagner dans la durée. »
             </h2>
           </div>
@@ -573,10 +573,10 @@ export function AboutPage() {
                 className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-3">
-                  <span className="text-2xl font-semibold font-['Outfit'] text-emerald-700">
+                  <span className="text-2xl font-semibold font-display text-emerald-700">
                     {eng.num}
                   </span>
-                  <h3 className="text-sm font-semibold text-slate-900 font-['Outfit'] tracking-wide uppercase group-hover:text-emerald-800 transition-colors">
+                  <h3 className="text-sm font-semibold text-slate-900 font-display tracking-wide uppercase group-hover:text-emerald-800 transition-colors">
                     {eng.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
@@ -597,7 +597,7 @@ export function AboutPage() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-['Outfit'] text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-display text-white tracking-tight">
             Votre projet mérite une solution adaptée.
           </h2>
 

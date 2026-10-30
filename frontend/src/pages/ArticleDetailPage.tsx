@@ -87,7 +87,7 @@ export function ArticleDetailPage() {
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-['Outfit'] leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display leading-tight">
             {article.title}
           </h1>
 

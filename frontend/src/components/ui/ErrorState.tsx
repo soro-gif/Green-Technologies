@@ -22,7 +22,7 @@ export function ErrorState({
       <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mb-4">
         <AlertCircle className="w-7 h-7" />
       </div>
-      <h4 className="text-base font-bold text-slate-800 font-['Outfit'] mb-1">{title}</h4>
+      <h4 className="text-base font-bold text-slate-800 font-display mb-1">{title}</h4>
       <p className="text-sm text-slate-600 max-w-md mb-6">{message}</p>
       {onRetry ? (
         <Button variant="outline" size="sm" onClick={onRetry} leftIcon={<RotateCcw className="w-4 h-4" />}>

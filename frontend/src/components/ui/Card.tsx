@@ -31,12 +31,12 @@ export function Card({
     : '';
 
   const hoverClass = hoverable
-    ? 'transition-all duration-200 hover:shadow-md hover:border-slate-300'
+    ? 'transition-colors duration-200 hover:border-slate-400'
     : '';
 
   return (
     <div
-      className={`rounded-2xl p-6 ${baseBackground} ${borderClass} ${hoverClass} ${className}`}
+      className={`rounded-lg p-6 ${baseBackground} ${borderClass} ${hoverClass} ${className}`}
       {...props}
     >
       {children}

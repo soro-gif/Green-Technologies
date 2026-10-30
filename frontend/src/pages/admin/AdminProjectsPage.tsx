@@ -181,7 +181,7 @@ export function AdminProjectsPage() {
             <Briefcase className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-['Outfit']">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
               Portfolio & Réalisations
             </h1>
             <p className="text-xs sm:text-sm text-slate-500">

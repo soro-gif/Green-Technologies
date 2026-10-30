@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Search,
   CheckCircle2,
@@ -172,7 +172,7 @@ export function QuoteRequestPage() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
           <Badge variant="orange">Étude et chiffrage gratuit sous 48h</Badge>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-['Outfit'] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 font-display tracking-tight">
             Demande de devis et suivi de dossier
           </h1>
           <p className="text-base sm:text-lg text-slate-600">
@@ -210,7 +210,7 @@ export function QuoteRequestPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-slate-900 font-['Outfit']">
+                  <h3 className="text-2xl font-bold text-slate-900 font-display">
                     Demande de devis enregistrée !
                   </h3>
                   <p className="text-sm text-slate-600 max-w-md mx-auto">
@@ -287,7 +287,7 @@ export function QuoteRequestPage() {
                     <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">
                       1
                     </span>
-                    <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
+                    <h3 className="text-base font-bold text-slate-900 font-display">
                       Vos coordonnées de contact
                     </h3>
                   </div>
@@ -358,7 +358,7 @@ export function QuoteRequestPage() {
                     <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">
                       2
                     </span>
-                    <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
+                    <h3 className="text-base font-bold text-slate-900 font-display">
                       Détails du projet et pôle d'expertise
                     </h3>
                   </div>
@@ -494,7 +494,7 @@ export function QuoteRequestPage() {
         {activeTab === 'track' && (
           <Card className="p-8 sm:p-10 bg-white space-y-6">
             <div className="max-w-xl mx-auto text-center space-y-2">
-              <h3 className="text-xl font-bold text-slate-900 font-['Outfit']">
+              <h3 className="text-xl font-bold text-slate-900 font-display">
                 Suivi d'un devis en cours
               </h3>
               <p className="text-xs text-slate-500">

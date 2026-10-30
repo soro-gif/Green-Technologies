@@ -6,14 +6,91 @@ import {
   MapPin,
   Calendar,
   Star,
+  Phone,
 } from 'lucide-react';
 import { servicesApi, projectsApi, testimonialsApi, articlesApi, categoriesApi } from '../api';
 import type { Service, Project, Testimonial, Article } from '../types/models';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
-import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 import { getImageUrl, handleImageError } from '../utils/image';
+
+/*
+  Coupe de forage : le tuyau part de la pompe visible sur forage.jpg.
+  PUMP_X est la position horizontale de la pompe dans la photo. L'image garde
+  toute sa largeur et s'ancre en bas, donc ce repère reste valable à toute taille.
+*/
+const PUMP_X = '37%';
+
+const strata = [
+  {
+    title: 'Énergie solaire',
+    slug: 'energie-solaire',
+    layer: 'Sur le terrain',
+    image: '/solaire.jpg',
+    desc: 'Centrales photovoltaïques, pompage solaire autonome, éclairage public et kits pour sites isolés.',
+    features: ['Pompage solaire immergé', 'Micro-centrales hybrides', 'Onduleurs industriels'],
+    band: 'bg-emerald-600 text-white',
+    muted: 'text-emerald-100',
+    edge: 'var(--color-emerald-600)',
+    link: 'text-white',
+  },
+  {
+    title: 'Agrotechnologies',
+    slug: 'agrotechnologies',
+    layer: 'Dans la terre arable',
+    image: '/agriculture.jpg',
+    desc: 'Irrigation goutte-à-goutte, serres automatisées, mécanisation agricole et valorisation des sols.',
+    features: ['Irrigation goutte-à-goutte', 'Serres climatisées', 'Automatisation hydrique'],
+    band: 'bg-pousse text-slate-900',
+    muted: 'text-slate-700',
+    edge: 'var(--color-pousse)',
+    link: 'text-slate-900',
+  },
+  {
+    title: 'BTP et génie civil',
+    slug: 'btp-genie-civil',
+    layer: 'Dans la latérite',
+    image: '/btp.jpg',
+    desc: 'Bâtiments professionnels et industriels, voiries, pistes rurales et ouvrages d\'art.',
+    features: ['Ouvrages béton armé', 'Génie civil durable', 'Pistes de désenclavement'],
+    band: 'bg-laterite text-white',
+    muted: 'text-orange-100',
+    edge: 'var(--color-laterite)',
+    link: 'text-white',
+  },
+  {
+    title: 'Eau et hydraulique',
+    slug: 'eau-hydraulique',
+    layer: 'Dans la nappe',
+    image: '/Fontaine.png',
+    desc: 'Forages industriels et villageois, châteaux d\'eau, réseaux d\'adduction d\'eau potable et assainissement.',
+    features: ['Forages gros débit', 'Châteaux d\'eau jusqu\'à 200 m³', 'Réseaux certifiés OMS'],
+    band: 'bg-sky-900 text-white',
+    muted: 'text-sky-100',
+    edge: 'var(--color-sky-900)',
+    link: 'text-white',
+  },
+];
+
+function StratumEdge({ color, raised = false }: { color: string; raised?: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 1440 24"
+      preserveAspectRatio="none"
+      className={`absolute left-0 w-full h-5 ${raised ? '-top-5' : 'top-0'}`}
+    >
+      <path
+        fill={color}
+        d={
+          raised
+            ? 'M0 24V14C180 4 320 18 520 12S860 2 1040 10 1320 18 1440 8V24Z'
+            : 'M0 0V10C200 20 340 6 540 12S880 22 1060 12 1320 4 1440 14V0Z'
+        }
+      />
+    </svg>
+  );
+}
 
 export function HomePage() {
   const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
@@ -61,200 +138,155 @@ export function HomePage() {
     loadData();
   }, []);
 
-  const domains = [
-    {
-      title: 'Eau et hydraulique',
-      slug: 'eau-hydraulique',
-      image: '/Fontaine.png',
-      tagline: 'Accès durable à l\'eau potable',
-      desc: 'Forages industriels et villageois, châteaux d\'eau métalliques et béton, réseaux d\'adduction d\'eau potable (AEP) et assainissement.',
-      features: ['Forages gros débit', 'Châteaux d\'eau jusqu\'à 200m³', 'Réseaux certifiés OMS'],
-    },
-    {
-      title: 'Énergie solaire',
-      slug: 'energie-solaire',
-      image: '/solaire.jpg',
-      tagline: 'Transition énergétique et pompage',
-      desc: 'Centrales solaires photovoltaïques, systèmes de pompage solaire autonome, éclairage public solaire et kits solaires pour sites isolés.',
-      features: ['Pompage solaire immergé', 'Micro-centrales hybrides', 'Onduleurs industriels'],
-    },
-    {
-      title: 'Agrotechnologies',
-      slug: 'agrotechnologies',
-      image: '/agriculture.jpg',
-      tagline: 'Agriculture moderne et productive',
-      desc: 'Systèmes d\'irrigation goutte-à-goutte, serres automatisées, mécanisation agricole et valorisation agrotechnologique des sols.',
-      features: ['Irrigation goutte-à-goutte', 'Serres climatisées', 'Automatisation hydrique'],
-    },
-    {
-      title: 'BTP et génie civil',
-      slug: 'btp-genie-civil',
-      image: '/btp.jpg',
-      tagline: 'Constructions durables et infrastructures',
-      desc: 'Bâtiments professionnels et industriels, voiries, pistes rurales, ouvrages d\'art et génie civil écoresponsable.',
-      features: ['Ouvrages béton armé', 'Génie civil durable', 'Pistes de désenclavement'],
-    },
+  const keyFigures = [
+    { value: `${stats.projectsCount}+`, label: 'projets livrés' },
+    { value: `${stats.categoriesCount}`, label: 'pôles d\'expertise' },
+    { value: `${stats.yearsWarranty} ans`, label: 'de garantie' },
+    { value: `${stats.responseHours} h`, label: 'pour chiffrer votre projet' },
   ];
 
   return (
     <div className="w-full">
-      {/* 1. HERO SECTION */}
-      <section className="bg-slate-950 text-white pt-12 pb-16 lg:pt-20 lg:pb-24 border-b border-slate-800 relative overflow-hidden">
-        {/* Ambient Glows */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* 1. HERO */}
+      <section className="bg-sky-100 text-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-16 lg:pb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+            <h1 className="lg:col-span-7 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-extrabold tracking-tight leading-[1.04]">
+              Du soleil à la nappe, des ouvrages qui durent.
+            </h1>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-            {/* LEFT COLUMN: Texts & CTAs (7 Cols) */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] tracking-tight leading-[1.12] text-white">
-                Bâtir l'avenir par l'eau, l'énergie et le génie civil
-              </h1>
-
-              <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl">
-                GREEN TECHNOLOGIES BTP déploie des solutions techniques de pointe en adduction d'eau potable,
-                centrales solaires, agrotechnologies et construction durable pour les collectivités,
-                entreprises et particuliers.
+            <div className="lg:col-span-5 space-y-6">
+              <p className="text-lg text-slate-700 leading-relaxed max-w-prose">
+                GREEN TECHNOLOGIES BTP conçoit et réalise vos forages, centrales solaires, systèmes
+                d'irrigation et bâtiments en Côte d'Ivoire, pour les collectivités, les entreprises
+                et les particuliers.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <Link to="/devis">
                   <Button
                     variant="accent"
                     size="lg"
                     leftIcon={<FileText className="w-5 h-5" />}
-                    className="w-full sm:w-auto font-bold shadow-lg shadow-emerald-700/20 text-base"
+                    className="w-full sm:w-auto font-bold"
                   >
                     Demander un devis
                   </Button>
                 </Link>
                 <Link to="/realisations">
-                  <Button
-                    variant="outline-dark"
-                    size="lg"
-                    rightIcon={<ArrowRight className="w-5 h-5" />}
-                    className="w-full sm:w-auto font-bold border-slate-700 hover:bg-slate-800 text-slate-200 text-base"
-                  >
-                    Découvrir nos réalisations
+                  <Button variant="secondary" size="lg" className="w-full sm:w-auto font-bold">
+                    Voir nos réalisations
                   </Button>
                 </Link>
               </div>
-
-              {/* Key Indicators */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-6 border-t border-slate-800/80">
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 hover:bg-slate-900 transition-all duration-300 group">
-                  <div className="text-3xl font-bold text-emerald-400 font-['Outfit'] group-hover:scale-105 transition-transform origin-left">
-                    <AnimatedCounter end={stats.projectsCount} suffix="+" duration={1600} />
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Projets livrés</div>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/40 hover:bg-slate-900 transition-all duration-300 group">
-                  <div className="text-3xl font-bold text-sky-400 font-['Outfit'] group-hover:scale-105 transition-transform origin-left">
-                    <AnimatedCounter end={stats.categoriesCount} duration={1200} />
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Pôles d'expertise</div>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-orange-500/40 hover:bg-slate-900 transition-all duration-300 group">
-                  <div className="text-3xl font-bold text-orange-400 font-['Outfit'] group-hover:scale-105 transition-transform origin-left">
-                    <AnimatedCounter end={stats.yearsWarranty} suffix=" ans" duration={1400} />
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Garantie</div>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/40 hover:bg-slate-900 transition-all duration-300 group">
-                  <div className="text-3xl font-bold text-lime-400 font-['Outfit'] group-hover:scale-105 transition-transform origin-left">
-                    <AnimatedCounter end={stats.responseHours} suffix="h" duration={1500} />
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Délai de chiffrage</div>
-                </div>
-              </div>
             </div>
+          </div>
 
-            {/* RIGHT COLUMN: Single Hero Image from public folder (5 Cols) */}
-            <div className="lg:col-span-5">
-              <div className="rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 shadow-2xl p-2">
+          <dl className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-5 mt-10 lg:mt-12">
+            {keyFigures.map((figure) => (
+              <div key={figure.label} className="flex flex-col-reverse">
+                <dt className="text-sm text-slate-600 mt-0.5">{figure.label}</dt>
+                <dd className="text-2xl sm:text-3xl font-display font-extrabold">{figure.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* 2. COUPE DE FORAGE : LES 4 PÔLES */}
+      <section
+        id="domaines"
+        aria-labelledby="domaines-titre"
+        className="relative [--photo-h:clamp(280px,44vw,560px)]"
+      >
+        <h2 id="domaines-titre" className="sr-only">
+          Nos 4 pôles d'expertise
+        </h2>
+
+        <img
+          src="/forage.jpg"
+          alt="Pompe solaire, panneaux et château d'eau alimentant les robinets d'un village"
+          fetchPriority="high"
+          className="w-full object-cover object-bottom h-[var(--photo-h)]"
+        />
+
+        {/* Tuyau : descend de la pompe de la photo jusqu'à la nappe */}
+        <div
+          aria-hidden="true"
+          className="bore-line hidden md:block absolute z-10 w-1.5 -ml-[3px] bg-white shadow-[0_0_0_1px_var(--color-slate-900)]"
+          style={{ left: PUMP_X, top: 'calc(var(--photo-h) - 6.3vw)', bottom: '3rem' }}
+        />
+
+        {strata.map((stratum, index) => (
+          <div key={stratum.slug} className={`relative ${stratum.band}`}>
+            {index === 0 ? (
+              <StratumEdge color={stratum.edge} raised />
+            ) : (
+              <StratumEdge color={strata[index - 1].edge} />
+            )}
+
+            {/* Repère du pôle sur le tuyau */}
+            <span
+              aria-hidden="true"
+              className="hidden md:block absolute z-20 top-14 w-4 h-4 -ml-2 rounded-full bg-orange-400 border-2 border-white"
+              style={{ left: PUMP_X }}
+            />
+
+            <div className="md:grid md:grid-cols-[37%_1fr] py-12 lg:py-16 px-4 sm:px-6 md:px-0">
+              <div className="md:pl-8 lg:pl-12 xl:pl-20 md:pr-8">
+                <p className={`text-sm font-medium ${stratum.muted}`}>{stratum.layer}</p>
+                <h3 className="text-3xl lg:text-4xl font-display font-extrabold tracking-tight mt-1">
+                  {stratum.title}
+                </h3>
+              </div>
+
+              <div className="mt-4 md:mt-0 md:pl-10 lg:pl-14 md:pr-8 lg:pr-12 xl:pr-20 grid gap-6 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
+                <div>
+                  <p className="text-lg leading-relaxed max-w-prose">{stratum.desc}</p>
+                  <ul className={`mt-3 text-sm leading-relaxed ${stratum.muted}`}>
+                    {stratum.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                  <Link
+                    to={`/domaines/${stratum.slug}`}
+                    className={`inline-flex items-center gap-2 mt-4 font-bold underline underline-offset-4 ${stratum.link}`}
+                  >
+                    <span>Découvrir ce pôle</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+
                 <img
-                  src="/Fontaine.png"
-                  alt="GREEN TECHNOLOGIES BTP"
-                  className="w-full h-80 sm:h-96 lg:h-[440px] object-cover rounded-2xl"
+                  src={getImageUrl(stratum.image, stratum.slug)}
+                  alt=""
+                  loading="lazy"
+                  onError={(e) => handleImageError(e, stratum.slug)}
+                  className={`hidden lg:block w-full h-36 rounded-md ${
+                    stratum.image.endsWith('.png') ? 'object-contain bg-white p-2' : 'object-cover'
+                  }`}
                 />
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 2. LES 4 PÔLES D'EXPERTISE */}
-      <section id="domaines" className="py-20 bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <Badge variant="green">Solutions clés en main</Badge>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl text-slate-900 font-['Outfit'] tracking-tight">
-              Nos 4 pôles d'excellence
-            </h2>
-            <p className="text-base sm:text-lg text-slate-600">
-              Une synergie complète entre maîtrise hydraulique, énergie propre, productivité agricole et solidité des ouvrages.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {domains.map((dom) => (
-              <Card
-                key={dom.slug}
-                hoverable
-                className="flex flex-col justify-between bg-white border border-slate-200/80 rounded-2xl shadow-xs hover:shadow-md transition-all overflow-hidden p-0 group"
-              >
-                <div>
-                  <div className="h-40 w-full overflow-hidden bg-slate-100 relative">
-                    <img
-                      src={getImageUrl(dom.image, dom.slug)}
-                      alt={dom.title}
-                      onError={(e) => handleImageError(e, dom.slug)}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                  </div>
-
-                  <div className="p-5">
-                    <h3 className="text-xl font-bold text-slate-900 font-['Outfit'] mb-1">
-                      {dom.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-semibold text-emerald-700 mb-2">{dom.tagline}</p>
-                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">{dom.desc}</p>
-                  </div>
-                </div>
-
-                <div className="px-5 pb-5 pt-2">
-                  <Link
-                    to={`/domaines/${dom.slug}`}
-                    className="inline-flex items-center justify-between w-full text-sm font-bold text-emerald-800 hover:text-emerald-900 pt-3 border-t border-slate-100"
-                  >
-                    <span>Découvrir le pôle</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
+        ))}
       </section>
 
       {/* 3. SERVICES PHARES */}
       {featuredServices.length > 0 && (
         <section id="services" className="py-20 bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
               <div className="space-y-2">
-                <Badge variant="blue">Catalogue technique</Badge>
-                <h2 className="text-3xl sm:text-4xl text-slate-900 font-['Outfit'] tracking-tight">
-                  Nos prestations populaires
+                <h2 className="text-3xl sm:text-4xl text-slate-900 font-display font-extrabold tracking-tight">
+                  Nos prestations les plus demandées
                 </h2>
-                <p className="text-base sm:text-lg text-slate-600">
-                  Des solutions techniques dimensionnées par nos ingénieurs certifiés.
+                <p className="text-lg text-slate-600 max-w-prose">
+                  Chaque solution est dimensionnée par nos ingénieurs pour votre site.
                 </p>
               </div>
               <Link to="/services">
-                <Button variant="outline" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                <Button variant="outline" size="md">
                   Voir tous les services
                 </Button>
               </Link>
@@ -262,52 +294,36 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredServices.map((service) => (
-                <Card key={service.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 border-slate-200 group bg-white shadow-xs hover:shadow-md transition-all">
+                <Card key={service.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
                   <div>
-                    <div className="h-44 w-full overflow-hidden bg-slate-100 relative">
-                      <img
-                        src={getImageUrl((service as any).image_url || service.image, service.slug || service.category?.slug, service.slug || service.id || service.title)}
-                        alt={service.title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, service.slug || service.category?.slug, service.slug || service.id || service.title)}
-                      />
-                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-900/80 text-white backdrop-blur-xs">
-                        {service.category?.name || 'Prestation'}
-                      </span>
-                    </div>
+                    <img
+                      src={getImageUrl((service as any).image_url || service.image, service.slug || service.category?.slug, service.slug || service.id || service.title)}
+                      alt={service.title}
+                      loading="lazy"
+                      className="h-44 w-full object-cover bg-slate-100"
+                      onError={(e) => handleImageError(e, service.slug || service.category?.slug, service.slug || service.id || service.title)}
+                    />
 
                     <div className="p-6">
-                      <h4 className="text-xl font-bold text-slate-900 font-['Outfit'] mb-2.5">
+                      <p className="text-sm text-slate-500 mb-1">{service.category?.name || 'Prestation'}</p>
+                      <h3 className="text-xl font-bold text-slate-900 font-display mb-2.5">
                         {service.title}
-                      </h4>
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4">
+                      </h3>
+                      <p className="text-slate-600 leading-relaxed line-clamp-3">
                         {service.summary || service.description}
                       </p>
-                      {service.features && service.features.length > 0 && (
-                        <div className="space-y-1.5 bg-slate-50 p-3 rounded-xl mb-4 border border-slate-100">
-                          {service.features.slice(0, 3).map((feat, i) => (
-                            <div key={i} className="text-sm text-slate-700 flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                              <span className="truncate">{feat}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   </div>
 
-                  <div className="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
+                  <div className="px-6 pb-6 flex items-center justify-between gap-4">
                     <Link
                       to={`/services/${service.slug}`}
-                      className="text-sm font-bold text-emerald-800 hover:text-emerald-900"
+                      className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
                     >
-                      Détails techniques →
+                      Voir le détail
                     </Link>
-                    <Link
-                      to="/devis"
-                      className="text-sm font-bold text-orange-600 hover:text-orange-700"
-                    >
-                      Devis express
+                    <Link to="/devis" className="font-bold text-slate-700 hover:text-slate-900">
+                      Demander un devis
                     </Link>
                   </div>
                 </Card>
@@ -319,84 +335,63 @@ export function HomePage() {
 
       {/* 4. RÉALISATIONS PHARES */}
       {featuredProjects.length > 0 && (
-        <section id="realisations" className="py-20 bg-slate-900 text-white border-b border-slate-800">
+        <section id="realisations" className="py-20 bg-slate-900 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
               <div className="space-y-2">
-                <Badge variant="orange">Chantiers récents</Badge>
-                <h2 className="text-3xl sm:text-4xl text-white font-['Outfit'] tracking-tight">
+                <h2 className="text-3xl sm:text-4xl text-white font-display font-extrabold tracking-tight">
                   Nos réalisations sur le terrain
                 </h2>
-                <p className="text-base sm:text-lg text-slate-400">
-                  Découvrez les chantiers livrés avec succès à travers la Côte d'Ivoire.
+                <p className="text-lg text-slate-300 max-w-prose">
+                  Des chantiers livrés à travers la Côte d'Ivoire.
                 </p>
               </div>
               <Link to="/realisations">
-                <Button
-                  variant="outline-dark"
-                  size="md"
-                  rightIcon={<ArrowRight className="w-4 h-4" />}
-                >
+                <Button variant="outline-dark" size="md">
                   Voir tous les projets
                 </Button>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProjects.map((project) => (
-                <div
-                  key={project.id}
-                  className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden flex flex-col justify-between group shadow-lg"
-                >
-                  <div>
-                    <div className="h-48 w-full overflow-hidden bg-slate-900 relative">
-                      <img
-                        src={getImageUrl((project as any).image_url || project.image, project.slug || project.category?.slug, project.slug || project.id || project.title)}
-                        alt={project.title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, project.slug || project.category?.slug, project.slug || project.id || project.title)}
-                      />
-                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-900/80 text-white backdrop-blur-xs">
-                        {project.category?.name || 'Projet'}
-                      </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+              {featuredProjects.map((project, index) => (
+                <article key={project.id} className={index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}>
+                  <img
+                    src={getImageUrl((project as any).image_url || project.image, project.slug || project.category?.slug, project.slug || project.id || project.title)}
+                    alt={project.title}
+                    loading="lazy"
+                    className={`w-full object-cover rounded-md bg-slate-800 ${index === 0 ? 'h-56 lg:h-[420px]' : 'h-48'}`}
+                    onError={(e) => handleImageError(e, project.slug || project.category?.slug, project.slug || project.id || project.title)}
+                  />
+
+                  <div className="mt-4">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-300 mb-1.5">
+                      <span>{project.category?.name || 'Projet'}</span>
+                      {project.location && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <MapPin className="w-4 h-4 text-orange-400" />
+                          {project.location}
+                        </span>
+                      )}
+                      {project.completion_date && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Calendar className="w-4 h-4 text-slate-400" />
+                          {new Date(project.completion_date).getFullYear()}
+                        </span>
+                      )}
                     </div>
 
-                    <div className="p-6">
-                      <div className="flex items-center justify-between gap-2 mb-2.5">
-                        {project.location && (
-                          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400 font-medium">
-                            <MapPin className="w-4 h-4 text-orange-400" />
-                            <span>{project.location}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <h4 className="text-lg sm:text-xl font-semibold text-white font-['Outfit'] mb-2 leading-snug">
+                    <h3 className={`font-display font-bold text-white leading-snug mb-2 ${index === 0 ? 'text-2xl lg:text-3xl' : 'text-xl'}`}>
+                      <Link to={`/realisations/${project.slug}`} className="hover:underline underline-offset-4">
                         {project.title}
-                      </h4>
+                      </Link>
+                    </h3>
 
-                      <p className="text-sm text-slate-300 line-clamp-3 leading-relaxed">
-                        {project.description}
-                      </p>
-                    </div>
+                    <p className="text-slate-300 line-clamp-3 leading-relaxed max-w-prose">
+                      {project.description}
+                    </p>
                   </div>
-
-                  <div className="px-6 py-4 bg-slate-900 border-t border-slate-700 flex items-center justify-between">
-                    <Link
-                      to={`/realisations/${project.slug}`}
-                      className="text-sm font-bold text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1.5"
-                    >
-                      <span>Fiche projet</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    {project.completion_date && (
-                      <span className="text-xs sm:text-sm text-slate-400 flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {new Date(project.completion_date).getFullYear()}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                </article>
               ))}
             </div>
           </div>
@@ -407,42 +402,36 @@ export function HomePage() {
       {testimonials.length > 0 && (
         <section id="temoignages" className="py-20 bg-slate-50 border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-              <Badge variant="green">Confiance et satisfaction</Badge>
-              <h2 className="text-3xl sm:text-4xl text-slate-900 font-['Outfit'] tracking-tight">
-                Ils nous font confiance
-              </h2>
-              <p className="text-base sm:text-lg text-slate-600">
-                Les retours d'expérience de nos clients publics, industriels et agricoles.
-              </p>
-            </div>
+            <h2 className="text-3xl sm:text-4xl text-slate-900 font-display font-extrabold tracking-tight mb-10">
+              Ce que disent nos clients
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {testimonials.map((t) => (
-                <Card key={t.id} className="flex flex-col justify-between p-6">
+                <figure key={t.id} className="flex flex-col justify-between border-t-2 border-emerald-600 pt-5">
                   <div>
-                    <div className="flex items-center gap-1 text-amber-500 mb-4">
+                    <div
+                      className="flex items-center gap-1 text-orange-500 mb-3"
+                      role="img"
+                      aria-label={`Note : ${t.rating || 5} sur 5`}
+                    >
                       {Array.from({ length: t.rating || 5 }).map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-current" />
                       ))}
                     </div>
-                    <p className="text-sm sm:text-base text-slate-700 italic leading-relaxed mb-6">
-                      "{t.content}"
-                    </p>
+                    <blockquote className="text-lg text-slate-800 leading-relaxed mb-5">
+                      {t.content}
+                    </blockquote>
                   </div>
 
-                  <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm shrink-0">
-                      {t.author_name.charAt(0)}
-                    </div>
-                    <div>
-                      <h5 className="text-sm font-bold text-slate-900">{t.author_name}</h5>
-                      <p className="text-xs sm:text-sm text-slate-500">
-                        {t.author_role} {t.company ? `• ${t.company}` : ''}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
+                  <figcaption>
+                    <p className="font-bold text-slate-900">{t.author_name}</p>
+                    <p className="text-sm text-slate-600">
+                      {t.author_role}
+                      {t.company ? `, ${t.company}` : ''}
+                    </p>
+                  </figcaption>
+                </figure>
               ))}
             </div>
           </div>
@@ -451,24 +440,19 @@ export function HomePage() {
 
       {/* 6. ACTUALITÉS & PUBLICATIONS */}
       {recentArticles.length > 0 && (
-        <section id="actualites" className="py-20 bg-white border-b border-slate-200">
+        <section id="actualites" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
               <div className="space-y-2">
-                <Badge variant="green">Actualités et blog</Badge>
-                <h2 className="text-3xl sm:text-4xl text-slate-900 font-['Outfit'] tracking-tight">
-                  Dernières publications et études
+                <h2 className="text-3xl sm:text-4xl text-slate-900 font-display font-extrabold tracking-tight">
+                  Dernières publications
                 </h2>
-                <p className="text-base sm:text-lg text-slate-600">
-                  Découvrez les dernières innovations et retours techniques de nos équipes.
+                <p className="text-lg text-slate-600 max-w-prose">
+                  Les retours techniques de nos équipes.
                 </p>
               </div>
               <Link to="/actualites">
-                <Button
-                  variant="outline"
-                  size="md"
-                  rightIcon={<ArrowRight className="w-4 h-4" />}
-                >
+                <Button variant="outline" size="md">
                   Voir tous les articles
                 </Button>
               </Link>
@@ -476,92 +460,66 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {recentArticles.map((art) => (
-                <Card
-                  key={art.id}
-                  hoverable
-                  className="flex flex-col justify-between overflow-hidden p-0 border-slate-200 group bg-white shadow-xs hover:shadow-md transition-all"
-                >
-                  <div>
-                    <div className="h-48 w-full overflow-hidden bg-slate-100 relative">
-                      <img
-                        src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
-                        alt={art.title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={(e) => handleImageError(e, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
-                      />
-                      {art.category?.name && (
-                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-900/80 text-white backdrop-blur-xs">
-                          {art.category.name}
-                        </span>
+                <article key={art.id}>
+                  <img
+                    src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
+                    alt={art.title}
+                    loading="lazy"
+                    className="h-48 w-full object-cover rounded-md bg-slate-100"
+                    onError={(e) => handleImageError(e, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
+                  />
+
+                  <div className="mt-4">
+                    <div className="flex flex-wrap items-center gap-x-4 text-sm text-slate-500 mb-1.5">
+                      {art.category?.name && <span>{art.category.name}</span>}
+                      {art.published_at && (
+                        <span>{new Date(art.published_at).toLocaleDateString('fr-FR')}</span>
                       )}
                     </div>
 
-                    <div className="p-6">
-                      <div className="flex items-center justify-between gap-2 mb-2.5">
-                        {art.published_at && (
-                          <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5">
-                            <Calendar className="w-4 h-4 text-slate-400" />
-                            <span>{new Date(art.published_at).toLocaleDateString('fr-FR')}</span>
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="text-xl font-bold text-slate-900 font-['Outfit'] mb-2 group-hover:text-emerald-700 transition-colors line-clamp-2">
+                    <h3 className="text-xl font-bold text-slate-900 font-display mb-2 line-clamp-2">
+                      <Link to={`/actualites/${art.slug}`} className="hover:underline underline-offset-4">
                         {art.title}
-                      </h3>
+                      </Link>
+                    </h3>
 
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2 mb-2">
-                        {art.excerpt || art.content}
-                      </p>
-                    </div>
+                    <p className="text-slate-600 leading-relaxed line-clamp-2">
+                      {art.excerpt || art.content}
+                    </p>
                   </div>
-
-                  <div className="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
-                    <Link
-                      to={`/actualites/${art.slug}`}
-                      className="text-sm font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1.5 group/link"
-                    >
-                      <span>Lire l'article</span>
-                      <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </Card>
+                </article>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* 7. BANNIÈRE DEVIS EXPRESS */}
-      <section className="bg-emerald-900 text-white py-16 px-4 sm:px-6 lg:px-8 border-t border-emerald-800">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
-          <div className="space-y-3">
-            <Badge variant="orangeDark" className="px-3 py-1">
-              Chiffrage gratuit en ligne
-            </Badge>
-            <h3 className="text-2xl sm:text-3xl font-bold font-['Outfit']">
+      {/* 7. APPEL À L'ACTION */}
+      <section className="bg-orange-400 text-slate-950 py-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          <div className="space-y-2">
+            <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
               Vous avez un projet en Côte d'Ivoire ?
-            </h3>
-            <p className="text-sm sm:text-base text-emerald-100 max-w-xl leading-relaxed">
-              Notre bureau d'études analyse votre cahier des charges et vous transmet une proposition technique et financière détaillée sous 48h.
+            </h2>
+            <p className="text-lg max-w-prose leading-relaxed">
+              Envoyez-nous votre cahier des charges. Vous recevez une proposition technique et
+              financière sous 48 h, sans frais.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3.5 shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
             <Link to="/devis">
-              <Button variant="accent" size="lg" className="font-bold text-base">
-                Lancer mon devis en ligne
+              <Button variant="secondary" size="lg" className="w-full sm:w-auto font-bold">
+                Demander un devis
               </Button>
             </Link>
-            <Link to="/contact">
-              <Button
-                variant="outline-dark"
-                size="lg"
-                className="font-bold border-emerald-700 bg-emerald-800 hover:bg-emerald-700 text-white text-base"
-              >
-                Nous appeler
-              </Button>
-            </Link>
+            <a
+              href="tel:+2252722584016"
+              className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-md border border-slate-950 font-bold hover:bg-orange-300 transition-colors"
+            >
+              <Phone className="w-5 h-5" />
+              <span>Appeler le +225 27 22 58 40 16</span>
+            </a>
           </div>
         </div>
       </section>

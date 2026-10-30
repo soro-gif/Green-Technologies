@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FileText,
@@ -49,7 +49,7 @@ export function UserDashboardPage() {
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
             Espace Personnel Client
           </span>
-          <h1 className="text-2xl sm:text-3xl font-semibold font-['Outfit']">
+          <h1 className="text-2xl sm:text-3xl font-semibold font-display">
             Bienvenue, {user?.name}
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
@@ -73,7 +73,7 @@ export function UserDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-wider">Total Demandes</span>
             <FileText className="w-5 h-5 text-emerald-600" />
           </div>
-          <p className="text-2xl font-extrabold text-slate-900 font-['Outfit']">{quotes.length}</p>
+          <p className="text-2xl font-extrabold text-slate-900 font-display">{quotes.length}</p>
         </div>
 
         <div className="p-5 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between">
@@ -81,7 +81,7 @@ export function UserDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">En étude / Attente</span>
             <Clock className="w-5 h-5 text-amber-500" />
           </div>
-          <p className="text-2xl font-extrabold text-amber-600 font-['Outfit']">{pendingCount}</p>
+          <p className="text-2xl font-extrabold text-amber-600 font-display">{pendingCount}</p>
         </div>
 
         <div className="p-5 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between">
@@ -89,14 +89,14 @@ export function UserDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Devis Validés</span>
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
           </div>
-          <p className="text-2xl font-extrabold text-emerald-700 font-['Outfit']">{acceptedCount}</p>
+          <p className="text-2xl font-extrabold text-emerald-700 font-display">{acceptedCount}</p>
         </div>
       </div>
 
       {/* Recent Quotes Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium text-slate-900 font-['Outfit']">
+          <h2 className="text-lg font-medium text-slate-900 font-display">
             Mes Dernières Demandes
           </h2>
           <Link
