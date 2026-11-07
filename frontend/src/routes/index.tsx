@@ -37,6 +37,7 @@ const QuoteRequestPage = lazy(() => import('../pages/QuoteRequestPage').then((m)
 const ContactPage = lazy(() => import('../pages/ContactPage').then((m) => ({ default: m.ContactPage })));
 const ArticlesPage = lazy(() => import('../pages/ArticlesPage').then((m) => ({ default: m.ArticlesPage })));
 const ArticleDetailPage = lazy(() => import('../pages/ArticleDetailPage').then((m) => ({ default: m.ArticleDetailPage })));
+const RecruitmentPage = lazy(() => import('../pages/RecruitmentPage').then((m) => ({ default: m.RecruitmentPage })));
 const HealthPage = lazy(() => import('../pages/HealthPage').then((m) => ({ default: m.HealthPage })));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
 
@@ -132,6 +133,14 @@ export const router = createBrowserRouter([
       {
         path: 'contact',
         element: withSuspense(ContactPage),
+      },
+      {
+        path: 'recrutement',
+        element: withSuspense(RecruitmentPage),
+      },
+      {
+        path: 'carrieres',
+        element: <Navigate to="/recrutement" replace />,
       },
       // Actualités (URL officielle)
       {
