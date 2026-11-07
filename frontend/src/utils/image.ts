@@ -97,6 +97,28 @@ function enforceHttps(url: string): string {
   return url;
 }
 
+const CLOUDINARY_UPLOAD = /^https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//;
+
+/** URL d'une image hébergée sur Cloudinary (stockage durable, servie par CDN). */
+export function isCloudinaryUrl(url?: string | null): url is string {
+  return !!url && CLOUDINARY_UPLOAD.test(url);
+}
+
+/**
+ * Demande à Cloudinary le meilleur format pour le navigateur (WebP/AVIF), une compression
+ * automatique et une largeur plafonnée : une photo de 3 Mo devient ~150 Ko.
+ * N'ajoute rien si l'URL contient déjà des transformations.
+ */
+function optimizeCloudinaryUrl(url: string, maxWidth = 1600): string {
+  const match = url.match(CLOUDINARY_UPLOAD);
+  if (!match) return url;
+  const rest = url.slice(match[0].length);
+  const firstSegment = rest.split('/')[0];
+  const hasTransform = /(^|,)(f|q|w|c)_/.test(firstSegment);
+  if (hasTransform) return url;
+  return `${match[0]}f_auto,q_auto,c_limit,w_${maxWidth}/${rest}`;
+}
+
 /**
  * Normalizes an image URL:
  * - If external (http/https/data:), returns as-is (http:// is upgraded to https://)
@@ -113,7 +135,7 @@ export function getImageUrl(
     const trimmed = imagePath.trim();
     if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:')) {
       // Upgrade http:// → https:// to avoid mixed-content errors
-      return trimmed.startsWith('data:') ? trimmed : enforceHttps(trimmed);
+      return trimmed.startsWith('data:') ? trimmed : optimizeCloudinaryUrl(enforceHttps(trimmed));
     }
     const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
 

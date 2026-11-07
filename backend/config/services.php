@@ -28,6 +28,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    /*
+     * Stockage des images (le disque de Render est effacé à chaque redémarrage).
+     * Renseigner CLOUDINARY_URL (cloudinary://API_KEY:API_SECRET@CLOUD_NAME)
+     * ou CLOUDINARY_CLOUD_NAME + CLOUDINARY_API_KEY + CLOUDINARY_API_SECRET.
+     */
+    'cloudinary' => [
+        'url' => env('CLOUDINARY_URL'),
+        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+        'api_key' => env('CLOUDINARY_API_KEY'),
+        'api_secret' => env('CLOUDINARY_API_SECRET'),
+        'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

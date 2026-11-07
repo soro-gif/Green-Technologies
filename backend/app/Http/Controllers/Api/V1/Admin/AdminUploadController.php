@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Project;
 use App\Models\Service;
 use App\Models\Testimonial;
+use App\Services\CloudinaryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -344,64 +345,29 @@ class AdminUploadController extends BaseApiController
             $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'jpg';
             $fileName = time() . '_' . Str::random(8) . ($safeName ? "_{$safeName}" : '') . ".{$extension}";
 
-            // Option A: If Cloudinary credentials are provided
-            $cloudinaryUrl = env('CLOUDINARY_URL');
-            $cloudinaryCloudName = env('CLOUDINARY_CLOUD_NAME');
-            $cloudinaryApiKey = env('CLOUDINARY_API_KEY');
-            $cloudinaryApiSecret = env('CLOUDINARY_API_SECRET');
-            $cloudinaryUploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
-
-            if ($cloudinaryUrl || ($cloudinaryCloudName && ($cloudinaryUploadPreset || ($cloudinaryApiKey && $cloudinaryApiSecret)))) {
+            // Option A : Cloudinary (stockage durable, recommandé en production)
+            $cloudinary = app(CloudinaryService::class);
+            if ($cloudinary->isConfigured()) {
                 try {
-                    $cloudName = $cloudinaryCloudName;
-                    $apiKey = $cloudinaryApiKey;
-                    $apiSecret = $cloudinaryApiSecret;
+                    $secureUrl = $cloudinary->uploadFile($file->getRealPath(), $file->getClientOriginalName(), $folder);
 
-                    if ($cloudinaryUrl && preg_match('/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/', $cloudinaryUrl, $matches)) {
-                        $apiKey = $matches[1];
-                        $apiSecret = $matches[2];
-                        $cloudName = $matches[3];
-                    }
-
-                    if ($cloudName) {
-                        $timestamp = time();
-                        $uploadData = [
-                            'folder' => "greentech/{$folder}",
-                        ];
-
-                        if ($cloudinaryUploadPreset) {
-                            $uploadData['upload_preset'] = $cloudinaryUploadPreset;
-                        } elseif ($apiKey && $apiSecret) {
-                            $paramsToSign = "folder=greentech/{$folder}&timestamp={$timestamp}{$apiSecret}";
-                            $signature = sha1($paramsToSign);
-                            $uploadData['timestamp'] = $timestamp;
-                            $uploadData['api_key'] = $apiKey;
-                            $uploadData['signature'] = $signature;
-                        }
-
-                        $response = Http::timeout(30)
-                            ->attach('file', file_get_contents($file->getRealPath()), $file->getClientOriginalName())
-                            ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", $uploadData);
-
-                        if ($response->successful()) {
-                            $json = $response->json();
-                            $secureUrl = $json['secure_url'] ?? $json['url'] ?? null;
-                            if ($secureUrl) {
-                                return $this->success([
-                                    'url' => $secureUrl,
-                                    'relative_url' => $secureUrl,
-                                    'file_name' => $fileName,
-                                    'original_name' => $file->getClientOriginalName(),
-                                    'size' => $file->getSize() ?: 0,
-                                    'formatted_size' => $this->formatBytes($file->getSize() ?: 0),
-                                ], 'Image téléversée avec succès sur Cloudinary.', 201);
-                            }
-                        }
-                    }
+                    return $this->success([
+                        'url' => $secureUrl,
+                        'relative_url' => $secureUrl,
+                        'file_name' => $fileName,
+                        'original_name' => $file->getClientOriginalName(),
+                        'size' => $file->getSize() ?: 0,
+                        'formatted_size' => $this->formatBytes($file->getSize() ?: 0),
+                    ], 'Image téléversée avec succès sur Cloudinary.', 201);
                 } catch (\Throwable $cloudEx) {
-                    Log::warning('Cloudinary upload error, falling back to local: ' . $cloudEx->getMessage());
+                    // Pas de repli sur le disque local : sur Render il est effacé au redémarrage.
+                    Log::error('Cloudinary upload error: ' . $cloudEx->getMessage());
+
+                    return $this->error('Le téléversement vers Cloudinary a échoué. Réessayez dans un instant.', 502);
                 }
             }
+
+            // Option B : disque local (développement uniquement : non persistant sur Render)
 
             $destinationPath = public_path("uploads/{$folder}");
             $savedSuccessfully = false;

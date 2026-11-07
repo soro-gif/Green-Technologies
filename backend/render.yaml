@@ -46,6 +46,11 @@ services:
       - key: LOG_CHANNEL
         value: stderr
 
+      # Images (le disque Render est effacé à chaque redémarrage)
+      # Valeur à saisir dans le tableau de bord Render : cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+      - key: CLOUDINARY_URL
+        sync: false
+
 # --- DATABASE (PostgreSQL) ---
 databases:
   - name: greentech-db
