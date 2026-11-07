@@ -57,7 +57,7 @@ export function MediaPickerModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-lg max-w-4xl w-full h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
+      <div className="bg-slate-900 border border-slate-800 rounded-lg max-w-4xl w-full h-[85dvh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in-95">
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
@@ -100,7 +100,7 @@ export function MediaPickerModal({
               <button
                 key={f}
                 onClick={() => setSelectedFolder(f)}
-                className={`px-3 py-1 rounded-full text-xs font-semibold capitalize transition-all ${
+                className={`px-3 py-1 rounded-full text-xs font-semibold capitalize transition-colors ${
                   selectedFolder === f
                     ? 'bg-emerald-600 text-white'
                     : 'bg-slate-800 text-slate-400 hover:text-white'
@@ -137,7 +137,7 @@ export function MediaPickerModal({
                   <div
                     key={item.id}
                     onClick={() => setSelectedItem(item)}
-                    className={`group relative rounded-md border overflow-hidden cursor-pointer bg-slate-950 transition-all flex flex-col justify-between ${
+                    className={`group relative rounded-md border overflow-hidden cursor-pointer bg-slate-950 transition-colors flex flex-col justify-between ${
                       isSelected
                         ? 'border-emerald-500 ring-2 ring-emerald-500/50 scale-[1.02]'
                         : 'border-slate-800 hover:border-slate-700'

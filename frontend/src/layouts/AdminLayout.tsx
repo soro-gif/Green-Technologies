@@ -106,8 +106,8 @@ export function AdminLayout() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col justify-between transition-transform duration-200 lg:shadow-none ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed lg:sticky top-0 left-0 z-50 h-dvh w-64 max-w-[85vw] shrink-0 overflow-y-auto bg-slate-900 border-r border-slate-800 flex flex-col justify-between transition-[translate,visibility] duration-200 lg:visible lg:shadow-none ${
+          sidebarOpen ? 'translate-x-0' : 'invisible -translate-x-full lg:translate-x-0'
         }`}
       >
         <div className="min-w-0">
@@ -117,6 +117,7 @@ export function AdminLayout() {
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+              aria-label="Fermer le menu"
             >
               <X className="w-5 h-5" />
             </button>
@@ -149,7 +150,7 @@ export function AdminLayout() {
               return (
                 <div
                   key={item.to}
-                  className={`group flex items-center justify-between px-3 py-2 rounded-md text-xs font-semibold transition-all ${
+                  className={`group flex items-center justify-between px-3 py-3 lg:py-2 rounded-md text-xs font-semibold transition-colors ${
                     active
                       ? 'bg-emerald-600 text-white'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
@@ -203,7 +204,7 @@ export function AdminLayout() {
       <div className="flex-1 flex flex-col min-w-0 bg-slate-50">
         {/* Top Header */}
         <header className="sticky top-0 z-30 h-16 bg-white border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer"
@@ -211,10 +212,11 @@ export function AdminLayout() {
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <h2 className="text-sm font-bold text-slate-800 font-display">
-                Portail d'Administration GREEN TECHNOLOGIES
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="w-2 h-2 shrink-0 rounded-full bg-emerald-500" />
+              <h2 className="text-sm font-bold text-slate-800 font-display truncate">
+                <span className="sm:hidden">Administration</span>
+                <span className="hidden sm:inline">Portail d'Administration GREEN TECHNOLOGIES</span>
               </h2>
             </div>
           </div>
@@ -223,7 +225,7 @@ export function AdminLayout() {
             <Link
               to="/"
               target="_blank"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2.5 lg:py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Site Web Public</span>

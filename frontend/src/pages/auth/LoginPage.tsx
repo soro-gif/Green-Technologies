@@ -97,7 +97,7 @@ export function LoginPage() {
                 aria-describedby={errors.email ? 'login-email-error' : undefined}
                 placeholder="vous@entreprise.ci"
                 {...register('email')}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-base text-slate-900 placeholder:text-slate-500 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-base text-slate-900 placeholder:text-slate-500 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-colors"
               />
             </div>
             {errors.email && <p id="login-email-error" className="text-red-600 text-sm mt-1 font-medium">{errors.email.message}</p>}
@@ -117,7 +117,7 @@ export function LoginPage() {
                 aria-describedby={errors.password ? 'login-password-error' : undefined}
                 placeholder="••••••••"
                 {...register('password')}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-base text-slate-900 placeholder:text-slate-500 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-md text-base text-slate-900 placeholder:text-slate-500 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-colors"
               />
             </div>
             {errors.password && <p id="login-password-error" className="text-red-600 text-sm mt-1 font-medium">{errors.password.message}</p>}

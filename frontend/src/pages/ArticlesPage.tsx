@@ -134,7 +134,7 @@ export function ArticlesPage() {
                 const imageUrl = getImageUrl(art.cover_image, fallbackKey, itemKey);
 
                 return (
-                  <Card key={art.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
+                  <Card key={art.id} hoverable className="reveal flex flex-col justify-between overflow-hidden p-0 bg-white">
                     <div>
                       <img
                         src={imageUrl}
@@ -177,7 +177,7 @@ export function ArticlesPage() {
                     <div className="px-6 pb-6">
                       <Link
                         to={`/actualites/${art.slug}`}
-                        className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
+                        className="py-2 -my-2 font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
                       >
                         Lire l'article
                       </Link>

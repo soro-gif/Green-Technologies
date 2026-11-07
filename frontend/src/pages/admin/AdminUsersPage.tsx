@@ -170,7 +170,7 @@ export function AdminUsersPage() {
             Aucun utilisateur trouvé.
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="table-cards">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
@@ -184,9 +184,9 @@ export function AdminUsersPage() {
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {users.map((u) => (
                   <tr key={u.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="px-4 py-3 text-slate-900 font-bold">{u.name}</td>
-                    <td className="px-4 py-3 text-slate-600 font-medium">{u.email}</td>
-                    <td className="px-4 py-3">
+                    <td data-label="Nom" className="px-4 py-3 text-slate-900 font-bold">{u.name}</td>
+                    <td data-label="Email" className="px-4 py-3 text-slate-600 font-medium">{u.email}</td>
+                    <td data-label="Rôle" className="px-4 py-3">
                       <span
                         className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                           u.role === 'super_admin'
@@ -199,7 +199,7 @@ export function AdminUsersPage() {
                         {u.role_label || u.role}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
+                    <td data-label="Statut" className="px-4 py-3">
                       <span
                         className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                           u.is_active
@@ -210,7 +210,7 @@ export function AdminUsersPage() {
                         {u.is_active ? 'Actif' : 'Désactivé'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td data-label="Actions" className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleOpenEdit(u)}
@@ -294,7 +294,7 @@ export function AdminUsersPage() {
             <option value="super_admin">Super Administrateur (Tous droits + gestion accès)</option>
           </Select>
 
-          <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-100 sticky bottom-0 bg-white py-2">
+          <div className="pt-4 pb-4 sm:pb-6 -mb-4 sm:-mb-6 flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 sticky -bottom-4 sm:-bottom-6 bg-white">
             <Button type="button" variant="outline" size="sm" onClick={() => setModalOpen(false)}>
               Annuler
             </Button>

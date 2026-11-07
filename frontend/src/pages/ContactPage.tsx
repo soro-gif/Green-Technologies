@@ -155,10 +155,10 @@ export function ContactPage() {
                   <div>
                     <h4 className="font-bold text-slate-900 text-sm">Téléphones</h4>
                     <div className="mt-0.5 text-sm text-slate-600 flex flex-col space-y-1">
-                      <a href="tel:+2252722584016" className="hover:text-emerald-700 transition-colors flex items-center gap-1.5">
+                      <a href="tel:+2252722584016" className="py-2 hover:text-emerald-700 transition-colors flex items-center gap-1.5">
                         <span>Fixe : +225 27 22 58 40 16</span>
                       </a>
-                      <a href="tel:+2250704901034" className="hover:text-emerald-700 transition-colors flex items-center gap-1.5">
+                      <a href="tel:+2250704901034" className="py-2 hover:text-emerald-700 transition-colors flex items-center gap-1.5">
                         <span>Tél : +225 07 04 90 10 34</span>
                       </a>
                     </div>
@@ -174,7 +174,7 @@ export function ContactPage() {
                     <h4 className="font-bold text-slate-900 text-sm">Courrier électronique</h4>
                     <a
                       href="mailto:contact@greentechnologies.ci"
-                      className="text-sm text-slate-600 hover:text-emerald-700 transition-colors block mt-0.5"
+                      className="py-2 text-sm text-slate-600 hover:text-emerald-700 transition-colors block"
                     >
                       contact@greentechnologies.ci
                     </a>
@@ -199,7 +199,7 @@ export function ContactPage() {
               <div className="pt-4 border-t border-slate-100">
                 <a
                   href="tel:+2252722584016"
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-all cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-colors cursor-pointer"
                 >
                   <Phone className="w-4 h-4" />
                   Appeler un conseiller

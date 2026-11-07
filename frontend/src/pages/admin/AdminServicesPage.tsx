@@ -217,7 +217,7 @@ export function AdminServicesPage() {
             Aucun service trouvé.
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="table-cards">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
@@ -233,7 +233,7 @@ export function AdminServicesPage() {
                   const srvImage = (s as any).image_url || s.image;
                   return (
                     <tr key={s.id} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="px-4 py-2.5">
+                      <td data-label="Visuel" className="px-4 py-2.5">
                         <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                           <img
                             src={getImageUrl(srvImage, s.slug || s.category?.slug)}
@@ -243,13 +243,13 @@ export function AdminServicesPage() {
                           />
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-slate-900 font-semibold">{s.title}</td>
-                      <td className="px-4 py-3 text-slate-600 font-medium">
+                      <td data-label="Titre" className="px-4 py-3 text-slate-900 font-semibold">{s.title}</td>
+                      <td data-label="Domaine" className="px-4 py-3 text-slate-600 font-medium">
                         <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
                           {s.category?.name || 'Général'}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td data-label="Statut" className="px-4 py-3">
                         <span
                           className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                             s.is_active
@@ -260,7 +260,7 @@ export function AdminServicesPage() {
                           {s.is_active ? 'Actif' : 'Inactif'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td data-label="Actions" className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleOpenEdit(s)}
@@ -354,7 +354,7 @@ export function AdminServicesPage() {
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
 
-          <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-100 sticky bottom-0 bg-white py-2">
+          <div className="pt-4 pb-4 sm:pb-6 -mb-4 sm:-mb-6 flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 sticky -bottom-4 sm:-bottom-6 bg-white">
             <Button type="button" variant="outline" size="sm" onClick={() => setModalOpen(false)}>
               Annuler
             </Button>

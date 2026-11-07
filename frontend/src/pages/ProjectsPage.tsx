@@ -143,7 +143,7 @@ export function ProjectsPage() {
                 const imageUrl = getImageUrl(proj.image_url || proj.main_image || proj.image, fallbackKey, itemKey);
 
                 return (
-                  <Card key={proj.id} hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
+                  <Card key={proj.id} hoverable className="reveal flex flex-col justify-between overflow-hidden p-0 bg-white">
                     <div>
                       <img
                         src={imageUrl}
@@ -189,7 +189,7 @@ export function ProjectsPage() {
                     <div className="px-6 pb-6">
                       <Link
                         to={`/realisations/${proj.slug}`}
-                        className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
+                        className="py-2 -my-2 font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
                       >
                         Voir l'étude de cas
                       </Link>

@@ -176,7 +176,7 @@ export function AdminCategoriesPage() {
             Aucun pôle d'expertise trouvé.
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="table-cards">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
@@ -193,7 +193,7 @@ export function AdminCategoriesPage() {
                   const catImage = (c as any).image_url || c.image;
                   return (
                     <tr key={c.id} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="px-4 py-2.5">
+                      <td data-label="Bannière" className="px-4 py-2.5">
                         <div className="w-14 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                           <img
                             src={c.slug === 'eau-hydraulique' && !catImage ? '/Fontaine.png' : getImageUrl(catImage, c.slug)}
@@ -203,18 +203,18 @@ export function AdminCategoriesPage() {
                           />
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-slate-900 font-bold">{c.name}</td>
-                      <td className="px-4 py-3 text-slate-700 font-medium">
+                      <td data-label="Pôle" className="px-4 py-3 text-slate-900 font-bold">{c.name}</td>
+                      <td data-label="Prestations" className="px-4 py-3 text-slate-700 font-medium">
                         <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
                           {c.services_count || 0} prestations
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-medium">
+                      <td data-label="Réalisations" className="px-4 py-3 font-medium">
                         <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-xs font-medium border border-emerald-200/60">
                           {c.projects_count || 0} projets
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td data-label="Statut" className="px-4 py-3">
                         <span
                           className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                             c.is_active
@@ -225,7 +225,7 @@ export function AdminCategoriesPage() {
                           {c.is_active ? 'Actif' : 'Inactif'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td data-label="Actions" className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleOpenEdit(c)}
@@ -298,7 +298,7 @@ export function AdminCategoriesPage() {
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
 
-          <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-100 sticky bottom-0 bg-white py-2">
+          <div className="pt-4 pb-4 sm:pb-6 -mb-4 sm:-mb-6 flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 sticky -bottom-4 sm:-bottom-6 bg-white">
             <Button type="button" variant="outline" size="sm" onClick={() => setModalOpen(false)}>
               Annuler
             </Button>

@@ -3,7 +3,7 @@ import { UploadCloud, Link as LinkIcon, Trash2, CheckCircle2, AlertCircle, Image
 import { uploadApi } from '../../api';
 import { Button } from './Button';
 import { Spinner } from './Spinner';
-import { getImageUrl, handleImageError } from '../../utils/image';
+import { getImageUrl, handleImageError, isCloudinaryUrl } from '../../utils/image';
 import { compressAndOptimizeImage } from '../../utils/imageUpload';
 import { MediaPickerModal } from './MediaPickerModal';
 
@@ -46,20 +46,21 @@ export function ImageUploadField({
       setUploading(true);
       setError(null);
 
-      // 1. Generate optimized client-side data URL for guaranteed persistence in PostgreSQL
-      const optimizedDataUrl = await compressAndOptimizeImage(file);
-      onChange(optimizedDataUrl);
-
-      // 2. Also send to backend upload API (supports Cloudinary / local storage)
+      // 1. Cloudinary d'abord : seule l'URL est enregistrée en base (réponses API légères, images en cache CDN)
       try {
         const res = await uploadApi.uploadImage(file, folder);
-        if (res.data?.url && res.data.url.startsWith('https://res.cloudinary.com')) {
+        if (isCloudinaryUrl(res.data?.url)) {
           onChange(res.data.url);
+          return;
         }
       } catch (uploadErr) {
-        // Local data URL is already set, so upload failure won't prevent image saving
-        console.warn('Backend disk upload notice:', uploadErr);
+        console.warn('Téléversement Cloudinary indisponible :', uploadErr);
       }
+
+      // 2. Repli (Cloudinary non configuré ou en panne) : image compressée en data URL
+      const optimizedDataUrl = await compressAndOptimizeImage(file);
+      onChange(optimizedDataUrl);
+      setError('Stockage Cloudinary indisponible : image enregistrée dans la base, ce qui ralentit le site. Réessayez plus tard.');
     } catch (err: any) {
       console.error('Erreur compression image:', err);
       setError('Erreur lors du traitement de l\'image.');
@@ -98,16 +99,16 @@ export function ImageUploadField({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <label className="block text-sm font-bold text-slate-800">
           {label}
         </label>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200">
             <button
               type="button"
               onClick={() => setMode('upload')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold whitespace-nowrap rounded-md transition-colors ${
                 mode === 'upload'
                   ? 'bg-white text-emerald-800'
                   : 'text-slate-600 hover:text-slate-900'
@@ -119,7 +120,7 @@ export function ImageUploadField({
             <button
               type="button"
               onClick={() => setMode('url')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold whitespace-nowrap rounded-md transition-colors ${
                 mode === 'url'
                   ? 'bg-white text-emerald-800'
                   : 'text-slate-600 hover:text-slate-900'
@@ -165,7 +166,7 @@ export function ImageUploadField({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onClick={() => !uploading && fileInputRef.current?.click()}
-          className={`relative border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-all ${
+          className={`relative border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-colors ${
             isDragOver
               ? 'border-emerald-500 bg-emerald-50/50'
               : 'border-slate-300 hover:border-emerald-500 hover:bg-slate-50/80 bg-white'

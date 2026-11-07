@@ -153,7 +153,7 @@ export function UserNewQuotePage() {
           )}
 
           {/* User readonly summary */}
-          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-md grid grid-cols-2 gap-3 text-slate-700">
+          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-md grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-700">
             <div>
               <span className="text-xs font-bold text-slate-400">Demandeur</span>
               <p className="font-bold text-slate-900">{user?.name}</p>

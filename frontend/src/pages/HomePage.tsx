@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { servicesApi, projectsApi, testimonialsApi, articlesApi, categoriesApi } from '../api';
 import type { Service, Project, Testimonial, Article } from '../types/models';
+import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 import { Button } from '../components/ui/Button';
 import { ServiceCard } from '../components/ui/ServiceCard';
 import { StratumEdge } from '../components/ui/StratumEdge';
@@ -17,11 +18,10 @@ import { POLES } from '../data/poles';
 import { getImageUrl, handleImageError, imageFitClass } from '../utils/image';
 
 /*
-  Coupe de forage : le tuyau part de la pompe visible sur forage.jpg.
-  PUMP_X est la position horizontale de la pompe dans la photo. L'image garde
-  toute sa largeur et s'ancre en bas, donc ce repère reste valable à toute taille.
+  Coupe de forage : le tuyau part du bas du hero, puis suit le défilement.
+  Sa pointe se place à cette hauteur de l'écran (0 = haut, 1 = bas).
 */
-const PUMP_X = '37%';
+const DRILL_TIP_POSITION = 0.65;
 
 export function HomePage() {
   const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
@@ -34,26 +34,47 @@ export function HomePage() {
     yearsWarranty: 10,
     responseHours: 48,
   });
-  const pumpRef = useRef<HTMLDivElement>(null);
-  const [pumpVisible, setPumpVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const pipeRef = useRef<HTMLDivElement>(null);
 
-  // Le tuyau ne descend que lorsque la pompe entre à l'écran
+  // Le tuyau descend avec le défilement, allume chaque couche, puis l'eau remonte
   useEffect(() => {
-    const pump = pumpRef.current;
-    if (!pump) return;
+    const section = sectionRef.current;
+    const pipe = pipeRef.current;
+    if (!section || !pipe) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setPumpVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '0px 0px -10% 0px' }
-    );
+    const markers = Array.from(section.querySelectorAll<HTMLElement>('.bore-marker'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let frame = 0;
 
-    observer.observe(pump);
-    return () => observer.disconnect();
+    const update = () => {
+      frame = 0;
+      const { top } = pipe.getBoundingClientRect();
+      const length = pipe.offsetHeight;
+      const reached = window.innerHeight * DRILL_TIP_POSITION - top;
+      const progress = reducedMotion ? 1 : Math.min(Math.max(reached / length, 0), 1);
+      const tip = top + length * progress;
+
+      pipe.style.transform = `scaleY(${progress})`;
+      markers.forEach((marker) => {
+        marker.classList.toggle('is-reached', marker.getBoundingClientRect().top <= tip);
+      });
+      if (progress === 1) pipe.classList.add('is-flowing');
+    };
+
+    const requestUpdate = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -91,26 +112,26 @@ export function HomePage() {
   }, []);
 
   const keyFigures = [
-    { value: `${stats.projectsCount}+`, label: 'projets livrés' },
-    { value: `${stats.categoriesCount}`, label: 'pôles d\'expertise' },
-    { value: `${stats.yearsWarranty} ans`, label: 'de garantie' },
-    { value: `${stats.responseHours} h`, label: 'pour chiffrer votre projet' },
+    { value: stats.projectsCount, suffix: '+', label: 'projets livrés' },
+    { value: stats.categoriesCount, suffix: '', label: 'pôles d\'expertise' },
+    { value: stats.yearsWarranty, suffix: ' ans', label: 'de garantie' },
+    { value: stats.responseHours, suffix: ' h', label: 'pour chiffrer votre projet' },
   ];
 
   return (
     <div className="relative w-full">
-      {/* 1. HERO : le texte passe sur la photo à partir de 1280 px */}
-      <section className="relative z-20 bg-slate-900 text-white xl:bg-transparent xl:absolute xl:inset-x-0 xl:top-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 xl:pt-12 xl:pb-0">
-          <div className="xl:max-w-[48vw] space-y-5">
+      {/* 1. HERO : le texte, puis l'unité de traitement sur son panneau blanc */}
+      <section className="bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16 grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-12 lg:items-center">
+          <div className="hero-copy space-y-5">
             <h1 className="text-4xl sm:text-5xl xl:text-[clamp(3rem,4.2vw,4.5rem)] font-display font-extrabold tracking-tight leading-[1.04]">
-              Du soleil à la nappe, des ouvrages qui durent.
+              Bâtir l'avenir par l'eau, l'énergie et le génie civil
             </h1>
 
             <p className="text-lg text-slate-100 leading-relaxed max-w-prose">
-              GREEN TECHNOLOGIES BTP conçoit et réalise vos forages, centrales solaires, systèmes
-              d'irrigation et bâtiments en Côte d'Ivoire, pour les collectivités, les entreprises
-              et les particuliers.
+              GREEN TECHNOLOGIES BTP déploie des solutions techniques de pointe en adduction d'eau
+              potable, centrales solaires, agrotechnologies et construction durable pour les
+              collectivités, entreprises et particuliers.
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
@@ -131,47 +152,35 @@ export function HomePage() {
               </Link>
             </div>
           </div>
+
+          <div className="hero-visual w-full max-w-lg lg:max-w-none justify-self-center rounded-lg bg-white p-3 sm:p-4">
+            <img
+              src="/traitement-eau.webp"
+              alt="Unité de traitement d'eau : filtres à sable quartz, charbon actif et résine, pompe haute pression et armoire de commande"
+              width={1366}
+              height={1151}
+              fetchPriority="high"
+              className="w-full h-auto"
+            />
+          </div>
         </div>
       </section>
 
       {/* 2. COUPE DE FORAGE : LES 4 PÔLES */}
       <section
         id="domaines"
+        ref={sectionRef}
         aria-labelledby="domaines-titre"
-        className="relative [--photo-h:74.67vw] xl:[--photo-h:min(74.67vw,1000px)]"
+        className="relative"
       >
         <h2 id="domaines-titre" className="sr-only">
           Nos 4 pôles d'expertise
         </h2>
 
-        <img
-          src="/forage.jpg"
-          alt="Pompe solaire, panneaux et château d'eau alimentant les robinets d'un village"
-          width={1200}
-          height={896}
-          fetchPriority="high"
-          className="w-full object-cover object-bottom h-[var(--photo-h)]"
-        />
-
-        {/* Voile limité à la zone du texte : le château d'eau reste lumineux */}
-        <div aria-hidden="true" className="hero-veil hidden xl:block absolute inset-x-0 top-0 h-[var(--photo-h)]" />
-
-        {/* Repère invisible posé sur la pompe : déclenche le tuyau */}
-        <div
-          ref={pumpRef}
-          aria-hidden="true"
-          className="absolute w-px h-px"
-          style={{ left: PUMP_X, top: 'calc(var(--photo-h) - 6.3vw)' }}
-        />
-
-        {/* Tuyau : descend de la pompe de la photo jusqu'à la nappe */}
-        <div
-          aria-hidden="true"
-          className={`bore-line hidden md:block absolute z-10 w-1.5 -ml-[3px] bg-white shadow-[0_0_0_1px_var(--color-slate-900)] ${
-            pumpVisible ? 'is-drilling' : ''
-          }`}
-          style={{ left: PUMP_X, top: 'calc(var(--photo-h) - 6.3vw)', bottom: '3rem' }}
-        />
+        {/* Tuyau : descend de la surface jusqu'à la nappe */}
+        <div ref={pipeRef} aria-hidden="true" className="bore-line">
+          <div className="bore-water" />
+        </div>
 
         {POLES.map((stratum, index) => (
           <div key={stratum.slug} className={`relative ${stratum.band}`}>
@@ -182,21 +191,17 @@ export function HomePage() {
             )}
 
             {/* Repère du pôle sur le tuyau */}
-            <span
-              aria-hidden="true"
-              className="hidden md:block absolute z-20 top-14 w-4 h-4 -ml-2 rounded-full bg-orange-400 border-2 border-white"
-              style={{ left: PUMP_X }}
-            />
+            <span aria-hidden="true" className="bore-marker" />
 
-            <div className="md:grid md:grid-cols-[37%_1fr] py-12 lg:py-16 px-4 sm:px-6 md:px-0">
-              <div className="md:pl-8 lg:pl-12 xl:pl-20 md:pr-8">
+            <div className="md:grid md:grid-cols-[37%_1fr] py-12 lg:py-16 pl-7 pr-4 sm:pl-8 sm:pr-6 md:px-0">
+              <div className="reveal md:pl-6 lg:pl-12 xl:pl-20 md:pr-4">
                 <p className={`text-sm font-medium ${stratum.muted}`}>{stratum.layer}</p>
-                <h3 className="text-3xl lg:text-4xl font-display font-extrabold tracking-tight mt-1">
+                <h3 className="text-[clamp(1.625rem,8.5vw,1.875rem)] md:text-[3vw] xl:text-4xl font-display font-extrabold tracking-tight mt-1">
                   {stratum.title}
                 </h3>
               </div>
 
-              <div className="mt-4 md:mt-0 md:pl-10 lg:pl-14 md:pr-8 lg:pr-12 xl:pr-20 grid gap-6 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
+              <div className="reveal mt-4 md:mt-0 md:pl-10 lg:pl-14 md:pr-8 lg:pr-12 xl:pr-20 grid gap-6 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
                 <div>
                   <p className="text-lg leading-relaxed max-w-prose">{stratum.desc}</p>
                   <ul className={`mt-3 text-sm leading-relaxed ${stratum.muted}`}>
@@ -206,10 +211,10 @@ export function HomePage() {
                   </ul>
                   <Link
                     to={`/domaines/${stratum.slug}`}
-                    className="inline-flex items-center gap-2 mt-4 font-bold underline underline-offset-4"
+                    className="group inline-flex items-center gap-2 mt-2 py-2 font-bold underline underline-offset-4"
                   >
                     <span>Découvrir ce pôle</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
                   </Link>
                 </div>
 
@@ -234,7 +239,9 @@ export function HomePage() {
           {keyFigures.map((figure) => (
             <div key={figure.label} className="flex flex-col-reverse">
               <dt className="text-sm text-slate-300 mt-0.5">{figure.label}</dt>
-              <dd className="text-2xl sm:text-3xl font-display font-extrabold">{figure.value}</dd>
+              <dd className="text-2xl sm:text-3xl font-display font-extrabold">
+                <AnimatedCounter end={figure.value} suffix={figure.suffix} />
+              </dd>
             </div>
           ))}
         </dl>
@@ -291,7 +298,7 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
               {featuredProjects.map((project, index) => (
-                <article key={project.id} className={index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}>
+                <article key={project.id} className={`reveal ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}>
                   <img
                     src={getImageUrl((project as any).image_url || project.image, project.category?.slug || project.slug, project.slug || project.id || project.title)}
                     alt={project.title}
@@ -344,7 +351,7 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {testimonials.map((t) => (
-                <figure key={t.id} className="flex flex-col justify-between border-t-2 border-emerald-600 pt-5">
+                <figure key={t.id} className="reveal flex flex-col justify-between border-t-2 border-emerald-600 pt-5">
                   <div>
                     <div
                       className="flex items-center gap-1 text-orange-500 mb-3"
@@ -396,7 +403,7 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {recentArticles.map((art) => (
-                <article key={art.id}>
+                <article key={art.id} className="reveal">
                   <img
                     src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name, art.slug || art.id || art.title)}
                     alt={art.title}

@@ -12,12 +12,12 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-950 text-slate-300 border-t border-slate-900 pt-16 pb-8">
+    <footer className="tap-links bg-slate-950 text-slate-300 border-t border-slate-900 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/80">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-10 pb-12 border-b border-slate-800/80">
           {/* Col 1: Brand & Presentation */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="md:col-span-2 lg:col-span-3 xl:col-span-1 space-y-4">
             <Logo size="lg" isLight showText />
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-sm mt-3">
               Acteur de référence en Côte d'Ivoire et dans la sous-région, GREEN TECHNOLOGIES BTP
@@ -108,6 +108,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/recrutement" className="hover:text-emerald-400 transition-colors">
+                  Recrutement et carrières
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="hover:text-emerald-400 transition-colors">
                   Nous contacter
                 </Link>
@@ -151,9 +156,9 @@ export function Footer() {
         </div>
 
         {/* Bottom copyright & legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-400">
-          <p>© {currentYear} Green Technologies BTP SARL. Tous droits réservés.</p>
-          <div className="flex items-center gap-6">
+        <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-400">
+          <p className="text-center sm:text-left">© {currentYear} Green Technologies BTP SARL. Tous droits réservés.</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
             <Link to="/contact" className="hover:text-slate-300 transition-colors">
               Mentions légales
             </Link>

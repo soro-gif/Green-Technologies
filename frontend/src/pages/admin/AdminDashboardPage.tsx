@@ -62,7 +62,7 @@ export function AdminDashboardPage() {
           <div className="space-y-2 min-w-0">
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 {user?.role_label || 'Super Administrateur'}
               </span>
               <span className="text-xs text-slate-500 font-medium">
@@ -99,7 +99,7 @@ export function AdminDashboardPage() {
         {/* Devis */}
         <Link
           to="/admin/devis"
-          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-amber-400 transition-all flex flex-col justify-between group"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-amber-400 transition-colors flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-amber-600 mb-3">
             <span className="text-xs font-bold text-slate-500">Demandes de devis</span>
@@ -118,7 +118,7 @@ export function AdminDashboardPage() {
         {/* Messages */}
         <Link
           to="/admin/messages"
-          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-sky-400 transition-all flex flex-col justify-between group"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-sky-400 transition-colors flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-sky-600 mb-3">
             <span className="text-xs font-bold text-slate-500">Messages contact</span>
@@ -137,7 +137,7 @@ export function AdminDashboardPage() {
         {/* Chantiers / Projets */}
         <Link
           to="/admin/projets"
-          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-orange-400 transition-all flex flex-col justify-between group"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-orange-400 transition-colors flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-orange-600 mb-3">
             <span className="text-xs font-bold text-slate-500">Réalisations</span>
@@ -156,7 +156,7 @@ export function AdminDashboardPage() {
         {/* Services & Prestations */}
         <Link
           to="/admin/services"
-          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-emerald-400 transition-all flex flex-col justify-between group"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-emerald-400 transition-colors flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-emerald-600 mb-3">
             <span className="text-xs font-bold text-slate-500">Catalogue services</span>
@@ -175,7 +175,7 @@ export function AdminDashboardPage() {
         {/* Médiathèque & Images */}
         <Link
           to="/admin/medias"
-          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-purple-400 transition-all flex flex-col justify-between group"
+          className="p-5 rounded-lg bg-white border border-slate-200/90 hover:border-purple-400 transition-colors flex flex-col justify-between group"
         >
           <div className="flex items-center justify-between text-purple-600 mb-3">
             <span className="text-xs font-bold text-slate-500">Médiathèque</span>

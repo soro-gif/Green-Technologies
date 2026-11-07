@@ -31,7 +31,7 @@ export function Card({
     : '';
 
   const hoverClass = hoverable
-    ? 'transition-colors duration-200 hover:border-slate-400'
+    ? 'transition-[border-color,translate] duration-200 hover:-translate-y-1 hover:border-slate-400'
     : '';
 
   return (

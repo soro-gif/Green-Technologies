@@ -38,6 +38,7 @@ export function Navbar() {
     { name: 'Services', to: '/services' },
     { name: 'Réalisations', to: '/realisations' },
     { name: 'Actualités', to: '/actualites' },
+    { name: 'Recrutement', to: '/recrutement' },
     { name: 'Contact', to: '/contact' },
   ];
 
@@ -70,22 +71,22 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full">
+    <header className="sticky -top-[33px] lg:top-0 z-40 w-full">
       {/* Top Banner (Contact info & Emergency Hotline) */}
-      <div className="bg-slate-900 text-slate-300 text-xs py-2 px-3 sm:px-4 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
-          <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
-            <div className="inline-flex items-center gap-2.5 sm:gap-4 flex-wrap">
+      <div className="flex items-center h-[33px] bg-slate-900 text-slate-300 text-xs px-3 sm:px-4 border-b border-slate-800">
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+            <div className="inline-flex items-center gap-2.5 sm:gap-4">
               <a
                 href="tel:+2252722584016"
-                className="inline-flex items-center gap-1.5 hover:text-white transition-colors text-xs"
+                className="inline-flex items-center gap-1.5 py-2.5 -my-2.5 whitespace-nowrap hover:text-white transition-colors text-xs"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Fixe : +225 27 22 58 40 16</span>
               </a>
               <a
                 href="tel:+2250704901034"
-                className="hidden xs:inline-flex items-center gap-1.5 hover:text-white transition-colors text-xs"
+                className="hidden xs:inline-flex items-center gap-1.5 py-2.5 -my-2.5 whitespace-nowrap hover:text-white transition-colors text-xs"
               >
                 <Smartphone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Tél : +225 07 04 90 10 34</span>
@@ -93,7 +94,7 @@ export function Navbar() {
             </div>
             <a
               href="mailto:contact@greentechnologies.ci"
-              className="hidden md:inline-flex items-center gap-1.5 hover:text-white transition-colors text-xs"
+              className="hidden lg:inline-flex items-center gap-1.5 hover:text-white transition-colors text-xs"
             >
               <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               <span>contact@greentechnologies.ci</span>
@@ -112,24 +113,24 @@ export function Navbar() {
               user?.role !== 'user' ? (
                 <Link
                   to="/admin/dashboard"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-300 hover:text-white hover:bg-emerald-900 transition-colors font-semibold text-xs"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full whitespace-nowrap bg-emerald-950/80 border border-emerald-700 text-emerald-300 hover:text-white hover:bg-emerald-900 transition-colors font-semibold text-xs"
                 >
                   <LayoutDashboard className="w-3 h-3 text-emerald-400 shrink-0" />
-                  <span>Admin ({user?.name.split(' ')[0]})</span>
+                  <span>Admin<span className="hidden md:inline"> ({user?.name.split(' ')[0]})</span></span>
                 </Link>
               ) : (
                 <Link
                   to="/mon-espace"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 hover:text-white hover:bg-slate-700 transition-colors font-semibold text-xs"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full whitespace-nowrap bg-slate-800 border border-slate-700 text-slate-200 hover:text-white hover:bg-slate-700 transition-colors font-semibold text-xs"
                 >
                   <UserIcon className="w-3 h-3 text-emerald-400 shrink-0" />
-                  <span>Mon espace ({user?.name.split(' ')[0]})</span>
+                  <span>Mon espace<span className="hidden md:inline"> ({user?.name.split(' ')[0]})</span></span>
                 </Link>
               )
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1 text-slate-300 hover:text-white text-xs"
+                className="inline-flex items-center gap-1 py-2.5 -my-2.5 whitespace-nowrap text-slate-300 hover:text-white text-xs"
               >
                 <UserIcon className="w-3.5 h-3.5 shrink-0" />
                 <span>Espace client / pro</span>
@@ -146,7 +147,7 @@ export function Navbar() {
           <Logo size="md" />
 
           {/* Desktop Navigation Links */}
-          <div className="hidden xl:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-0.5">
             {navLinks.map((link) => {
               if (link.hasDropdown) {
                 return (
@@ -158,18 +159,18 @@ export function Navbar() {
                   >
                     <Link
                       to={link.to}
-                      className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors ${isActive(link.to)
+                      className={`inline-flex items-center gap-1 px-2 py-2 rounded-lg text-sm font-semibold tracking-tight whitespace-nowrap transition-colors ${isActive(link.to)
                           ? 'text-emerald-800 bg-emerald-50'
                           : 'text-slate-700 hover:text-emerald-800 hover:bg-slate-50'
                         }`}
                     >
                       <span>{link.name}</span>
-                      <ChevronDown className="w-4 h-4" />
+                      <ChevronDown className="w-4 h-4 shrink-0" />
                     </Link>
 
                     {/* Dropdown Menu */}
                     <div
-                      className={`absolute top-full left-0 w-80 bg-white rounded-lg border border-slate-200 p-2 shadow-sm transition-all duration-150 ${domainsOpen
+                      className={`absolute top-full left-0 w-80 bg-white rounded-lg border border-slate-200 p-2 shadow-sm transition-[opacity,transform,visibility] duration-150 ${domainsOpen
                           ? 'opacity-100 visible translate-y-0'
                           : 'opacity-0 invisible -translate-y-1'
                         }`}
@@ -200,7 +201,7 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   to={link.to}
-                  className={`px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors ${isActive(link.to)
+                  className={`px-2 py-2 rounded-lg text-sm font-semibold tracking-tight whitespace-nowrap transition-colors ${isActive(link.to)
                       ? 'text-emerald-800 bg-emerald-50'
                       : 'text-slate-700 hover:text-emerald-800 hover:bg-slate-50'
                     }`}
@@ -217,7 +218,7 @@ export function Navbar() {
               to="/devis"
               className="inline-flex items-center gap-2 bg-orange-400 hover:bg-orange-300 text-slate-950 text-sm font-bold whitespace-nowrap px-4 py-2 rounded-md transition-colors"
             >
-              <FileText className="w-4 h-4" />
+              <FileText className="w-4 h-4 shrink-0" />
               <span>Demander un devis</span>
             </Link>
           </div>
@@ -235,7 +236,7 @@ export function Navbar() {
 
         {/* Mobile Navigation Drawer */}
         {isOpen && (
-          <div className="xl:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 max-h-[calc(100vh-5rem)] overflow-y-auto">
+          <div className="drawer-enter xl:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 max-h-[calc(100dvh-6.25rem)] overflow-y-auto">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => {
                 if (link.hasDropdown) {
@@ -244,7 +245,7 @@ export function Navbar() {
                       <div className="flex items-center justify-between">
                         <Link
                           to={link.to}
-                          className={`flex-1 px-3 py-2.5 rounded-lg text-sm font-semibold ${isActive(link.to)
+                          className={`flex-1 px-3 py-3 rounded-lg text-sm font-semibold ${isActive(link.to)
                               ? 'bg-emerald-50 text-emerald-800'
                               : 'text-slate-700 hover:bg-slate-50'
                             }`}
@@ -267,7 +268,7 @@ export function Navbar() {
                             <Link
                               key={sub.slug}
                               to={`/domaines/${sub.slug}`}
-                              className="block px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-800 hover:bg-slate-50 rounded-lg"
+                              className="block px-3 py-3 text-sm font-semibold text-slate-600 hover:text-emerald-800 hover:bg-slate-50 rounded-lg"
                             >
                               <span>{sub.title}</span>
                             </Link>
@@ -282,7 +283,7 @@ export function Navbar() {
                   <Link
                     key={link.name}
                     to={link.to}
-                    className={`px-3 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-between ${isActive(link.to)
+                    className={`px-3 py-3 rounded-lg text-sm font-semibold flex items-center justify-between ${isActive(link.to)
                         ? 'bg-emerald-50 text-emerald-800'
                         : 'text-slate-700 hover:bg-slate-50'
                       }`}
@@ -297,7 +298,7 @@ export function Navbar() {
                   to="/devis"
                   className="w-full inline-flex items-center justify-center gap-2 bg-orange-400 hover:bg-orange-300 text-slate-950 text-sm font-bold py-2.5 rounded-md"
                 >
-                  <FileText className="w-4 h-4" />
+                  <FileText className="w-4 h-4 shrink-0" />
                   <span>Demander un devis</span>
                 </Link>
                 {isAuthenticated ? (

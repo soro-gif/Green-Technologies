@@ -53,7 +53,7 @@ export function Logo({
       />
       {showText && (
         <div className="flex flex-col leading-tight min-w-0">
-          <div className={`flex items-center gap-1 font-extrabold tracking-tight [font-variation-settings:'wdth'_100] sm:[font-variation-settings:'wdth'_118] ${titleSizes[size]} truncate`}>
+          <div className={`flex items-center gap-1 font-extrabold tracking-tight ${titleSizes[size]} truncate`}>
             <span className={isLight ? 'text-white' : 'text-emerald-800'}>
               GREEN
             </span>

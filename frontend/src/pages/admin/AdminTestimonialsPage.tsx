@@ -164,7 +164,7 @@ export function AdminTestimonialsPage() {
             Aucun témoignage enregistré.
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="table-cards">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
@@ -178,14 +178,14 @@ export function AdminTestimonialsPage() {
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {testimonials.map((t) => (
                   <tr key={t.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="px-4 py-3 text-slate-900 font-bold">{t.author_name}</td>
-                    <td className="px-4 py-3 text-slate-600 font-medium">
+                    <td data-label="Auteur" className="px-4 py-3 text-slate-900 font-bold">{t.author_name}</td>
+                    <td data-label="Entreprise / Rôle" className="px-4 py-3 text-slate-600 font-medium">
                       {t.author_role} {t.company ? `• ${t.company}` : ''}
                     </td>
-                    <td className="px-4 py-3 text-amber-500 font-bold">
+                    <td data-label="Note" className="px-4 py-3 text-amber-500 font-bold">
                       {t.rating} / 5 ★
                     </td>
-                    <td className="px-4 py-3">
+                    <td data-label="Statut" className="px-4 py-3">
                       <span
                         className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                           t.is_published
@@ -196,7 +196,7 @@ export function AdminTestimonialsPage() {
                         {t.is_published ? 'Publié' : 'Brouillon'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td data-label="Actions" className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => handleOpenEdit(t)}
@@ -253,7 +253,7 @@ export function AdminTestimonialsPage() {
             value={formData.author_name}
             onChange={(e) => setFormData({ ...formData, author_name: e.target.value })}
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               label="Rôle / Titre"
               required
@@ -284,7 +284,7 @@ export function AdminTestimonialsPage() {
             value={formData.content}
             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
           />
-          <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-100 sticky bottom-0 bg-white py-2">
+          <div className="pt-4 pb-4 sm:pb-6 -mb-4 sm:-mb-6 flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 sticky -bottom-4 sm:-bottom-6 bg-white">
             <Button type="button" variant="outline" size="sm" onClick={() => setModalOpen(false)}>
               Annuler
             </Button>

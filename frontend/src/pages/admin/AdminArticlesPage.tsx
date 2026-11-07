@@ -25,7 +25,7 @@ import { Modal } from '../../components/ui/Modal';
 import { Pagination } from '../../components/ui/Pagination';
 import { Spinner } from '../../components/ui/Spinner';
 import { MediaPickerModal } from '../../components/ui/MediaPickerModal';
-import { getImageUrl, handleImageError } from '../../utils/image';
+import { getImageUrl, handleImageError, isCloudinaryUrl } from '../../utils/image';
 import { compressAndOptimizeImage } from '../../utils/imageUpload';
 
 export function AdminArticlesPage() {
@@ -194,8 +194,9 @@ export function AdminArticlesPage() {
         // Guard: discard result if the user already opened a different article form
         if (uploadSessionRef.current !== mySession) return;
 
-        const uploadedUrl = res.data?.url || res.data?.relative_url || '';
-        if (uploadedUrl) {
+        // Seule une URL Cloudinary est durable : le disque de Render est effacé à chaque redémarrage
+        const uploadedUrl = res.data?.url || '';
+        if (isCloudinaryUrl(uploadedUrl)) {
           setFormData((prev) => ({ ...prev, cover_image: uploadedUrl }));
         } else {
           setFormData((prev) => ({ ...prev, cover_image: optimizedDataUrl }));
@@ -303,7 +304,7 @@ export function AdminArticlesPage() {
           size="sm"
           onClick={handleOpenCreate}
           leftIcon={<Plus className="w-4 h-4" />}
-          className=" font-semibold rounded-md"
+          className="shrink-0 font-semibold rounded-md"
         >
           Rédiger une Actualité
         </Button>
@@ -395,7 +396,7 @@ export function AdminArticlesPage() {
             </Button>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="table-cards">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
@@ -410,7 +411,7 @@ export function AdminArticlesPage() {
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {articles.map((art) => (
                   <tr key={art.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="px-4 py-3.5">
+                    <td data-label="" className="px-4 py-3.5">
                       <div className="flex items-center gap-3">
                         <img
                           src={getImageUrl(art.cover_image, art.category?.slug || art.category?.name)}
@@ -419,16 +420,16 @@ export function AdminArticlesPage() {
                           onError={(e) => handleImageError(e, art.category?.slug || art.category?.name)}
                         />
                         <div className="min-w-0">
-                          <p className="text-slate-900 font-bold truncate max-w-xs">{art.title}</p>
+                          <p className="text-slate-900 font-bold line-clamp-2 xl:truncate xl:max-w-xs">{art.title}</p>
                           {art.excerpt && (
-                            <p className="text-xs text-slate-500 truncate max-w-xs mt-0.5">
+                            <p className="hidden xl:block text-xs text-slate-500 truncate max-w-xs mt-0.5">
                               {art.excerpt}
                             </p>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-600 font-medium">
+                    <td data-label="Domaine technique" className="px-4 py-3 text-slate-600 font-medium">
                       {art.category?.name ? (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200/60">
                           {art.category.name}
@@ -437,13 +438,13 @@ export function AdminArticlesPage() {
                         <span className="text-slate-400">Général</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-slate-600 font-medium">{art.author?.name || 'Admin'}</td>
-                    <td className="px-4 py-3 text-slate-500 text-xs">
+                    <td data-label="Auteur" className="px-4 py-3 text-slate-600 font-medium">{art.author?.name || 'Admin'}</td>
+                    <td data-label="Date" className="px-4 py-3 text-slate-500 text-xs">
                       {art.published_at
                         ? new Date(art.published_at).toLocaleDateString('fr-FR')
                         : new Date(art.created_at).toLocaleDateString('fr-FR')}
                     </td>
-                    <td className="px-4 py-3">
+                    <td data-label="Statut" className="px-4 py-3">
                       <span
                         className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                           art.status === 'published'
@@ -456,7 +457,7 @@ export function AdminArticlesPage() {
                         {art.status_label || art.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td data-label="Actions" className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         {art.status === 'published' && art.slug && (
                           <Link
@@ -629,7 +630,7 @@ export function AdminArticlesPage() {
                       const file = e.dataTransfer.files?.[0];
                       if (file) handleFileUpload(file);
                     }}
-                    className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all ${
+                    className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
                       isDragOver
                         ? 'border-emerald-500 bg-emerald-50/60 scale-[0.99]'
                         : 'border-slate-300 hover:border-emerald-500 hover:bg-slate-50/80 bg-slate-50/40'

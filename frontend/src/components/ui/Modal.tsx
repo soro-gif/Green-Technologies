@@ -46,7 +46,7 @@ export function Modal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-900/70 transition-opacity"
@@ -58,10 +58,10 @@ export function Modal({
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthStyles[maxWidth]} max-h-[90vh] flex flex-col bg-white rounded-lg border border-slate-200 z-10 overflow-hidden shadow-2xl`}
+        className={`relative w-full ${maxWidthStyles[maxWidth]} max-h-[90dvh] flex flex-col bg-white rounded-lg border border-slate-200 z-10 overflow-hidden shadow-2xl`}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 shrink-0">
+          <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-slate-200 bg-slate-50 shrink-0">
             <h3 className="text-base font-bold text-slate-900 font-display">{title}</h3>
             <button
               onClick={onClose}
@@ -72,7 +72,7 @@ export function Modal({
             </button>
           </div>
         )}
-        <div className="p-6 overflow-y-auto flex-1">{children}</div>
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">{children}</div>
       </div>
     </div>
   );

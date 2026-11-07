@@ -15,7 +15,7 @@ export function ServiceCard({ service, categoryName }: ServiceCardProps) {
   const imageUrl = getImageUrl((service as any).image_url || service.image, fallbackKey, itemKey);
 
   return (
-    <Card hoverable className="flex flex-col justify-between overflow-hidden p-0 bg-white">
+    <Card hoverable className="reveal flex flex-col justify-between overflow-hidden p-0 bg-white">
       <div>
         <img
           src={imageUrl}
@@ -47,11 +47,11 @@ export function ServiceCard({ service, categoryName }: ServiceCardProps) {
       <div className="px-6 pb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <Link
           to={`/services/${service.slug}`}
-          className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
+          className="py-2 -my-2 font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
         >
           Voir le détail
         </Link>
-        <Link to="/devis" className="font-bold text-slate-700 hover:text-slate-900">
+        <Link to="/devis" className="py-2 -my-2 font-bold text-slate-700 hover:text-slate-900">
           Demander un devis
         </Link>
       </div>

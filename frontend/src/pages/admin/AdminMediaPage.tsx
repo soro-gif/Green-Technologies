@@ -257,7 +257,7 @@ export function AdminMediaPage() {
       {/* Toast Notification */}
       {notification && (
         <div
-          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all border animate-in fade-in slide-in-from-bottom-3 ${notification.type === 'success'
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-colors border animate-in fade-in slide-in-from-bottom-3 ${notification.type === 'success'
               ? 'bg-white text-emerald-950 border-emerald-200'
               : 'bg-white text-rose-950 border-rose-200 shadow-rose-950/10'
             }`}
@@ -469,7 +469,7 @@ export function AdminMediaPage() {
               <button
                 key={f.key}
                 onClick={() => setSelectedFolder(f.key)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${isActive
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors flex items-center gap-2 cursor-pointer ${isActive
                     ? 'bg-emerald-600 text-white'
                     : 'bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200'
                   }`}
@@ -536,7 +536,7 @@ export function AdminMediaPage() {
             return (
               <div
                 key={item.id}
-                className={`group relative bg-white rounded-lg border overflow-hidden transition-all duration-200 flex flex-col justify-between ${isSelected
+                className={`group relative bg-white rounded-lg border overflow-hidden transition-colors duration-200 flex flex-col justify-between ${isSelected
                     ? 'border-emerald-500 ring-2 ring-emerald-500/30'
                     : 'border-slate-200/90 hover:border-slate-300'
                   }`}
@@ -639,7 +639,7 @@ export function AdminMediaPage() {
       ) : (
         /* TABLE LIST VIEW */
         <div className="bg-white rounded-lg border border-slate-200/90 overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="table-cards">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-500 font-bold text-xs border-b border-slate-200">
                 <tr>
@@ -675,7 +675,7 @@ export function AdminMediaPage() {
                       className={`hover:bg-slate-50/70 transition-colors ${isSelected ? 'bg-emerald-50/60' : ''
                         }`}
                     >
-                      <td className="p-4">
+                      <td data-label="Sélection" className="p-4">
                         {item.is_deletable && (
                           <input
                             type="checkbox"
@@ -685,7 +685,7 @@ export function AdminMediaPage() {
                           />
                         )}
                       </td>
-                      <td className="p-4">
+                      <td data-label="Aperçu" className="p-4">
                         <div
                           onClick={() => setInspectItem(item)}
                           className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden cursor-pointer shrink-0 relative"
@@ -698,7 +698,7 @@ export function AdminMediaPage() {
                           />
                         </div>
                       </td>
-                      <td className="p-4">
+                      <td data-label="Nom du fichier" className="p-4">
                         <div>
                           <p
                             className="font-bold text-slate-900 hover:text-emerald-700 cursor-pointer"
@@ -711,13 +711,13 @@ export function AdminMediaPage() {
                           </p>
                         </div>
                       </td>
-                      <td className="p-4">
+                      <td data-label="Dossier" className="p-4">
                         <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
                           {item.folder_label || item.folder}
                         </span>
                       </td>
-                      <td className="p-4 font-mono text-slate-600">{item.formatted_size}</td>
-                      <td className="p-4">
+                      <td data-label="Taille" className="p-4 font-mono text-slate-600">{item.formatted_size}</td>
+                      <td data-label="Utilisation" className="p-4">
                         {item.usage_count > 0 ? (
                           <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
                             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -727,8 +727,8 @@ export function AdminMediaPage() {
                           <span className="text-slate-400 text-xs">Non référencé</span>
                         )}
                       </td>
-                      <td className="p-4 text-slate-500 font-medium text-xs">{formatDate(item.updated_at)}</td>
-                      <td className="p-4 text-right">
+                      <td data-label="Date d'ajout" className="p-4 text-slate-500 font-medium text-xs">{formatDate(item.updated_at)}</td>
+                      <td data-label="Actions" className="p-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setInspectItem(item)}
@@ -787,7 +787,7 @@ export function AdminMediaPage() {
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+            <div className="p-6 space-y-6 max-h-[80dvh] overflow-y-auto">
               {/* Full Image Preview */}
               <div className="w-full h-64 sm:h-72 rounded-lg bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center relative pattern-checkered">
                 <img

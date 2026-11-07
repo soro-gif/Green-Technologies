@@ -480,7 +480,7 @@ export function QuoteRequestPage() {
                     size="lg"
                     isLoading={loading}
                     leftIcon={<Send className="w-4 h-4" />}
-                    className="w-full sm:w-auto font-bold"
+                    className="w-full sm:w-auto shrink-0 font-bold"
                   >
                     Envoyer ma demande de devis
                   </Button>

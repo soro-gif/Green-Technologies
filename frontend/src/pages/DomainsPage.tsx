@@ -63,7 +63,7 @@ export function DomainsPage() {
               <section key={category.id} className={`relative ${band}`}>
                 {previousEdge && <StratumEdge color={previousEdge} />}
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14 lg:items-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 reveal grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14 lg:items-center">
                   <div>
                     {pole && <p className={`text-sm font-medium ${muted}`}>{pole.layer}</p>}
                     <h2 className="text-3xl lg:text-4xl font-display font-extrabold tracking-tight mt-1">
@@ -78,10 +78,10 @@ export function DomainsPage() {
                     </p>
                     <Link
                       to={`/domaines/${category.slug}`}
-                      className="inline-flex items-center gap-2 mt-4 font-bold underline underline-offset-4"
+                      className="group inline-flex items-center gap-2 mt-2 py-2 font-bold underline underline-offset-4"
                     >
                       <span>Découvrir ce pôle</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
                     </Link>
                   </div>
 
