@@ -1,3 +1,4 @@
+import type { JobApplication } from './recruitment.api';
 import api from './client';
 import type { ApiResponse } from '../types/api';
 import {
@@ -26,6 +27,8 @@ export interface DashboardStats {
     categories_total: number;
     testimonials_total: number;
     users_total: number;
+    applications_total?: number;
+    applications_new?: number;
   };
   quotes_distribution: {
     pending: number;
@@ -50,6 +53,7 @@ export interface DashboardStats {
     category?: { name: string };
     service?: { title: string };
   }>;
+  recent_applications?: JobApplication[];
   recent_messages: Array<{
     id: number;
     full_name: string;
@@ -196,6 +200,8 @@ const getComputedStats = (): DashboardStats => {
       categories_total: categories.length,
       testimonials_total: testimonials.length,
       users_total: users.length,
+      applications_total: 0,
+      applications_new: 0,
     },
     quotes_distribution: {
       pending: quotes_pending,
@@ -211,6 +217,7 @@ const getComputedStats = (): DashboardStats => {
     },
     recent_quotes: quotes.slice(0, 5),
     recent_messages: messages.slice(0, 5),
+    recent_applications: [],
   };
 };
 

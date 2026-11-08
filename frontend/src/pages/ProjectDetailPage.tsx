@@ -68,7 +68,7 @@ export function ProjectDetailPage() {
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
+        <nav aria-label="Fil d'Ariane" className="tap-links flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
           <Link to="/" className="hover:text-emerald-700">
             Accueil
           </Link>
@@ -78,7 +78,7 @@ export function ProjectDetailPage() {
           </Link>
           <span>/</span>
           <span className="text-slate-900 font-semibold">{project.title}</span>
-        </div>
+        </nav>
 
         {/* Hero Card for Project */}
         <div className="bg-white rounded-lg overflow-hidden mb-8 border border-slate-200/90">

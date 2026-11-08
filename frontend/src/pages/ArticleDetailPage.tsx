@@ -64,7 +64,7 @@ export function ArticleDetailPage() {
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
+        <nav aria-label="Fil d'Ariane" className="tap-links flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
           <Link to="/" className="hover:text-emerald-700">
             Accueil
           </Link>
@@ -74,7 +74,7 @@ export function ArticleDetailPage() {
           </Link>
           <span>/</span>
           <span className="text-slate-900 font-semibold truncate">{article.title}</span>
-        </div>
+        </nav>
 
         <Card className="p-8 sm:p-12 bg-white space-y-6">
           <div className="flex items-center gap-3">

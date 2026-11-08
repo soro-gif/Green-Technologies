@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
+use App\Enums\ApplicationStatus;
 use App\Enums\ArticleStatus;
 use App\Enums\MessageStatus;
 use App\Enums\ProjectStatus;
 use App\Enums\QuoteStatus;
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\JobApplicationResource;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\ContactMessage;
+use App\Models\JobApplication;
 use App\Models\Project;
 use App\Models\QuoteRequest;
 use App\Models\Service;
@@ -64,6 +67,10 @@ class AdminDashboardController extends BaseApiController
             ->limit(5)
             ->get();
 
+        $applicationsTotal = JobApplication::count();
+        $applicationsNew = JobApplication::where('status', ApplicationStatus::New)->count();
+        $recentApplications = JobApplicationResource::collection(JobApplication::latest('id')->limit(5)->get());
+
         $recentMessages = ContactMessage::latest('id')
             ->limit(5)
             ->get();
@@ -85,6 +92,8 @@ class AdminDashboardController extends BaseApiController
                 'categories_total' => $categoriesTotal,
                 'testimonials_total' => $testimonialsTotal,
                 'users_total' => $usersTotal,
+                'applications_total' => $applicationsTotal,
+                'applications_new' => $applicationsNew,
             ],
             'quotes_distribution' => [
                 'pending' => $quotesPending,
@@ -100,6 +109,7 @@ class AdminDashboardController extends BaseApiController
             ],
             'recent_quotes' => $recentQuotes,
             'recent_messages' => $recentMessages,
+            'recent_applications' => $recentApplications,
         ], 'Statistiques complètes du tableau de bord.');
     }
 }

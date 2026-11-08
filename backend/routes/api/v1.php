@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Admin\AdminArticleController;
 use App\Http\Controllers\Api\V1\Admin\AdminCategoryController;
 use App\Http\Controllers\Api\V1\Admin\AdminContactController;
 use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
+use App\Http\Controllers\Api\V1\Admin\AdminJobApplicationController;
 use App\Http\Controllers\Api\V1\Admin\AdminProjectController;
 use App\Http\Controllers\Api\V1\Admin\AdminQuoteController;
 use App\Http\Controllers\Api\V1\Admin\AdminServiceController;
@@ -183,6 +184,16 @@ Route::middleware('auth:sanctum')->group(function () {
             ->name('api.v1.admin.quotes.update_status');
         Route::delete('quotes/{quote}', [AdminQuoteController::class, 'destroy'])
             ->name('api.v1.admin.quotes.destroy');
+
+        // Job Applications (Candidatures)
+        Route::get('job-applications/stats', [AdminJobApplicationController::class, 'stats'])
+            ->name('api.v1.admin.job_applications.stats');
+        Route::apiResource('job-applications', AdminJobApplicationController::class)
+            ->parameters(['job-applications' => 'application'])
+            ->names('api.v1.admin.job_applications');
+        // Les formulaires avec fichiers passent en POST (multipart) : alias de la mise à jour
+        Route::post('job-applications/{application}', [AdminJobApplicationController::class, 'update'])
+            ->name('api.v1.admin.job_applications.update_multipart');
 
         // Contact Messages Management, Export & Stats
         Route::get('contact-messages/export', [AdminContactController::class, 'export'])

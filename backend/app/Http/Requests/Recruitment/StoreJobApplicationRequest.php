@@ -2,17 +2,12 @@
 
 namespace App\Http\Requests\Recruitment;
 
+use App\Models\JobApplication;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreJobApplicationRequest extends FormRequest
 {
-    public const EXPERIENCE_LEVELS = [
-        'debutant' => 'Débutant / jeune diplômé',
-        '1-3' => '1 à 3 ans',
-        '3-5' => '3 à 5 ans',
-        '5-10' => '5 à 10 ans',
-        '10+' => 'Plus de 10 ans',
-    ];
+    public const EXPERIENCE_LEVELS = JobApplication::EXPERIENCE_LEVELS;
 
     public function authorize(): bool
     {

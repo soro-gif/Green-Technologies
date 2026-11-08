@@ -16,6 +16,7 @@ import {
   Shield,
   MessageSquareQuote,
   Image as ImageIcon,
+  UserPlus,
 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { Logo } from '../components/ui/Logo';
@@ -47,6 +48,11 @@ export function AdminLayout() {
       label: 'Messages de contact',
       to: '/admin/messages',
       icon: <Mail className="w-4 h-4" />,
+    },
+    {
+      label: 'Candidatures',
+      to: '/admin/candidatures',
+      icon: <UserPlus className="w-4 h-4" />,
     },
     {
       label: 'Actualités et blog',

@@ -79,14 +79,14 @@ export function Navbar() {
             <div className="inline-flex items-center gap-2.5 sm:gap-4">
               <a
                 href="tel:+2252722584016"
-                className="inline-flex items-center gap-1.5 py-2.5 -my-2.5 whitespace-nowrap hover:text-white transition-colors text-xs"
+                className="inline-flex items-center gap-1.5 py-3 -my-3 whitespace-nowrap hover:text-white transition-colors text-xs"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Fixe : +225 27 22 58 40 16</span>
               </a>
               <a
                 href="tel:+2250704901034"
-                className="hidden xs:inline-flex items-center gap-1.5 py-2.5 -my-2.5 whitespace-nowrap hover:text-white transition-colors text-xs"
+                className="hidden xs:inline-flex items-center gap-1.5 py-3 -my-3 whitespace-nowrap hover:text-white transition-colors text-xs"
               >
                 <Smartphone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Tél : +225 07 04 90 10 34</span>
@@ -130,7 +130,7 @@ export function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1 py-2.5 -my-2.5 whitespace-nowrap text-slate-300 hover:text-white text-xs"
+                className="inline-flex items-center gap-1 py-3 -my-3 whitespace-nowrap text-slate-300 hover:text-white text-xs"
               >
                 <UserIcon className="w-3.5 h-3.5 shrink-0" />
                 <span>Espace client / pro</span>

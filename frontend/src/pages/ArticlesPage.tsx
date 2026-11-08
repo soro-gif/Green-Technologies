@@ -177,7 +177,7 @@ export function ArticlesPage() {
                     <div className="px-6 pb-6">
                       <Link
                         to={`/actualites/${art.slug}`}
-                        className="py-2 -my-2 font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
+                        className="inline-block py-3 -my-3 font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-4"
                       >
                         Lire l'article
                       </Link>

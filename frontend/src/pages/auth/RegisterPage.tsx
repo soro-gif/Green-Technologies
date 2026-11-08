@@ -188,7 +188,7 @@ export function RegisterPage() {
           </Button>
         </form>
 
-        <div className="pt-4 border-t border-slate-100 flex flex-col items-center gap-3 text-xs">
+        <div className="tap-links pt-4 border-t border-slate-100 flex flex-col items-center gap-3 text-xs">
           <div className="text-slate-600">
             <span>Déjà un compte ? </span>
             <Link to="/login" className="text-emerald-700 hover:text-emerald-800 font-bold">

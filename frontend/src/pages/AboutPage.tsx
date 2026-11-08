@@ -348,7 +348,7 @@ export function AboutPage() {
                   <div className="pt-4 border-t border-slate-100">
                     <Link
                       to={`/domaines/${bu.slug}`}
-                      className="inline-flex items-center gap-1.5 py-2 -my-2 text-xs font-semibold text-emerald-800 hover:text-emerald-900 transition-colors"
+                      className="inline-flex items-center gap-1.5 py-3.5 -my-3.5 text-xs font-semibold text-emerald-800 hover:text-emerald-900 transition-colors"
                     >
                       <span>Découvrir le pôle</span>
                       <ArrowRight className="w-3.5 h-3.5" />

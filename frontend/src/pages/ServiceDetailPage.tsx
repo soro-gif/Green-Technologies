@@ -70,7 +70,7 @@ export function ServiceDetailPage() {
   return (
     <div className="py-12 sm:py-16 bg-slate-50 min-h-[80vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
+        <nav aria-label="Fil d'Ariane" className="tap-links flex items-center gap-2 text-sm text-slate-600 mb-6 flex-wrap">
           <Link to="/" className="hover:text-emerald-700">
             Accueil
           </Link>
@@ -91,7 +91,7 @@ export function ServiceDetailPage() {
             </>
           )}
           <span className="text-slate-900 font-semibold">{service.title}</span>
-        </div>
+        </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
@@ -191,7 +191,7 @@ export function ServiceDetailPage() {
               </p>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-700 hover:text-emerald-800"
+                className="inline-flex items-center gap-1.5 min-h-11 text-sm font-bold text-emerald-700 hover:text-emerald-800"
               >
                 <span>Voir le catalogue complet</span>
                 <ArrowRight className="w-4 h-4" />
