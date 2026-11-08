@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ApplicationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobApplication extends Model
 {
@@ -30,7 +31,6 @@ class JobApplication extends Model
         'cover_letter_url',
         'message',
         'status',
-        'notes',
         'source',
         'consent_at',
         'ip_address',
@@ -42,6 +42,14 @@ class JobApplication extends Model
             'status' => ApplicationStatus::class,
             'consent_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Journal des notes internes, de la plus récente à la plus ancienne.
+     */
+    public function internalNotes(): HasMany
+    {
+        return $this->hasMany(JobApplicationNote::class)->latest('id');
     }
 
     public function experienceLabel(): ?string

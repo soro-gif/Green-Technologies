@@ -28,7 +28,7 @@ class JobApplicationResource extends JsonResource
             'message' => $this->message,
             'status' => $this->status?->value,
             'status_label' => $this->status?->label(),
-            'notes' => $this->notes,
+            'internal_notes' => JobApplicationNoteResource::collection($this->whenLoaded('internalNotes')),
             'source' => $this->source,
             'consent_at' => $this->consent_at?->toIso8601String(),
             'created_at' => $this->created_at?->toIso8601String(),

@@ -13,12 +13,16 @@ import {
   CheckCircle2,
   Globe,
   ChevronRight,
+  Download,
+  MessageSquarePlus,
+  X,
 } from 'lucide-react';
 import {
   recruitmentApi,
   APPLICATION_STATUSES,
   EXPERIENCE_LEVELS,
   type JobApplication,
+  type JobApplicationNote,
   type ApplicationStatus,
   type JobApplicationStats,
 } from '../../api';
@@ -49,6 +53,8 @@ function StatusBadge({ status, label }: { status: ApplicationStatus; label: stri
 }
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString('fr-FR');
+const formatDateTime = (iso: string) =>
+  new Date(iso).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
 interface NewApplicationForm {
   full_name: string;
@@ -96,9 +102,17 @@ export function AdminApplicationsPage() {
   // Fiche détaillée
   const [selected, setSelected] = useState<JobApplication | null>(null);
   const [editStatus, setEditStatus] = useState<ApplicationStatus>('new');
-  const [editNotes, setEditNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
+
+  // Journal de notes de la fiche ouverte
+  const [notes, setNotes] = useState<JobApplicationNote[] | null>(null);
+  const [newNote, setNewNote] = useState('');
+  const [noteSaving, setNoteSaving] = useState(false);
+  const [noteError, setNoteError] = useState<string | null>(null);
+
+  // Export
+  const [exporting, setExporting] = useState(false);
 
   // Ajout manuel
   const [creating, setCreating] = useState(false);
@@ -133,8 +147,68 @@ export function AdminApplicationsPage() {
     setSelected(application);
     // Ouvrir une candidature nouvelle la passe en « En cours d'étude » par défaut
     setEditStatus(application.status === 'new' ? 'reviewing' : application.status);
-    setEditNotes(application.notes || '');
     setDetailError(null);
+    setNewNote('');
+    setNoteError(null);
+
+    // La liste ne contient pas les notes : on charge la fiche complète
+    if (application.internal_notes) {
+      setNotes(application.internal_notes);
+      return;
+    }
+    setNotes(null);
+    recruitmentApi
+      .get(application.id)
+      .then((res) => setNotes(res.data?.internal_notes ?? []))
+      .catch(() => {
+        setNotes([]);
+        setNoteError('Impossible de charger les notes de cette candidature.');
+      });
+  };
+
+  const handleAddNote = async () => {
+    if (!selected || !newNote.trim()) return;
+    try {
+      setNoteSaving(true);
+      setNoteError(null);
+      const res = await recruitmentApi.addNote(selected.id, newNote.trim());
+      if (res.data) setNotes((prev) => [res.data!, ...(prev ?? [])]);
+      setNewNote('');
+    } catch (err: any) {
+      setNoteError(err.response?.data?.errors?.body?.[0] || err.response?.data?.message || 'La note n\'a pas été enregistrée.');
+    } finally {
+      setNoteSaving(false);
+    }
+  };
+
+  const handleDeleteNote = async (note: JobApplicationNote) => {
+    if (!selected || !window.confirm('Supprimer cette note ?')) return;
+    try {
+      setNoteError(null);
+      await recruitmentApi.deleteNote(selected.id, note.id);
+      setNotes((prev) => (prev ?? []).filter((n) => n.id !== note.id));
+    } catch (err: any) {
+      setNoteError(err.response?.data?.message || 'La note n\'a pas été supprimée.');
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      setExporting(true);
+      const blob = await recruitmentApi.exportCsv({ search: search || undefined, status: statusFilter || undefined });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `candidatures_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      window.alert('L\'export a échoué. Réessayez dans un instant.');
+    } finally {
+      setExporting(false);
+    }
   };
 
   // Lien direct depuis le tableau de bord : /admin/candidatures?id=12
@@ -158,7 +232,7 @@ export function AdminApplicationsPage() {
     try {
       setSaving(true);
       setDetailError(null);
-      await recruitmentApi.update(selected.id, { status: editStatus, notes: editNotes });
+      await recruitmentApi.update(selected.id, { status: editStatus });
       setSelected(null);
       fetchList();
     } catch (err: any) {
@@ -248,19 +322,33 @@ export function AdminApplicationsPage() {
             </p>
           </div>
         </div>
-        <Button
-          variant="primary"
-          size="md"
-          onClick={() => {
-            setForm(EMPTY_NEW);
-            setFormErrors({});
-            setCreating(true);
-          }}
-          leftIcon={<Plus className="w-4 h-4" />}
-          className="w-full sm:w-auto font-bold"
-        >
-          Ajouter une candidature
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            size="md"
+            onClick={handleExport}
+            isLoading={exporting}
+            disabled={(meta.total ?? 0) === 0}
+            leftIcon={<Download className="w-4 h-4" />}
+            className="w-full sm:w-auto font-bold"
+            title="Exporte les candidatures affichées (filtre et recherche en cours), ouvrable dans Excel"
+          >
+            Exporter (CSV)
+          </Button>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => {
+              setForm(EMPTY_NEW);
+              setFormErrors({});
+              setCreating(true);
+            }}
+            leftIcon={<Plus className="w-4 h-4" />}
+            className="w-full sm:w-auto font-bold"
+          >
+            Ajouter une candidature
+          </Button>
+        </div>
       </div>
 
       {/* Filtres */}
@@ -529,16 +617,74 @@ export function AdminApplicationsPage() {
                 onChange={(e) => setEditStatus(e.target.value as ApplicationStatus)}
                 options={APPLICATION_STATUSES.map((s) => ({ value: s.value, label: s.label }))}
               />
-              <Textarea
-                id="candidature-notes"
-                label="Notes internes"
-                rows={3}
-                placeholder="Échanges, date d'entretien, avis de l'équipe…"
-                value={editNotes}
-                onChange={(e) => setEditNotes(e.target.value)}
-              />
               {detailError && <p role="alert" className="text-sm font-medium text-red-600">{detailError}</p>}
             </div>
+
+            {/* Journal des notes internes : chaque note est enregistrée tout de suite, avec son auteur */}
+            <section aria-labelledby="notes-title" className="pt-4 border-t border-slate-100 space-y-3">
+              <h3 id="notes-title" className="text-sm font-bold text-slate-800">
+                Notes internes {notes && notes.length > 0 && <span className="text-slate-500 font-semibold">({notes.length})</span>}
+              </h3>
+              <p className="text-xs text-slate-500">Visibles seulement par l'équipe, jamais par le candidat.</p>
+
+              <Textarea
+                id="candidature-nouvelle-note"
+                label="Nouvelle note"
+                rows={2}
+                placeholder="Échange téléphonique, date d'entretien, avis de l'équipe…"
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
+                maxLength={4000}
+              />
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="md"
+                  onClick={handleAddNote}
+                  isLoading={noteSaving}
+                  disabled={!newNote.trim()}
+                  leftIcon={<MessageSquarePlus className="w-4 h-4" />}
+                  className="w-full sm:w-auto"
+                >
+                  Ajouter la note
+                </Button>
+              </div>
+              {noteError && <p role="alert" className="text-sm font-medium text-red-600">{noteError}</p>}
+
+              {notes === null ? (
+                <div className="flex items-center gap-2 text-sm text-slate-500">
+                  <Spinner size="sm" /> Chargement des notes…
+                </div>
+              ) : notes.length === 0 ? (
+                <p className="text-sm text-slate-500">Aucune note pour l'instant.</p>
+              ) : (
+                <ol className="max-h-64 overflow-y-auto space-y-2">
+                  {notes.map((note) => (
+                    <li key={note.id} className="p-3 bg-white rounded-md border border-slate-200">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-xs text-slate-500">
+                          <span className="font-semibold text-slate-700">{note.author ?? 'Note reprise'}</span>
+                          {' · '}
+                          <time dateTime={note.created_at}>{formatDateTime(note.created_at)}</time>
+                        </p>
+                        {note.can_delete && (
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteNote(note)}
+                            className="inline-flex items-center justify-center min-h-11 min-w-11 -m-3 rounded-md text-slate-400 hover:text-rose-700"
+                            aria-label={`Supprimer la note du ${formatDateTime(note.created_at)}`}
+                          >
+                            <X className="w-4 h-4" aria-hidden="true" />
+                          </button>
+                        )}
+                      </div>
+                      <p className="mt-1 text-sm text-slate-800 whitespace-pre-line leading-relaxed">{note.body}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </section>
 
             <div className="pt-3 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2 border-t border-slate-100">
               <Button
@@ -679,7 +825,7 @@ export function AdminApplicationsPage() {
             <div className="sm:col-span-2">
               <Textarea
                 id="new-notes"
-                label="Notes internes"
+                label="Première note interne"
                 rows={2}
                 placeholder="Ex : reçue au salon de l'emploi d'Abidjan"
                 value={form.notes}

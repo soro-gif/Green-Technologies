@@ -41,6 +41,18 @@ return [
         'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
     ],
 
+    /*
+     * Recrutement : destinataires de l'e-mail envoyé à chaque nouvelle candidature
+     * (adresses séparées par des virgules). Vide : les administrateurs actifs.
+     */
+    'recruitment' => [
+        'notify' => array_values(array_filter(array_map(
+            'trim',
+            explode(',', (string) env('RECRUITMENT_NOTIFY_EMAILS', ''))
+        ))),
+        'admin_url' => env('RECRUITMENT_ADMIN_URL', 'https://greentechnologies.ci/admin/candidatures'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

@@ -34,11 +34,21 @@ export interface JobApplication {
   message: string | null;
   status: ApplicationStatus;
   status_label: string;
-  notes: string | null;
+  /** Présent sur la fiche détaillée (pas dans la liste). */
+  internal_notes?: JobApplicationNote[];
   source: 'site' | 'admin';
   consent_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface JobApplicationNote {
+  id: number;
+  body: string;
+  /** null : note reprise de l'ancien champ, sans auteur connu. */
+  author: string | null;
+  created_at: string;
+  can_delete: boolean;
 }
 
 export interface JobApplicationStats {
@@ -74,6 +84,7 @@ export interface AdminJobApplicationDto {
   cv_url?: string;
   message?: string;
   status?: ApplicationStatus;
+  /** À l'ajout seulement : devient la première note du journal. */
   notes?: string;
 }
 
@@ -134,6 +145,26 @@ export const recruitmentApi = {
 
   remove: async (id: number) => {
     const response = await api.delete<ApiResponse<null>>(`/admin/job-applications/${id}`);
+    return response.data;
+  },
+
+  addNote: async (id: number, body: string) => {
+    const response = await api.post<ApiResponse<JobApplicationNote>>(`/admin/job-applications/${id}/notes`, { body });
+    return response.data;
+  },
+
+  deleteNote: async (id: number, noteId: number) => {
+    const response = await api.delete<ApiResponse<null>>(`/admin/job-applications/${id}/notes/${noteId}`);
+    return response.data;
+  },
+
+  /** Export CSV (ouvrable dans Excel) avec les filtres de la liste. */
+  exportCsv: async (params: { search?: string; status?: string }): Promise<Blob> => {
+    const response = await api.get('/admin/job-applications/export', {
+      params,
+      responseType: 'blob',
+      timeout: UPLOAD_TIMEOUT,
+    });
     return response.data;
   },
 };

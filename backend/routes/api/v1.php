@@ -188,6 +188,12 @@ Route::middleware('auth:sanctum')->group(function () {
         // Job Applications (Candidatures)
         Route::get('job-applications/stats', [AdminJobApplicationController::class, 'stats'])
             ->name('api.v1.admin.job_applications.stats');
+        Route::get('job-applications/export', [AdminJobApplicationController::class, 'export'])
+            ->name('api.v1.admin.job_applications.export');
+        Route::post('job-applications/{application}/notes', [AdminJobApplicationController::class, 'storeNote'])
+            ->name('api.v1.admin.job_applications.notes.store');
+        Route::delete('job-applications/{application}/notes/{note}', [AdminJobApplicationController::class, 'destroyNote'])
+            ->name('api.v1.admin.job_applications.notes.destroy');
         Route::apiResource('job-applications', AdminJobApplicationController::class)
             ->parameters(['job-applications' => 'application'])
             ->names('api.v1.admin.job_applications');
