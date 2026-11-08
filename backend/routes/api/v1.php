@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\HealthController;
+use App\Http\Controllers\Api\V1\JobApplicationController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\QuoteController;
 use App\Http\Controllers\Api\V1\ServiceController;
@@ -72,6 +73,11 @@ Route::get('/quotes/track/{reference}', [QuoteController::class, 'track'])
 Route::post('/contact', [ContactController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('api.v1.contact.store');
+
+// Candidatures (CV et lettre de motivation stockés sur Cloudinary)
+Route::post('/job-applications', [JobApplicationController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('api.v1.job-applications.store');
 
 // =========================================================================
 // AUTHENTICATION ROUTES

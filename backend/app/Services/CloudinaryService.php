@@ -52,6 +52,16 @@ class CloudinaryService
     }
 
     /**
+     * Téléverse un document (PDF, Word) en ressource « raw » : Cloudinary le sert tel quel.
+     */
+    public function uploadDocument(string $path, string $originalName, string $folder): string
+    {
+        return $this->send($folder, function ($request) use ($path, $originalName) {
+            return $request->attach('file', file_get_contents($path), $originalName);
+        }, [], 'raw');
+    }
+
+    /**
      * Téléverse une image encodée en data URL (data:image/...;base64,...).
      * Cloudinary accepte directement ce format dans le champ `file`.
      */
@@ -60,7 +70,7 @@ class CloudinaryService
         return $this->send($folder, fn ($request) => $request->asMultipart(), ['file' => $dataUrl]);
     }
 
-    private function send(string $folder, callable $prepare, array $extra): string
+    private function send(string $folder, callable $prepare, array $extra, string $resourceType = 'image'): string
     {
         if (!$this->isConfigured()) {
             throw new RuntimeException('Cloudinary n\'est pas configuré (CLOUDINARY_URL manquant).');
@@ -80,7 +90,7 @@ class CloudinaryService
 
         $request = $prepare(Http::timeout(60));
         $response = $request->post(
-            "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload",
+            "https://api.cloudinary.com/v1_1/{$this->cloudName}/{$resourceType}/upload",
             array_merge($params, $extra)
         );
 
