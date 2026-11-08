@@ -8,7 +8,10 @@ export const authService = {
    * Log in user and return token + user data
    */
   async login(credentials: LoginCredentials): Promise<AuthResponseData> {
-    const response = await api.post<ApiResponse<AuthResponseData>>('/auth/login', credentials);
+    // Render (offre gratuite) met parfois plus d'une minute à réveiller le backend
+    const response = await api.post<ApiResponse<AuthResponseData>>('/auth/login', credentials, {
+      timeout: 90000,
+    });
     const { token, user, token_type } = response.data.data;
     localStorage.setItem('auth_token', token);
     localStorage.setItem('auth_user', JSON.stringify(user));
@@ -50,6 +53,15 @@ export const authService = {
       }
       throw err;
     }
+  },
+
+  /**
+   * Wake the backend up early, so the login request does not pay for a cold start
+   */
+  warmUp(): void {
+    api.get('/health', { timeout: 90000 }).catch(() => {
+      // le login affichera l'erreur s'il échoue
+    });
   },
 
   /**

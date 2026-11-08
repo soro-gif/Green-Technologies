@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +9,7 @@ import { Lock, Mail, AlertCircle, LogIn, ArrowLeft } from 'lucide-react';
 import type { AxiosError } from 'axios';
 import type { ApiErrorResponse } from '../../types/api';
 import type { LoginCredentials } from '../../auth/auth.types';
+import { authService } from '../../auth/auth.service';
 import { Logo } from '../../components/ui/Logo';
 import { Button } from '../../components/ui/Button';
 
@@ -26,6 +27,11 @@ export function LoginPage() {
   const from = location.state?.from?.pathname || '/admin/dashboard';
 
   const [serverError, setServerError] = useState<string | null>(null);
+
+  // Réveille le backend pendant que l'admin saisit ses identifiants
+  useEffect(() => {
+    authService.warmUp();
+  }, []);
 
   const {
     register,
@@ -57,7 +63,9 @@ export function LoginPage() {
       setServerError(
         axiosErr.response
           ? axiosErr.response.data?.message || 'Identifiants invalides ou compte désactivé.'
-          : 'Connexion au serveur impossible. Vérifiez votre réseau, puis réessayez.'
+          : axiosErr.code === 'ECONNABORTED'
+            ? 'Le serveur met du temps à démarrer. Patientez quelques secondes, puis réessayez.'
+            : 'Connexion au serveur impossible. Vérifiez votre réseau, puis réessayez.'
       );
     }
   };
