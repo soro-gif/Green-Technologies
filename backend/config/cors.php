@@ -23,6 +23,8 @@ return [
 
     'allowed_origins_patterns' => [
         '#^https?://.*\.onrender\.com$#',
+        // Domaine de production du site
+        '#^https://(www\.)?greentechnologies\.ci$#',
     ],
 
     'allowed_headers' => ['*'],
