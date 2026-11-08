@@ -9,8 +9,12 @@ import {
   FileText,
   Search,
   MessageCircle,
+  Briefcase,
+  MapPin,
+  CalendarClock,
+  X,
 } from 'lucide-react';
-import { recruitmentApi, EXPERIENCE_LEVELS } from '../api';
+import { recruitmentApi, jobOffersApi, EXPERIENCE_LEVELS, type JobOffer } from '../api';
 import { useAuth } from '../auth/AuthContext';
 import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
@@ -156,6 +160,33 @@ export function RecruitmentPage() {
     if (submitted) successRef.current?.focus();
   }, [submitted]);
 
+  // Offres ouvertes : sans offre (ou si l'API ne répond pas), la page reste une candidature spontanée
+  const [offers, setOffers] = useState<JobOffer[]>([]);
+  const [selectedOffer, setSelectedOffer] = useState<JobOffer | null>(null);
+
+  useEffect(() => {
+    jobOffersApi
+      .listOpen()
+      .then((res) => {
+        setOffers(res.data || []);
+        // Lien direct vers une offre : /recrutement#offre-technicien-de-forage
+        const hash = window.location.hash.slice(1);
+        if (hash) window.requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView({ block: 'start' }));
+      })
+      .catch(() => undefined);
+  }, []);
+
+  const applyTo = (offer: JobOffer) => {
+    setSelectedOffer(offer);
+    update('position', offer.title);
+    goToForm();
+  };
+
+  const clearOffer = () => {
+    setSelectedOffer(null);
+    update('position', '');
+  };
+
   const errorFor = (name: FieldName): string | undefined =>
     serverErrors[name] ?? (touched[name] ? validateField(name, form) ?? undefined : undefined);
 
@@ -201,6 +232,7 @@ export function RecruitmentPage() {
         phone: form.phone.trim(),
         city: form.city.trim(),
         position: form.position.trim(),
+        job_offer_id: selectedOffer?.id,
         experience: form.experience,
         linkedin: form.linkedin.trim(),
         cv: form.cv,
@@ -210,11 +242,17 @@ export function RecruitmentPage() {
       });
       setSubmitted(true);
       setForm(EMPTY_FORM);
+      setSelectedOffer(null);
       setTouched({});
       setServerErrors({});
     } catch (err: any) {
       const apiErrors: Record<string, string[]> | undefined = err.response?.status === 422 ? err.response?.data?.errors : undefined;
-      if (apiErrors) {
+      if (apiErrors?.job_offer_id?.[0]) {
+        // L'offre a été retirée ou a expiré pendant la saisie : on bascule en candidature spontanée
+        setSelectedOffer(null);
+        setOffers((prev) => prev.filter((o) => o.id !== selectedOffer?.id));
+        setGeneralError(`${apiErrors.job_offer_id[0]} Votre saisie est conservée : renvoyez le formulaire.`);
+      } else if (apiErrors) {
         const mapped: Partial<Record<FieldName, string>> = {};
         for (const name of VALIDATED_FIELDS) {
           if (apiErrors[name]?.[0]) mapped[name] = apiErrors[name][0];
@@ -271,6 +309,85 @@ export function RecruitmentPage() {
             ))}
           </ol>
         </section>
+
+        {/* Offres ouvertes */}
+        {offers.length > 0 && (
+          <section aria-labelledby="offers-title" className="space-y-6">
+            <div>
+              <h2 id="offers-title" className="text-2xl sm:text-3xl font-bold font-display text-slate-900">
+                Offres ouvertes
+              </h2>
+              <p className="text-slate-600 mt-2">
+                {offers.length} poste{offers.length > 1 ? 's' : ''} à pourvoir. Aucun ne correspond ? Envoyez une candidature spontanée.
+              </p>
+            </div>
+            <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+              {offers.map((offer) => (
+                <li key={offer.id}>
+                  <article
+                    id={`offre-${offer.slug}`}
+                    aria-labelledby={`offre-${offer.slug}-titre`}
+                    className="scroll-mt-28 h-full flex flex-col gap-3 p-5 sm:p-6 bg-white border border-slate-200/80 rounded-lg"
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        {offer.contract_label}
+                      </span>
+                      {offer.department && <span className="text-xs font-semibold text-slate-500">{offer.department}</span>}
+                    </div>
+                    <h3 id={`offre-${offer.slug}-titre`} className="text-lg font-bold text-slate-900">
+                      {offer.title}
+                    </h3>
+                    <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-600">
+                      <span className="inline-flex items-center gap-1">
+                        <MapPin className="w-4 h-4 text-emerald-700" aria-hidden="true" />
+                        {offer.location}
+                      </span>
+                      {offer.deadline && (
+                        <span className="inline-flex items-center gap-1">
+                          <CalendarClock className="w-4 h-4 text-emerald-700" aria-hidden="true" />
+                          Jusqu'au {new Date(`${offer.deadline}T00:00:00`).toLocaleDateString('fr-FR')}
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-slate-700 leading-relaxed">{offer.summary}</p>
+
+                    <details className="group">
+                      <summary className="inline-flex items-center min-h-11 text-sm font-semibold text-emerald-800 cursor-pointer hover:underline">
+                        Missions et profil recherché
+                      </summary>
+                      <div className="mt-2 space-y-4 text-sm text-slate-700 leading-relaxed">
+                        <div>
+                          <h4 className="font-bold text-slate-900 mb-1">Missions</h4>
+                          <p className="whitespace-pre-line">{offer.description}</p>
+                        </div>
+                        {offer.requirements && (
+                          <div>
+                            <h4 className="font-bold text-slate-900 mb-1">Profil recherché</h4>
+                            <p className="whitespace-pre-line">{offer.requirements}</p>
+                          </div>
+                        )}
+                      </div>
+                    </details>
+
+                    <div className="mt-auto pt-2">
+                      <Button
+                        variant="primary"
+                        size="md"
+                        onClick={() => applyTo(offer)}
+                        leftIcon={<Send className="w-4 h-4" />}
+                        className="w-full sm:w-auto"
+                        aria-describedby={`offre-${offer.slug}-titre`}
+                      >
+                        Postuler à cette offre
+                      </Button>
+                    </div>
+                  </article>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Candidature */}
         <section
@@ -364,6 +481,24 @@ export function RecruitmentPage() {
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
+                  {selectedOffer && (
+                    <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-md bg-emerald-50 border border-emerald-200 text-sm">
+                      <p className="flex items-start gap-2 text-emerald-900">
+                        <Briefcase className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+                        <span>
+                          Vous postulez à l'offre <strong>{selectedOffer.title}</strong> ({selectedOffer.contract_label}, {selectedOffer.location}).
+                        </span>
+                      </p>
+                      <button
+                        type="button"
+                        onClick={clearOffer}
+                        className="inline-flex items-center gap-1 min-h-11 shrink-0 font-semibold text-emerald-800 hover:underline"
+                      >
+                        <X className="w-4 h-4" aria-hidden="true" />
+                        Plutôt une candidature spontanée
+                      </button>
+                    </div>
+                  )}
                   <div className="sm:col-span-2">
                     <Input
                       id={FIELD_IDS.full_name}

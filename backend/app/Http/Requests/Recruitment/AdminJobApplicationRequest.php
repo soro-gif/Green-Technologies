@@ -32,6 +32,7 @@ class AdminJobApplicationRequest extends FormRequest
             'phone' => [$required, 'string', 'max:50'],
             'city' => ['nullable', 'string', 'max:100'],
             'position' => [$required, 'string', 'max:150'],
+            'job_offer_id' => ['nullable', 'integer', 'exists:job_offers,id'],
             'experience' => ['nullable', 'string', Rule::in(array_keys(JobApplication::EXPERIENCE_LEVELS))],
             'linkedin' => ['nullable', 'url', 'max:255'],
             'cv' => $document,

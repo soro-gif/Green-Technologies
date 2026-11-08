@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Recruitment;
 
 use App\Models\JobApplication;
+use App\Models\JobOffer;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreJobApplicationRequest extends FormRequest
@@ -24,6 +25,12 @@ class StoreJobApplicationRequest extends FormRequest
             'phone' => ['required', 'string', 'max:50'],
             'city' => ['nullable', 'string', 'max:100'],
             'position' => ['required', 'string', 'max:150'],
+            // Facultatif : candidature à une offre précise, qui doit être encore ouverte
+            'job_offer_id' => ['nullable', 'integer', function (string $attribute, mixed $value, \Closure $fail) {
+                if (! JobOffer::open()->whereKey($value)->exists()) {
+                    $fail('Cette offre n\'est plus ouverte. Vous pouvez envoyer une candidature spontanée.');
+                }
+            }],
             'experience' => ['nullable', 'string', 'in:' . implode(',', array_keys(self::EXPERIENCE_LEVELS))],
             'linkedin' => ['nullable', 'url:https', 'max:255'],
             'cv' => ['required', ...$document],

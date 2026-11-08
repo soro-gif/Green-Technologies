@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ApplicationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobApplication extends Model
@@ -25,6 +26,7 @@ class JobApplication extends Model
         'phone',
         'city',
         'position',
+        'job_offer_id',
         'experience',
         'linkedin',
         'cv_url',
@@ -50,6 +52,11 @@ class JobApplication extends Model
     public function internalNotes(): HasMany
     {
         return $this->hasMany(JobApplicationNote::class)->latest('id');
+    }
+
+    public function jobOffer(): BelongsTo
+    {
+        return $this->belongsTo(JobOffer::class);
     }
 
     public function experienceLabel(): ?string

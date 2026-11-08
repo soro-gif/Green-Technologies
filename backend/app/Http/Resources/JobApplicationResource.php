@@ -20,6 +20,8 @@ class JobApplicationResource extends JsonResource
             'phone' => $this->phone,
             'city' => $this->city,
             'position' => $this->position,
+            'job_offer_id' => $this->job_offer_id,
+            'job_offer_title' => $this->whenLoaded('jobOffer', fn () => $this->jobOffer?->title),
             'experience' => $this->experience,
             'experience_label' => $this->experienceLabel(),
             'linkedin' => $this->linkedin,

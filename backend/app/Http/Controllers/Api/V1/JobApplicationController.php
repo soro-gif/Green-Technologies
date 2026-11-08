@@ -48,6 +48,7 @@ class JobApplicationController extends BaseApiController
             'phone' => $data['phone'],
             'city' => $data['city'] ?? null,
             'position' => $data['position'],
+            'job_offer_id' => $data['job_offer_id'] ?? null,
             'experience' => $data['experience'] ?? null,
             'linkedin' => $data['linkedin'] ?? null,
             'cv_url' => $cvUrl,

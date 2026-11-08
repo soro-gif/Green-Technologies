@@ -17,6 +17,7 @@ import {
   MessageSquareQuote,
   Image as ImageIcon,
   UserPlus,
+  Briefcase,
 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { Logo } from '../components/ui/Logo';
@@ -53,6 +54,11 @@ export function AdminLayout() {
       label: 'Candidatures',
       to: '/admin/candidatures',
       icon: <UserPlus className="w-4 h-4" />,
+    },
+    {
+      label: 'Offres d\'emploi',
+      to: '/admin/offres',
+      icon: <Briefcase className="w-4 h-4" />,
     },
     {
       label: 'Actualités et blog',

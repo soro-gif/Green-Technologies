@@ -90,6 +90,8 @@ const EMPTY_NEW: NewApplicationForm = {
 
 export function AdminApplicationsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  // Filtre par offre : /admin/candidatures?offre=3 (lien depuis la page Offres d'emploi)
+  const [offerFilter, setOfferFilter] = useState<number | null>(() => Number(searchParams.get('offre')) || null);
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [stats, setStats] = useState<JobApplicationStats | null>(null);
   const [meta, setMeta] = useState<PaginationMeta>({ current_page: 1, per_page: 15, total: 0, last_page: 1 });
@@ -125,7 +127,13 @@ export function AdminApplicationsPage() {
       setLoading(true);
       setError(null);
       const [list, s] = await Promise.all([
-        recruitmentApi.list({ search: search || undefined, status: statusFilter || undefined, page, per_page: 15 }),
+        recruitmentApi.list({
+          search: search || undefined,
+          status: statusFilter || undefined,
+          job_offer_id: offerFilter ?? undefined,
+          page,
+          per_page: 15,
+        }),
         recruitmentApi.stats(),
       ]);
       setApplications(list.data || []);
@@ -136,7 +144,7 @@ export function AdminApplicationsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, statusFilter, page]);
+  }, [search, statusFilter, offerFilter, page]);
 
   useEffect(() => {
     const t = window.setTimeout(fetchList, search ? 300 : 0);
@@ -195,7 +203,11 @@ export function AdminApplicationsPage() {
   const handleExport = async () => {
     try {
       setExporting(true);
-      const blob = await recruitmentApi.exportCsv({ search: search || undefined, status: statusFilter || undefined });
+      const blob = await recruitmentApi.exportCsv({
+        search: search || undefined,
+        status: statusFilter || undefined,
+        job_offer_id: offerFilter ?? undefined,
+      });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -222,7 +234,15 @@ export function AdminApplicationsPage() {
       .get(id)
       .then((res) => res.data && openDetail(res.data))
       .catch(() => undefined)
-      .finally(() => setSearchParams({}, { replace: true }));
+      .finally(() =>
+        setSearchParams(
+          (prev) => {
+            prev.delete('id');
+            return prev;
+          },
+          { replace: true }
+        )
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -353,6 +373,32 @@ export function AdminApplicationsPage() {
 
       {/* Filtres */}
       <div className="p-4 rounded-lg bg-white border border-slate-200/90 space-y-4">
+        {offerFilter !== null && (
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-slate-600">Candidatures pour l'offre :</span>
+            <span className="inline-flex items-center gap-1 pl-3 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 font-semibold">
+              {applications.find((a) => a.job_offer_id === offerFilter)?.job_offer_title ?? `n° ${offerFilter}`}
+              <button
+                type="button"
+                onClick={() => {
+                  setOfferFilter(null);
+                  setPage(1);
+                  setSearchParams(
+                    (prev) => {
+                      prev.delete('offre');
+                      return prev;
+                    },
+                    { replace: true }
+                  );
+                }}
+                className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-full hover:text-rose-700"
+                aria-label="Retirer le filtre par offre"
+              >
+                <X className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </span>
+          </div>
+        )}
         <div className="-mx-4 px-4 overflow-x-auto">
           <div role="tablist" aria-label="Filtrer par statut" className="flex gap-2 w-max">
             {filterTabs.map((tab) => {
@@ -436,7 +482,10 @@ export function AdminApplicationsPage() {
                         <span className="font-bold text-slate-900 text-sm truncate">{a.full_name}</span>
                         <StatusBadge status={a.status} label={a.status_label} />
                       </div>
-                      <p className="text-sm font-medium text-emerald-800 truncate">{a.position}</p>
+                      <p className="text-sm font-medium text-emerald-800 truncate">
+                        {a.position}
+                        {a.job_offer_id && <span className="ml-1.5 text-xs font-semibold text-slate-500">· Offre</span>}
+                      </p>
                       <p className="text-xs text-slate-500 truncate">
                         {[a.city, a.experience_label, formatDate(a.created_at)].filter(Boolean).join(' · ')}
                       </p>
@@ -479,7 +528,9 @@ export function AdminApplicationsPage() {
                       </td>
                       <td className="px-4 py-3 text-slate-700">
                         <div className="font-medium">{a.position}</div>
-                        {a.city && <div className="text-xs text-slate-500">{a.city}</div>}
+                        <div className="text-xs text-slate-500">
+                          {[a.job_offer_id ? 'Réponse à une offre' : 'Spontanée', a.city].filter(Boolean).join(' · ')}
+                        </div>
                       </td>
                       <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">{a.experience_label || '—'}</td>
                       <td className="px-4 py-3">
@@ -522,6 +573,11 @@ export function AdminApplicationsPage() {
               <div className="sm:col-span-2">
                 <dt className="text-xs font-semibold text-slate-500">Poste ou domaine visé</dt>
                 <dd className="font-bold text-slate-900">{selected.position}</dd>
+                <dd className="text-xs text-slate-500 mt-0.5">
+                  {selected.job_offer_id
+                    ? `En réponse à l'offre « ${selected.job_offer_title ?? 'supprimée'} »`
+                    : 'Candidature spontanée'}
+                </dd>
               </div>
               <div>
                 <dt className="text-xs font-semibold text-slate-500">E-mail</dt>

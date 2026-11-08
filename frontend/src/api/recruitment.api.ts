@@ -19,6 +19,51 @@ export const APPLICATION_STATUSES = [
 
 export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number]['value'];
 
+export const CONTRACT_TYPES = [
+  { value: 'cdi', label: 'CDI' },
+  { value: 'cdd', label: 'CDD' },
+  { value: 'stage', label: 'Stage' },
+  { value: 'alternance', label: 'Alternance' },
+  { value: 'freelance', label: 'Prestataire / freelance' },
+] as const;
+
+export type ContractType = (typeof CONTRACT_TYPES)[number]['value'];
+
+/** Offre d'emploi. Les champs de gestion ne sont renvoyés qu'à l'administration. */
+export interface JobOffer {
+  id: number;
+  title: string;
+  slug: string;
+  department: string | null;
+  location: string;
+  contract_type: ContractType;
+  contract_label: string;
+  summary: string;
+  description: string;
+  requirements: string | null;
+  /** AAAA-MM-JJ */
+  deadline: string | null;
+  published_at: string | null;
+  is_published?: boolean;
+  status?: 'draft' | 'published' | 'expired';
+  status_label?: string;
+  applications_count?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface JobOfferDto {
+  title: string;
+  department?: string;
+  location: string;
+  contract_type: ContractType;
+  summary: string;
+  description: string;
+  requirements?: string;
+  deadline?: string | null;
+  is_published: boolean;
+}
+
 export interface JobApplication {
   id: number;
   full_name: string;
@@ -26,6 +71,9 @@ export interface JobApplication {
   phone: string;
   city: string | null;
   position: string;
+  job_offer_id: number | null;
+  /** Intitulé de l'offre à laquelle répond la candidature (null : spontanée). */
+  job_offer_title?: string | null;
   experience: string | null;
   experience_label: string | null;
   linkedin: string | null;
@@ -62,6 +110,7 @@ export interface JobApplicationDto {
   phone: string;
   city?: string;
   position: string;
+  job_offer_id?: number;
   experience?: string;
   linkedin?: string;
   cv: File;
@@ -113,7 +162,7 @@ export const recruitmentApi = {
 
   // --------------------------------------------------------------- Administration
 
-  list: async (params: { search?: string; status?: string; page?: number; per_page?: number }) => {
+  list: async (params: { search?: string; status?: string; job_offer_id?: number; page?: number; per_page?: number }) => {
     const response = await api.get<ApiPaginatedResponse<JobApplication>>('/admin/job-applications', { params });
     return response.data;
   },
@@ -159,12 +208,42 @@ export const recruitmentApi = {
   },
 
   /** Export CSV (ouvrable dans Excel) avec les filtres de la liste. */
-  exportCsv: async (params: { search?: string; status?: string }): Promise<Blob> => {
+  exportCsv: async (params: { search?: string; status?: string; job_offer_id?: number }): Promise<Blob> => {
     const response = await api.get('/admin/job-applications/export', {
       params,
       responseType: 'blob',
       timeout: UPLOAD_TIMEOUT,
     });
+    return response.data;
+  },
+};
+
+export const jobOffersApi = {
+  /** Offres publiées et non expirées, affichées sur la page Recrutement. */
+  listOpen: async () => {
+    const response = await api.get<ApiResponse<JobOffer[]>>('/job-offers');
+    return response.data;
+  },
+
+  // --------------------------------------------------------------- Administration
+
+  list: async () => {
+    const response = await api.get<ApiResponse<JobOffer[]>>('/admin/job-offers');
+    return response.data;
+  },
+
+  create: async (data: JobOfferDto) => {
+    const response = await api.post<ApiResponse<JobOffer>>('/admin/job-offers', data);
+    return response.data;
+  },
+
+  update: async (id: number, data: Partial<JobOfferDto>) => {
+    const response = await api.patch<ApiResponse<JobOffer>>(`/admin/job-offers/${id}`, data);
+    return response.data;
+  },
+
+  remove: async (id: number) => {
+    const response = await api.delete<ApiResponse<null>>(`/admin/job-offers/${id}`);
     return response.data;
   },
 };

@@ -61,7 +61,7 @@ class AdminJobApplicationController extends BaseApiController
         $this->authorize('view', $application);
 
         return $this->success(
-            new JobApplicationResource($application->load('internalNotes.author')),
+            new JobApplicationResource($application->load(['internalNotes.author', 'jobOffer:id,title'])),
             'Candidature récupérée.'
         );
     }
@@ -136,7 +136,7 @@ class AdminJobApplicationController extends BaseApiController
 
             fputcsv($out, [
                 'ID', 'Date de réception', 'Nom et prénoms', 'E-mail', 'Téléphone', 'Ville',
-                'Poste visé', 'Expérience', 'Statut', 'Origine', 'LinkedIn', 'CV',
+                'Poste visé', 'Offre', 'Expérience', 'Statut', 'Origine', 'LinkedIn', 'CV',
                 'Lettre de motivation', 'Message du candidat', 'Notes internes',
             ], ';');
 
@@ -156,6 +156,7 @@ class AdminJobApplicationController extends BaseApiController
                         $a->phone,
                         $a->city,
                         $a->position,
+                        $a->jobOffer?->title ?? 'Candidature spontanée',
                         $a->experienceLabel(),
                         $a->status?->label(),
                         $a->source === 'admin' ? 'Ajout manuel' : 'Site web',
@@ -223,7 +224,11 @@ class AdminJobApplicationController extends BaseApiController
             $query->where('status', $status);
         }
 
-        return $query;
+        if ($offerId = (int) $request->query('job_offer_id', 0)) {
+            $query->where('job_offer_id', $offerId);
+        }
+
+        return $query->with('jobOffer:id,title');
     }
 
     /**

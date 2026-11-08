@@ -61,6 +61,7 @@ const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage').then(
 const AdminDashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage').then((m) => ({ default: m.AdminDashboardPage })));
 const AdminQuotesPage = lazy(() => import('../pages/admin/AdminQuotesPage').then((m) => ({ default: m.AdminQuotesPage })));
 const AdminApplicationsPage = lazy(() => import('../pages/admin/AdminApplicationsPage').then((m) => ({ default: m.AdminApplicationsPage })));
+const AdminJobOffersPage = lazy(() => import('../pages/admin/AdminJobOffersPage').then((m) => ({ default: m.AdminJobOffersPage })));
 const AdminMessagesPage = lazy(() => import('../pages/admin/AdminMessagesPage').then((m) => ({ default: m.AdminMessagesPage })));
 const AdminServicesPage = lazy(() => import('../pages/admin/AdminServicesPage').then((m) => ({ default: m.AdminServicesPage })));
 const AdminProjectsPage = lazy(() => import('../pages/admin/AdminProjectsPage').then((m) => ({ default: m.AdminProjectsPage })));
@@ -257,6 +258,10 @@ export const router = createBrowserRouter([
       {
         path: 'candidatures',
         element: withSuspense(AdminApplicationsPage),
+      },
+      {
+        path: 'offres',
+        element: withSuspense(AdminJobOffersPage),
       },
       {
         path: 'domaines',

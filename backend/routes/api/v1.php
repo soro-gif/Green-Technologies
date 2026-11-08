@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Admin\AdminCategoryController;
 use App\Http\Controllers\Api\V1\Admin\AdminContactController;
 use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
 use App\Http\Controllers\Api\V1\Admin\AdminJobApplicationController;
+use App\Http\Controllers\Api\V1\Admin\AdminJobOfferController;
 use App\Http\Controllers\Api\V1\Admin\AdminProjectController;
 use App\Http\Controllers\Api\V1\Admin\AdminQuoteController;
 use App\Http\Controllers\Api\V1\Admin\AdminServiceController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\JobApplicationController;
+use App\Http\Controllers\Api\V1\JobOfferController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\QuoteController;
 use App\Http\Controllers\Api\V1\ServiceController;
@@ -74,6 +76,10 @@ Route::get('/quotes/track/{reference}', [QuoteController::class, 'track'])
 Route::post('/contact', [ContactController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('api.v1.contact.store');
+
+// Offres d'emploi ouvertes (publiées, date limite non passée)
+Route::get('/job-offers', [JobOfferController::class, 'index'])->name('api.v1.job-offers.index');
+Route::get('/job-offers/{slug}', [JobOfferController::class, 'show'])->name('api.v1.job-offers.show');
 
 // Candidatures (CV et lettre de motivation stockés sur Cloudinary)
 Route::post('/job-applications', [JobApplicationController::class, 'store'])
@@ -184,6 +190,12 @@ Route::middleware('auth:sanctum')->group(function () {
             ->name('api.v1.admin.quotes.update_status');
         Route::delete('quotes/{quote}', [AdminQuoteController::class, 'destroy'])
             ->name('api.v1.admin.quotes.destroy');
+
+        // Job Offers (Offres d'emploi)
+        Route::apiResource('job-offers', AdminJobOfferController::class)
+            ->except(['show'])
+            ->parameters(['job-offers' => 'offer'])
+            ->names('api.v1.admin.job_offers');
 
         // Job Applications (Candidatures)
         Route::get('job-applications/stats', [AdminJobApplicationController::class, 'stats'])
