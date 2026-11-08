@@ -11,3 +11,4 @@ export * from './users.api';
 export * from './user.api';
 export * from './dashboard.api';
 export * from './upload.api';
+export * from './recruitment.api';
